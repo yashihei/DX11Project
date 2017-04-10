@@ -4,10 +4,10 @@
 #include <string>
 #include <memory>
 
-class D3D11App {
+class App {
 public:
-	D3D11App();
-	~D3D11App();
+	App();
+	~App();
 	void run();
 private:
 	bool registerWndClass();

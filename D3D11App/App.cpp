@@ -1,14 +1,14 @@
-#include "D3D11App.h"
+#include "App.h"
 
-D3D11App::D3D11App() :
+App::App() :
 	m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)),
-	m_appName("D3D11App"), m_ScreenWidth(800), m_ScreenHeight(600)
+	m_appName("App"), m_ScreenWidth(800), m_ScreenHeight(600)
 {
 }
 
-D3D11App::~D3D11App() {}
+App::~App() {}
 
-void D3D11App::run()
+void App::run()
 {
 	const int answer = MessageBox(NULL, TEXT("フルスクリーンで起動しますか？"), m_appName.c_str(), MB_YESNO | MB_ICONQUESTION);
 	const float fullScreen = (answer == IDYES) ? true : false;
@@ -21,10 +21,8 @@ void D3D11App::run()
 	MSG msg = {};
 
 	try {
-		while (true) {
+		while (msg.message != WM_QUIT) {
 			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-				if (msg.message == WM_QUIT)
-					break;
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			} else {
@@ -36,7 +34,7 @@ void D3D11App::run()
 	}
 }
 
-bool D3D11App::registerWndClass()
+bool App::registerWndClass()
 {
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(WNDCLASSEX);
@@ -58,7 +56,7 @@ bool D3D11App::registerWndClass()
 	return true;
 }
 
-bool D3D11App::initWindow(bool fullScreen) {
+bool App::initWindow(bool fullScreen) {
 	DWORD style;
 	RECT rc = { 0, 0, m_ScreenWidth, m_ScreenHeight };
 
@@ -92,7 +90,7 @@ bool D3D11App::initWindow(bool fullScreen) {
 	return true;
 }
 
-LRESULT CALLBACK D3D11App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
