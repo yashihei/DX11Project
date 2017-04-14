@@ -21,7 +21,7 @@ void Graphics::initialize(int screenWidth, int screenHeight, HWND hWnd, bool ful
 	if (!createDepthStencil(screenWidth, screenHeight))
 		throw std::runtime_error("Error Create DepthStencil");
 
-	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+	m_deviceContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
 
 	D3D11_VIEWPORT vp = {};
 	vp.Width = static_cast<float>(screenWidth);
@@ -36,8 +36,8 @@ void Graphics::initialize(int screenWidth, int screenHeight, HWND hWnd, bool ful
 void Graphics::beginScene()
 {
 	float color[] = {0.1f, 0.1f, 0.1f, 1};
-	m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
-	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1, 0);
+	m_deviceContext->ClearRenderTargetView(m_renderTargetView.Get(), color);
+	m_deviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1, 0);
 }
 
 void Graphics::endScene()
@@ -94,16 +94,15 @@ bool Graphics::createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND 
 
 bool Graphics::createRenderTarget()
 {
-	ID3D11Texture2D* backBuffer;
+	ComPtr<ID3D11Texture2D> backBuffer;
 	HRESULT hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
 	if (FAILED(hr))
 		return false;
 
-	hr = m_device->CreateRenderTargetView(backBuffer, NULL, &m_renderTargetView);
+	hr = m_device->CreateRenderTargetView(backBuffer.Get(), NULL, &m_renderTargetView);
 	if (FAILED(hr))
 		return false;
 
-	backBuffer->Release();
 	return true;
 }
 
@@ -133,7 +132,7 @@ bool Graphics::createDepthStencil(int screenWidth, int screenHeight)
 	//multisample > 0�̏ꍇ
 	//dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
 
-	hr = m_device->CreateDepthStencilView(m_depthStencilBuffer, &dsvDesc, &m_depthStencilView);
+	hr = m_device->CreateDepthStencilView(m_depthStencilBuffer.Get(), &dsvDesc, &m_depthStencilView);
 	if (FAILED(hr))
 		return false;
 
