@@ -110,11 +110,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="D3D11App.cpp" />
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D3D11App.h" />
+    <ClInclude Include="App.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Input.h" />
   </ItemGroup>

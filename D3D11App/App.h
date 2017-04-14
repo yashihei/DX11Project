@@ -4,6 +4,8 @@
 #include <string>
 #include <memory>
 
+#include "Graphics.h"
+
 class App {
 public:
 	App();
@@ -19,4 +21,5 @@ private:
 	const int m_ScreenWidth, m_ScreenHeight;
 	std::string m_appName;
 	//graphics, inputMgr
+	std::shared_ptr<Graphics> m_graphics;
 };

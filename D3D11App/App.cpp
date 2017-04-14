@@ -2,8 +2,9 @@
 
 App::App() :
 	m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)),
-	m_appName("App"), m_ScreenWidth(800), m_ScreenHeight(600)
+	m_appName("TestApp"), m_ScreenWidth(800), m_ScreenHeight(600)
 {
+	m_graphics = std::make_shared<Graphics>();
 }
 
 App::~App() {}
@@ -18,6 +19,8 @@ void App::run()
 	if (!initWindow(fullScreen))
 		return;
 
+	m_graphics->initialize(m_ScreenWidth, m_ScreenHeight, m_hWnd, false);
+
 	MSG msg = {};
 
 	try {
@@ -27,8 +30,12 @@ void App::run()
 				DispatchMessage(&msg);
 			} else {
 				//do some thing...
+				m_graphics->beginScene();
+				m_graphics->endScene();
 			}
 		}
+	} catch (const std::runtime_error& error) {
+		MessageBox(NULL, error.what(), "Runtime error", MB_OK | MB_ICONERROR);
 	} catch (...) {
 		MessageBox(NULL, TEXT("Unknown error"), "Error", MB_OK | MB_ICONERROR);
 	}
@@ -56,7 +63,8 @@ bool App::registerWndClass()
 	return true;
 }
 
-bool App::initWindow(bool fullScreen) {
+bool App::initWindow(bool fullScreen)
+{
 	DWORD style;
 	RECT rc = { 0, 0, m_ScreenWidth, m_ScreenHeight };
 
