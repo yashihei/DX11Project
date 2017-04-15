@@ -19,7 +19,7 @@ void App::run()
 	if (!initWindow(fullScreen))
 		return;
 
-	m_graphics->initialize(m_ScreenWidth, m_ScreenHeight, m_hWnd, false);
+	m_graphics->initialize(m_ScreenWidth, m_ScreenHeight, m_hWnd, fullScreen);
 
 	MSG msg = {};
 
@@ -93,7 +93,7 @@ bool App::initWindow(bool fullScreen)
 		return false;
 
 	ShowWindow(m_hWnd, SW_SHOWNORMAL);
-	ShowCursor(false);
+	//ShowCursor(false);
 
 	return true;
 }
