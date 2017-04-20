@@ -31,7 +31,6 @@ Scene* DemoScene::update()
 
 void DemoScene::draw()
 {
-	//change const buffer
 	XMMATRIX world, view, proj;
 	D3D11_MAPPED_SUBRESOURCE resource;
 
@@ -44,6 +43,7 @@ void DemoScene::draw()
 	view = XMMatrixTranspose(view);
 	proj = XMMatrixTranspose(proj);
 
+	//コンスタントバッファ書き換え
 	HRESULT hr = m_deviceContext->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
 		ConstantBuffer* data = reinterpret_cast<ConstantBuffer*>(resource.pData);
@@ -52,13 +52,14 @@ void DemoScene::draw()
 		data->proj = proj;
 		m_deviceContext->Unmap(m_constantBuffer.Get(), 0);
 	}
-
 	m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
+
+	//set input layout
 	m_deviceContext->IASetInputLayout(m_layout.Get());
+	//set shader
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), NULL, 0);
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), NULL, 0);
 
-	//model
 	unsigned int stride = sizeof(MyVertex);
 	unsigned int offset = 0;
 	m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
@@ -81,16 +82,16 @@ void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID
 
 void DemoScene::createShader(WCHAR * filePath)
 {
+	//create vs
 	ComPtr<ID3DBlob> VSbuffer;
 	compileFromFile(filePath, "VS", "vs_5_0", &VSbuffer);
-	
-	ComPtr<ID3DBlob> PSBuffer;
-	compileFromFile(filePath, "PS", "ps_5_0", &PSBuffer);
-
 	HRESULT hr = m_device->CreateVertexShader(VSbuffer->GetBufferPointer(), VSbuffer->GetBufferSize(), NULL, &m_vertexShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreateVertexShader() Failed.");
-
+	
+	//create ps
+	ComPtr<ID3DBlob> PSBuffer;
+	compileFromFile(filePath, "PS", "ps_5_0", &PSBuffer);
 	hr = m_device->CreatePixelShader(PSBuffer->GetBufferPointer(), PSBuffer->GetBufferSize(), NULL, &m_pixelShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreatePixelShader() Failed.");
@@ -112,9 +113,9 @@ void DemoScene::createBuffer()
 	//create vertex buffer
 	{
 		MyVertex vertices[] = {
-			{{-1, -1, 0}, {0, 1, 0, 1}},
-			{{0, 1, 0}, {0, 1, 0, 1}},
-			{{1, -1, 0}, {0, 1, 0, 1}},
+			{{-1, -1, 0}, {0, 1, 1, 1}},
+			{{0, 1, 0}, {0, 1, 1, 1}},
+			{{1, -1, 0}, {0, 1, 1, 1}},
 		};
 
 		D3D11_BUFFER_DESC desc = {};

@@ -13,5 +13,5 @@ public:
 	XMFLOAT3 getRot();
 private:
 	XMFLOAT3 pos, rot;
-	XMMATRIX m_viewMat;
+	XMFLOAT4X4 m_viewMat, m_projMat;
 };

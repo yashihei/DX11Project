@@ -15,6 +15,7 @@ Graphics::Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen
 
 	m_deviceContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
 
+	//setting viewport
 	D3D11_VIEWPORT vp = {};
 	vp.Width = static_cast<float>(screenWidth);
 	vp.Height = static_cast<float>(screenHeight);
