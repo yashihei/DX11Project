@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "Graphics.h"
+#include "Scene.h"
 
 class App {
 public:
@@ -22,4 +23,5 @@ private:
 	std::string m_appName;
 	//graphics, inputMgr
 	std::shared_ptr<Graphics> m_graphics;
+	std::shared_ptr<Scene> m_scene;
 };

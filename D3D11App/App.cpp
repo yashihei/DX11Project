@@ -1,10 +1,11 @@
 #include "App.h"
 
+#include "DemoScene.h"
+
 App::App() :
 	m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)),
 	m_appName("TestApp"), m_ScreenWidth(800), m_ScreenHeight(600)
 {
-	m_graphics = std::make_shared<Graphics>();
 }
 
 App::~App() {}
@@ -19,18 +20,20 @@ void App::run()
 	if (!initWindow(fullScreen))
 		return;
 
-	m_graphics->initialize(m_ScreenWidth, m_ScreenHeight, m_hWnd, fullScreen);
-
 	MSG msg = {};
 
 	try {
+		m_graphics = std::make_shared<Graphics>(m_ScreenWidth, m_ScreenHeight, m_hWnd, fullScreen);
+		m_scene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext());
+
 		while (msg.message != WM_QUIT) {
 			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			} else {
-				//do some thing...
+				m_scene->update();
 				m_graphics->beginScene();
+				m_scene->draw();
 				m_graphics->endScene();
 			}
 		}

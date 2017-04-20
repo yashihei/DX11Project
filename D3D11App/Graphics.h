@@ -12,13 +12,11 @@ using Microsoft::WRL::ComPtr;
 
 class Graphics {
 public:
-	Graphics();
-	~Graphics();
-	void initialize(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen);
+	Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen);
 	void beginScene();
 	void endScene();
 	ComPtr<ID3D11Device> getDevice() const { return m_device; }
-	ComPtr<ID3D11DeviceContext> getDeviceContext() { return m_deviceContext; }
+	ComPtr<ID3D11DeviceContext> getDeviceContext() const { return m_deviceContext; }
 private:
 	bool createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen);
 	bool createRenderTarget();
