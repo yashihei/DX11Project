@@ -21,6 +21,7 @@ private:
 	bool createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen);
 	bool createRenderTarget();
 	bool createDepthStencil(int screenWidth, int screenHeight);
+	bool createRasterizerState();
 
 	ComPtr<ID3D11Device> m_device;
 	ComPtr<ID3D11DeviceContext> m_deviceContext;

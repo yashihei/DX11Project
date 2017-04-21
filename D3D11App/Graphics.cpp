@@ -11,9 +11,12 @@ Graphics::Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen
 		throw std::runtime_error("Error Create RenderTarget.");
 
 	if (!createDepthStencil(screenWidth, screenHeight))
-		throw std::runtime_error("Error Create DepthStencil");
+		throw std::runtime_error("Error Create DepthStencil.");
 
 	m_deviceContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
+
+	if (!createRasterizerState())
+		throw std::runtime_error("Error Create RasterizerState.");
 
 	//setting viewport
 	D3D11_VIEWPORT vp = {};
@@ -53,7 +56,7 @@ bool Graphics::createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND 
 	//マルチサンプリングOFF
 	swapChainDesc.SampleDesc.Count = 1;
 	swapChainDesc.SampleDesc.Quality = 0;
-	swapChainDesc.Windowed = fullScreen ? false : true;
+	swapChainDesc.Windowed = fullScreen ? FALSE : TRUE;
 	swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
@@ -128,6 +131,29 @@ bool Graphics::createDepthStencil(int screenWidth, int screenHeight)
 	hr = m_device->CreateDepthStencilView(m_depthStencilBuffer.Get(), &dsvDesc, &m_depthStencilView);
 	if (FAILED(hr))
 		return false;
+
+	return true;
+}
+
+bool Graphics::createRasterizerState()
+{
+	D3D11_RASTERIZER_DESC rasterDesc = {};
+	rasterDesc.FillMode = D3D11_FILL_SOLID;
+	rasterDesc.CullMode = D3D11_CULL_FRONT;
+	rasterDesc.FrontCounterClockwise = FALSE;
+	rasterDesc.DepthBias = 0;
+	rasterDesc.SlopeScaledDepthBias = 0;
+	rasterDesc.DepthBiasClamp = 0;
+	rasterDesc.DepthClipEnable = TRUE;
+	rasterDesc.ScissorEnable = FALSE;
+	rasterDesc.MultisampleEnable = FALSE;
+	rasterDesc.AntialiasedLineEnable = FALSE;
+
+	ComPtr<ID3D11RasterizerState> rasterState;
+	HRESULT hr = m_device->CreateRasterizerState(&rasterDesc, &rasterState);
+	if (FAILED(hr))
+		return false;
+	m_deviceContext->RSSetState(rasterState.Get());
 
 	return true;
 }

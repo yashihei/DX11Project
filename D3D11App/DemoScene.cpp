@@ -1,5 +1,7 @@
 #include "DemoScene.h"
 
+#include "SimpleMath.h"
+using namespace DirectX::SimpleMath;
 #include <d3dcompiler.h>
 #include <stdexcept>
 
@@ -7,13 +9,13 @@
 
 namespace {
 	struct MyVertex {
-		XMFLOAT3 pos;
-		XMFLOAT4 color;
+		Vector3 pos;
+		Vector4 color;
 	};
 	struct ConstantBuffer {
-		XMMATRIX world;
-		XMMATRIX view;
-		XMMATRIX proj;
+		Matrix world;
+		Matrix view;
+		Matrix proj;
 	};
 }
 
@@ -31,12 +33,11 @@ Scene* DemoScene::update()
 
 void DemoScene::draw()
 {
-	XMMATRIX world, view, proj;
+	Matrix world, view, proj;
 	D3D11_MAPPED_SUBRESOURCE resource;
 
-	world = XMMatrixIdentity();
-	view = XMMatrixLookAtLH({0, 0, -5}, {0, 0, 0}, {0, 1, 0});
-	proj = XMMatrixPerspectiveFovLH(3.141592654f / 4.0f, 800/600, 1.0f, 1000.0f);
+	view = Matrix::CreateLookAt({0, 0, -5}, {0, 0, 0}, {0, 1, 0});
+	proj = Matrix::CreatePerspectiveFieldOfView(3.141592654f / 4.0f, 800/600, 1.0f, 1000.0f);
 
 	//“]’u
 	world = XMMatrixTranspose(world);

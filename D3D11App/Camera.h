@@ -1,17 +1,15 @@
 #pragma once
 
-#include <DirectXMath.h>
-using namespace DirectX;
+#include "SimpleMath.h"
+using namespace DirectX::SimpleMath;
 
 class Camera
 {
 public:
-	Camera();
-	void setPos(XMFLOAT3 pos);
-	void setRot(XMFLOAT3 rot);
-	XMFLOAT3 GetPos();
-	XMFLOAT3 getRot();
+	Camera() {}
+	void setPos(Vector3 pos) { m_pos = pos; }
+	void setRot(Vector3 rot) { m_rot = rot; }
 private:
-	XMFLOAT3 pos, rot;
-	XMFLOAT4X4 m_viewMat, m_projMat;
+	Vector3 m_pos, m_rot;
+	Matrix m_viewMat, m_projMat;
 };

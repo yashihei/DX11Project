@@ -3,8 +3,6 @@
 #include "Scene.h"
 
 #include <d3d11.h>
-#include <DirectXMath.h>
-using namespace DirectX;
 
 #include <wrl\client.h>
 using Microsoft::WRL::ComPtr;
