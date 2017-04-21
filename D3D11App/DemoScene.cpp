@@ -36,8 +36,8 @@ void DemoScene::draw()
 	Matrix world, view, proj;
 	D3D11_MAPPED_SUBRESOURCE resource;
 
-	view = Matrix::CreateLookAt({0, 0, -5}, {0, 0, 0}, {0, 1, 0});
-	proj = Matrix::CreatePerspectiveFieldOfView(3.141592654f / 4.0f, 800/600, 1.0f, 1000.0f);
+	view = DirectX::XMMatrixLookAtLH({ 0, 0, -5 }, { 0, 0, 0 }, { 0, 1, 0 });
+	proj = DirectX::XMMatrixPerspectiveFovLH(3.141592654f / 4.0f, 800 / 600, 1.0f, 1000.0f);
 
 	//“]’u
 	world = XMMatrixTranspose(world);

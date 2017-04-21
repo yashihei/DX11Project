@@ -139,7 +139,7 @@ bool Graphics::createRasterizerState()
 {
 	D3D11_RASTERIZER_DESC rasterDesc = {};
 	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.CullMode = D3D11_CULL_FRONT;
+	rasterDesc.CullMode = D3D11_CULL_BACK;
 	rasterDesc.FrontCounterClockwise = FALSE;
 	rasterDesc.DepthBias = 0;
 	rasterDesc.SlopeScaledDepthBias = 0;
