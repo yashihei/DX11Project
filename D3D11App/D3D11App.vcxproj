@@ -119,10 +119,12 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DemoScene.h" />
+    <ClInclude Include="DirectXTex.h" />
     <ClInclude Include="Graphics.h" />
-    <ClInclude Include="Input.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SimpleMath.h" />
+    <ClInclude Include="ShaderRV.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\test.fx">

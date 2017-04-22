@@ -1,10 +1,10 @@
 #pragma once
 
+#include <d3d11.h>
+#include <wrl\client.h>
+
 #include "Scene.h"
 
-#include <d3d11.h>
-
-#include <wrl\client.h>
 using Microsoft::WRL::ComPtr;
 
 class DemoScene : public Scene {

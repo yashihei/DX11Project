@@ -2,6 +2,7 @@
 
 #include "SimpleMath.h"
 using namespace DirectX::SimpleMath;
+
 #include <d3dcompiler.h>
 #include <stdexcept>
 
@@ -67,7 +68,7 @@ void DemoScene::draw()
 	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_deviceContext->DrawIndexed(3, 0, 0);
+	m_deviceContext->DrawIndexed(6, 0, 0);
 }
 
 void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob ** blobOut)
@@ -114,13 +115,14 @@ void DemoScene::createBuffer()
 	//create vertex buffer
 	{
 		MyVertex vertices[] = {
-			{{-1, -1, 0}, {0, 1, 1, 1}},
-			{{0, 1, 0}, {0, 1, 1, 1}},
-			{{1, -1, 0}, {0, 1, 1, 1}},
+			{{-1, -1, 0}, {1, 1, 0, 1}},
+			{{-1, 1, 0}, {0, 1, 0.5f, 1}},
+			{{1, 1, 0}, {1, 1, 0, 1}},
+			{{1, -1, 0}, {0, 1, 0.5f, 1}},
 		};
 
 		D3D11_BUFFER_DESC desc = {};
-		desc.ByteWidth = sizeof(MyVertex) * 3;
+		desc.ByteWidth = sizeof(MyVertex) * 4;
 		desc.Usage = D3D11_USAGE_DEFAULT;
 		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		desc.CPUAccessFlags = 0;
@@ -135,10 +137,10 @@ void DemoScene::createBuffer()
 
 	//create index buffer
 	{
-		unsigned long indices[] = {0, 1, 2};
+		unsigned long indices[] = {0, 1, 2, 0, 2, 3};
 
 		D3D11_BUFFER_DESC desc = {};
-		desc.ByteWidth = sizeof(unsigned long) * 3;
+		desc.ByteWidth = sizeof(unsigned long) * 6;
 		desc.Usage = D3D11_USAGE_DEFAULT;
 		desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		desc.CPUAccessFlags = 0;

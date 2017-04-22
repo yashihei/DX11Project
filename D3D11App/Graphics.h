@@ -1,14 +1,14 @@
 #pragma once
 
-//Lib linked
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3d11.lib")
-
 #include <dxgi.h>
 #include <d3d11.h>
 
 #include <wrl\client.h>
 using Microsoft::WRL::ComPtr;
+
+//Lib linked
+#pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "d3d11.lib")
 
 class Graphics {
 public:
