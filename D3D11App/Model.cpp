@@ -8,7 +8,7 @@ using namespace DirectX::SimpleMath;
 namespace {
 	struct MyVertex {
 		Vector3 pos;
-		Vector4 tex;
+		Vector2 tex;
 	};
 }
 
@@ -33,10 +33,10 @@ void Model::draw() {
 void Model::createVertexBuffer()
 {
 	MyVertex vertices[] = {
-		{{-1, -1, 0}, {1, 0, 0, 1}},
-		{{-1, 1, 0}, {1, 0, 0, 1}},
-		{{1, 1, 0}, {0, 0, 1, 1}},
-		{{1, -1, 0}, {0, 0, 1, 1}},
+		{{-1, -1, 0}, {0, 0}},
+		{{-1, 1, 0}, {1, 0}},
+		{{1, 1, 0}, {1, 1}},
+		{{1, -1, 0}, {0, 1}},
 	};
 
 	D3D11_BUFFER_DESC desc = {};

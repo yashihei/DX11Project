@@ -27,7 +27,7 @@ void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID
 Effect::Effect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
-	WCHAR* filePath = L"./Shader/test.fx";
+	WCHAR* filePath = L"./Shader/tex.fx";
 
 	//create vs
 	ComPtr<ID3DBlob> VSbuffer;
@@ -46,7 +46,7 @@ Effect::Effect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCo
 	//create input layout
 	const D3D11_INPUT_ELEMENT_DESC layout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{"COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	const UINT numElement = ARRAYSIZE(layout);
 
@@ -61,12 +61,27 @@ Effect::Effect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCo
 	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	HRESULT hr = m_device->CreateBuffer(&desc, NULL, &m_constantBuffer);
+	hr = m_device->CreateBuffer(&desc, NULL, &m_constantBuffer);
 	if (FAILED(hr))
 		throw std::runtime_error("CreateConstantBuffer Failed.");
+
+	//create sampler
+	D3D11_SAMPLER_DESC samplerDesc = {};
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = samplerDesc.AddressV = samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	samplerDesc.BorderColor[0] = samplerDesc.BorderColor[1] = samplerDesc.BorderColor[2] = samplerDesc.BorderColor[3] = 0;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	hr = m_device->CreateSamplerState(&samplerDesc, &m_samplerState);
+	if (FAILED(hr))
+		throw std::runtime_error("CreateSamplerState() Failed.");
 }
 
-void Effect::updateConstantBuffer(const Matrix& world, const Matrix& view, const Matrix& proj)
+void Effect::set(const Matrix& world, const Matrix& view, const Matrix& proj, ComPtr<ID3D11ShaderResourceView> rv)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
@@ -80,11 +95,11 @@ void Effect::updateConstantBuffer(const Matrix& world, const Matrix& view, const
 		m_deviceContext->Unmap(m_constantBuffer.Get(), 0);
 	}
 
+	//set shader param
 	m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
-}
+	m_deviceContext->PSSetShaderResources(0, 1, rv.GetAddressOf());
+	m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
 
-void Effect::set()
-{
 	//set input layout
 	m_deviceContext->IASetInputLayout(m_layout.Get());
 	//set shader

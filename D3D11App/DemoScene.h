@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "Model.h"
 #include "Effect.h"
+#include "ShaderRV.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -19,4 +20,5 @@ private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ModelPtr m_model;
 	EffectPtr m_effect;
+	ShaderRVPtr m_shaderRV;
 };
