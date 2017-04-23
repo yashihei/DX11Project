@@ -112,14 +112,17 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="DemoScene.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DemoScene.h" />
     <ClInclude Include="DirectXTex.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Scene.h" />
