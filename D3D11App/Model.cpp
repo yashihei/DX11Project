@@ -8,7 +8,7 @@ using namespace DirectX::SimpleMath;
 namespace {
 	struct MyVertex {
 		Vector3 pos;
-		Vector2 tex;
+		Vector2 uv;
 	};
 }
 

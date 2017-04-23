@@ -13,13 +13,13 @@ cbuffer Params : register(b0)
 struct VSInput
 {
 	float4 pos : POSITION;
-	float2 tex : TEXCOORD0;
+	float2 uv : TEXCOORD0;
 };
 
 struct PSInput
 {
 	float4 pos : SV_POSITION;
-	float2 tex : TEXCOORD0;
+	float2 uv : TEXCOORD0;
 };
 
 PSInput VS(VSInput input)
@@ -32,7 +32,7 @@ PSInput VS(VSInput input)
 	output.pos = mul(output.pos, view);
 	output.pos = mul(output.pos, proj);
 
-	output.tex = input.tex;
+	output.uv = input.uv;
 
 	return output;
 }
@@ -40,6 +40,6 @@ PSInput VS(VSInput input)
 float4 PS(PSInput input) : SV_TARGET
 {
 	float4 texColor;
-	texColor = tex2d.Sample(sampleType, input.tex);
+	texColor = tex2d.Sample(sampleType, input.uv);
 	return texColor;
 }

@@ -3,12 +3,24 @@
 #include "SimpleMath.h"
 using namespace DirectX::SimpleMath;
 
+#include <fstream>
+
 DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
 	m_effect = std::make_shared<Effect>(m_device, m_deviceContext);
 	m_model = std::make_shared<Model>(m_device, m_deviceContext);
 	m_shaderRV = std::make_shared<ShaderRV>(m_device, L"./assets/alice.png");
+
+	//pmx load
+	std::filebuf fb;
+	if (!fb.open("assets/aichan/kizunaai.pmx", std::ios::in | std::ios::binary)) {
+		std::runtime_error("Pmx Load Failed.");
+	}
+	std::istream is(&fb);
+
+	m_pmxData = std::make_shared<pmx::PmxModel>();
+	m_pmxData->Read(&is);
 }
 
 Scene* DemoScene::update()

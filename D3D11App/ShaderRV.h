@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <memory>
 
-#include "DirectXTex.h"
+#include "DirectXTex\DirectXTex.h"
 #if defined(DEBUG) || defined(_DEBUG)
 	#pragma comment(lib, "DirectXTexD.lib")
 #else
