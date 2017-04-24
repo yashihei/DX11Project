@@ -71,12 +71,18 @@
     <ClInclude Include="MMD\Pmx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\test.fx">
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="Shader\tex.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\diffuse.fx">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

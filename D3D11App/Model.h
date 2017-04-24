@@ -19,6 +19,8 @@ private:
 	ComPtr<ID3D11Buffer> m_vertexBuffer;
 	ComPtr<ID3D11Buffer> m_indexBuffer;
 	ComPtr<ID3D11ShaderResourceView> m_resource;
+
+	UINT m_vertexCount, m_indexCount;
 };
 
 using ModelPtr = std::shared_ptr<Model>;

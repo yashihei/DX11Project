@@ -11,7 +11,7 @@ using Microsoft::WRL::ComPtr;
 class Effect {
 public:
 	Effect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
-	void set(const Matrix& world, const Matrix& view, const Matrix& proj, ComPtr<ID3D11ShaderResourceView> rv);
+	void set(const Matrix& world, const Matrix& view, const Matrix& proj, ComPtr<ID3D11ShaderResourceView> rv, const Vector3& lightDir, const Vector4& diffuseColor);
 private:
 	ComPtr<ID3D11Device> m_device;
 	ComPtr<ID3D11DeviceContext> m_deviceContext;

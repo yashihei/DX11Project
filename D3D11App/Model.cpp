@@ -9,12 +9,15 @@ namespace {
 	struct MyVertex {
 		Vector3 pos;
 		Vector2 uv;
+		Vector3 normal;
 	};
 }
 
 Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
-	m_device(device), m_deviceContext(deviceContext)
+	m_device(device), m_deviceContext(deviceContext),
+	m_vertexCount(0), m_indexCount(0)
 {
+	m_vertexCount = 4, m_indexCount = 6;
 	createVertexBuffer();
 	createIndexBuffer();
 }
@@ -27,20 +30,20 @@ void Model::draw() {
 	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_deviceContext->DrawIndexed(6, 0, 0);
+	m_deviceContext->DrawIndexed(m_indexCount, 0, 0);
 }
 
 void Model::createVertexBuffer()
 {
 	MyVertex vertices[] = {
-		{{-1, -1, 0}, {0, 0}},
-		{{-1, 1, 0}, {1, 0}},
-		{{1, 1, 0}, {1, 1}},
-		{{1, -1, 0}, {0, 1}},
+		{{-1, 1, 0}, {0, 0}, {0, 0, -1}},
+		{{1, 1, 0}, {1, 0}, {0, 0, -1}},
+		{{1, -1, 0}, {1, 1}, {0, 0, -1}},
+		{{-1, -1, 0}, {0, 1}, {0, 0, -1}},
 	};
 
 	D3D11_BUFFER_DESC desc = {};
-	desc.ByteWidth = sizeof(MyVertex) * 4;
+	desc.ByteWidth = sizeof(MyVertex) * m_vertexCount;
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	desc.CPUAccessFlags = 0;
@@ -58,7 +61,7 @@ void Model::createIndexBuffer()
 	unsigned long indices[] = {0, 1, 2, 0, 2, 3};
 
 	D3D11_BUFFER_DESC desc = {};
-	desc.ByteWidth = sizeof(unsigned long) * 6;
+	desc.ByteWidth = sizeof(unsigned long) * m_indexCount;
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	desc.CPUAccessFlags = 0;

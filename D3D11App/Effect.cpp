@@ -10,6 +10,10 @@ namespace {
 		Matrix world;
 		Matrix view;
 		Matrix proj;
+		//light params
+		Vector4 diffuseColor;
+		Vector3 lightDir;
+		float padding;
 	};
 }
 
@@ -17,6 +21,11 @@ void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID
 {
 	DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS;
 	ComPtr<ID3DBlob> errorBlob;
+
+#if defined(DEBUG) || defined(_DEBUG)
+	flags = D3DCOMPILE_SKIP_OPTIMIZATION;
+	flags |= D3DCOMPILE_DEBUG;
+#endif
 
 	HRESULT hr = D3DCompileFromFile(filePath, NULL, NULL, entryPoint, shaderModel, flags, 0, blobOut, &errorBlob);
 
@@ -27,7 +36,7 @@ void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID
 Effect::Effect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
-	WCHAR* filePath = L"./Shader/tex.fx";
+	WCHAR* filePath = L"./Shader/diffuse.fx";
 
 	//create vs
 	ComPtr<ID3DBlob> VSbuffer;
@@ -47,6 +56,7 @@ Effect::Effect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCo
 	const D3D11_INPUT_ELEMENT_DESC layout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	const UINT numElement = ARRAYSIZE(layout);
 
@@ -55,13 +65,13 @@ Effect::Effect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCo
 		throw std::runtime_error("CreateInputLayout() Failed.");
 
 	//create constant buf
-	D3D11_BUFFER_DESC desc = {};
-	desc.ByteWidth = sizeof(ConstantBuffer);
-	desc.Usage = D3D11_USAGE_DYNAMIC;
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	D3D11_BUFFER_DESC constantBufferDesc = {};
+	constantBufferDesc.ByteWidth = sizeof(ConstantBuffer);
+	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	hr = m_device->CreateBuffer(&desc, NULL, &m_constantBuffer);
+	hr = m_device->CreateBuffer(&constantBufferDesc, NULL, &m_constantBuffer);
 	if (FAILED(hr))
 		throw std::runtime_error("CreateConstantBuffer Failed.");
 
@@ -81,7 +91,7 @@ Effect::Effect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCo
 		throw std::runtime_error("CreateSamplerState() Failed.");
 }
 
-void Effect::set(const Matrix& world, const Matrix& view, const Matrix& proj, ComPtr<ID3D11ShaderResourceView> rv)
+void Effect::set(const Matrix& world, const Matrix& view, const Matrix& proj, ComPtr<ID3D11ShaderResourceView> rv, const Vector3& lightDir, const Vector4& diffuseColor)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
@@ -92,11 +102,15 @@ void Effect::set(const Matrix& world, const Matrix& view, const Matrix& proj, Co
 		data->world = world;
 		data->view = view;
 		data->proj = proj;
+		data->diffuseColor = diffuseColor;
+		data->lightDir = lightDir;
+		data->padding = 0.0f;
 		m_deviceContext->Unmap(m_constantBuffer.Get(), 0);
 	}
 
 	//set shader param
 	m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
+	m_deviceContext->PSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 	m_deviceContext->PSSetShaderResources(0, 1, rv.GetAddressOf());
 	m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
 

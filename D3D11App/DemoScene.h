@@ -23,4 +23,5 @@ private:
 	EffectPtr m_effect;
 	ShaderRVPtr m_shaderRV;
 	std::shared_ptr<pmx::PmxModel> m_pmxData;
+	float m_angle = 0;
 };
