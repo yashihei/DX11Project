@@ -7,7 +7,6 @@
 #include "Model.h"
 #include "Effect.h"
 #include "ShaderRV.h"
-#include "MMD\Pmx.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -22,6 +21,5 @@ private:
 	ModelPtr m_model;
 	EffectPtr m_effect;
 	ShaderRVPtr m_shaderRV;
-	std::shared_ptr<pmx::PmxModel> m_pmxData;
 	float m_angle = 0;
 };

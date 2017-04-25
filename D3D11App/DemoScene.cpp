@@ -11,15 +11,6 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_effect = std::make_shared<Effect>(m_device, m_deviceContext);
 	m_model = std::make_shared<Model>(m_device, m_deviceContext);
 	m_shaderRV = std::make_shared<ShaderRV>(m_device, L"./assets/alice.png");
-
-	//pmx load
-	//std::filebuf fb;
-	//if (!fb.open("assets/alicia/Alicia_solid.pmx", std::ios::in | std::ios::binary)) {
-	//	std::runtime_error("Pmx Load Failed.");
-	//}
-	//std::istream is(&fb);
-	//m_pmxData = std::make_shared<pmx::PmxModel>();
-	//m_pmxData->Read(&is);
 }
 
 Scene* DemoScene::update()
@@ -32,10 +23,12 @@ void DemoScene::draw()
 {
 	Matrix world, view, proj;
 	Vector3 lightDir = { 0, 0, 1 };
-	Vector4 diffuseColor = { 1, 1, 0, 1 };
+	Vector4 diffuseColor = { 1, 1, 1, 1 };
 
 	world = DirectX::XMMatrixRotationY(m_angle);
-	view = DirectX::XMMatrixLookAtLH({ 0, 0, -5 }, { 0, 0, 0 }, { 0, 1, 0 });
+	world *= DirectX::XMMatrixTranslation(0, -10, 0);
+
+	view = DirectX::XMMatrixLookAtLH({ 0, 0, -30 }, { 0, 0, 0 }, { 0, 1, 0 });
 	proj = DirectX::XMMatrixPerspectiveFovLH(3.141592654f / 4.0f, 800.0f / 600.0f, 1.0f, 1000.0f);
 
 	//“]’u
