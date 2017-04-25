@@ -38,7 +38,7 @@ void Graphics::beginScene()
 
 void Graphics::endScene()
 {
-	m_swapChain->Present(0, 0);
+	m_swapChain->Present(1, 0);
 }
 
 bool Graphics::createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen)
