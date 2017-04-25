@@ -10,12 +10,12 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 {
 	m_effect = std::make_shared<Effect>(m_device, m_deviceContext);
 	m_model = std::make_shared<Model>(m_device, m_deviceContext);
-	m_shaderRV = std::make_shared<ShaderRV>(m_device, L"./assets/alice.png");
+	m_shaderRV = std::make_shared<ShaderRV>(m_device, L"./assets/test.png");
 }
 
 Scene* DemoScene::update()
 {
-	m_angle += 0.0003f;
+	m_angle += 0.01f;
 	return this;
 }
 
@@ -26,9 +26,8 @@ void DemoScene::draw()
 	Vector4 diffuseColor = { 1, 1, 1, 1 };
 
 	world = DirectX::XMMatrixRotationY(m_angle);
-	world *= DirectX::XMMatrixTranslation(0, -10, 0);
 
-	view = DirectX::XMMatrixLookAtLH({ 0, 0, -30 }, { 0, 0, 0 }, { 0, 1, 0 });
+	view = DirectX::XMMatrixLookAtLH({ 0, 10, -30 }, { 0, 10, 0 }, { 0, 1, 0 });
 	proj = DirectX::XMMatrixPerspectiveFovLH(3.141592654f / 4.0f, 800.0f / 600.0f, 1.0f, 1000.0f);
 
 	//“]’u

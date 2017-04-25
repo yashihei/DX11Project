@@ -57,16 +57,11 @@ void Model::loadPmx()
 			pmxModel.vertices[i].normal[1],
 			pmxModel.vertices[i].normal[2]
 		};
-
-		//FIXME:余計なコピー
-		MyVertex vtx;
-		vtx.pos = pos, vtx.uv = uv, vtx.normal = normal;
-		m_vertices.push_back(vtx);
+		m_vertices.push_back({ pos, uv, normal });
 	}
 	for (int i = 0; i < m_indexCount; i++) {
 		m_indices.emplace_back(pmxModel.indices[i]);
 	}
-
 }
 
 void Model::createVertexBuffer()
