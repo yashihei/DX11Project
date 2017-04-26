@@ -3,6 +3,8 @@
 #include <wrl\client.h>
 #include <stdexcept>
 #include <memory>
+#include <Shlwapi.h>
+#pragma comment(lib, "Shlwapi.lib")
 
 #include "DirectXTex\DirectXTex.h"
 #if defined(DEBUG) || defined(_DEBUG)
@@ -19,10 +21,17 @@ public:
 	ShaderRV(ComPtr<ID3D11Device> device, const WCHAR* filePath) {
 		TexMetadata info;
 		ScratchImage image;
+		HRESULT hr;
 
-		HRESULT hr = LoadFromWICFile(filePath, 0, &info, image);
-		if (FAILED(hr))
-			throw std::runtime_error("LoadFromWICFile() Failed.");
+		if (StrCmpW(L".tga", PathFindExtensionW(filePath)) == 0) {
+			hr = LoadFromTGAFile(filePath, &info, image);
+			if (FAILED(hr))
+				throw std::runtime_error("LoadFromTGAFile() Failed.");
+		} else {
+			hr = LoadFromWICFile(filePath, 0, &info, image);
+			if (FAILED(hr))
+				throw std::runtime_error("LoadFromWICFile() Failed.");
+		}
 
 		hr = CreateShaderResourceView(device.Get(), image.GetImages(), image.GetImageCount(), info, &m_resource);
 		if (FAILED(hr))
