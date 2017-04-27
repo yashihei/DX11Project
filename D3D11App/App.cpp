@@ -12,7 +12,7 @@ App::~App() {}
 
 void App::run()
 {
-	const int answer = MessageBox(NULL, TEXT("フルスクリーンで起動しますか？"), m_appName.c_str(), MB_YESNO | MB_ICONQUESTION);
+	const int answer = MessageBox(NULL, "フルスクリーンで起動しますか？", m_appName.c_str(), MB_YESNO | MB_ICONQUESTION);
 	const float fullScreen = (answer == IDYES) ? true : false;
 
 	if (!registerWndClass())
@@ -40,7 +40,7 @@ void App::run()
 	} catch (const std::runtime_error& error) {
 		MessageBox(NULL, error.what(), "Runtime error", MB_OK | MB_ICONERROR);
 	} catch (...) {
-		MessageBox(NULL, TEXT("Unknown error"), "Error", MB_OK | MB_ICONERROR);
+		MessageBox(NULL, "Unknown error", "Error", MB_OK | MB_ICONERROR);
 	}
 }
 
