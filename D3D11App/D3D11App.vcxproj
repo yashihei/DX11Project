@@ -138,7 +138,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="ShaderRV.h" />
-    <ClInclude Include="Util.h" />
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\diffuse.fx">
