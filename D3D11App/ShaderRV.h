@@ -16,33 +16,26 @@
 using Microsoft::WRL::ComPtr;
 using namespace DirectX;
 
-class ShaderRV {
-public:
-	ShaderRV(ComPtr<ID3D11Device> device, const WCHAR* filePath) {
-		TexMetadata info;
-		ScratchImage image;
-		HRESULT hr;
+inline ComPtr<ID3D11ShaderResourceView> CreateShaderResourceViewFromFile(ComPtr<ID3D11Device> device, const WCHAR* filePath) {
+	ComPtr<ID3D11ShaderResourceView> resource;
+	TexMetadata info;
+	ScratchImage image;
+	HRESULT hr;
 
-		if (StrCmpW(L".tga", PathFindExtensionW(filePath)) == 0) {
-			hr = LoadFromTGAFile(filePath, &info, image);
-			if (FAILED(hr))
-				throw std::runtime_error("LoadFromTGAFile() Failed.");
-		} else {
-			hr = LoadFromWICFile(filePath, 0, &info, image);
-			if (FAILED(hr))
-				throw std::runtime_error("LoadFromWICFile() Failed.");
-		}
-
-		hr = CreateShaderResourceView(device.Get(), image.GetImages(), image.GetImageCount(), info, &m_resource);
+	if (StrCmpW(L".tga", PathFindExtensionW(filePath)) == 0) {
+		hr = LoadFromTGAFile(filePath, &info, image);
 		if (FAILED(hr))
-			throw std::runtime_error("CreateShaderResourceView() Failed.");
+			throw std::runtime_error("LoadFromTGAFile() Failed.");
+	}
+	else {
+		hr = LoadFromWICFile(filePath, 0, &info, image);
+		if (FAILED(hr))
+			throw std::runtime_error("LoadFromWICFile() Failed.");
 	}
 
-	ComPtr<ID3D11ShaderResourceView> getResource() {
-		return m_resource;
-	}
-private:
-	ComPtr<ID3D11ShaderResourceView> m_resource;
-};
+	hr = CreateShaderResourceView(device.Get(), image.GetImages(), image.GetImageCount(), info, &resource);
+	if (FAILED(hr))
+		throw std::runtime_error("CreateShaderResourceView() Failed.");
 
-using ShaderRVPtr = std::shared_ptr<ShaderRV>;
+	return resource;
+}

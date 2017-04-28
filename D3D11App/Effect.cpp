@@ -91,7 +91,7 @@ Effect::Effect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCo
 		throw std::runtime_error("CreateSamplerState() Failed.");
 }
 
-void Effect::set(const Matrix& world, const Matrix& view, const Matrix& proj, ComPtr<ID3D11ShaderResourceView> rv, const Vector3& lightDir, const Vector4& diffuseColor)
+void Effect::setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
@@ -107,13 +107,15 @@ void Effect::set(const Matrix& world, const Matrix& view, const Matrix& proj, Co
 		data->padding = 0.0f;
 		m_deviceContext->Unmap(m_constantBuffer.Get(), 0);
 	}
+}
 
-	//set shader param
+void Effect::apply()
+{
+	//set constants
 	m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 	m_deviceContext->PSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
-	m_deviceContext->PSSetShaderResources(0, 1, rv.GetAddressOf());
+	m_deviceContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 	m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
-
 	//set input layout
 	m_deviceContext->IASetInputLayout(m_layout.Get());
 	//set shader
