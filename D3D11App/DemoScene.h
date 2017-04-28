@@ -4,8 +4,7 @@
 #include <wrl\client.h>
 
 #include "Scene.h"
-#include "Model.h"
-#include "Effect.h"
+#include "Fwd.h"
 
 using Microsoft::WRL::ComPtr;
 

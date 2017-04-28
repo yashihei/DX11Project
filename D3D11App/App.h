@@ -3,9 +3,7 @@
 #include <Windows.h>
 #include <string>
 #include <memory>
-
-#include "Graphics.h"
-#include "Scene.h"
+#include "Fwd.h"
 
 class App {
 public:
@@ -22,6 +20,6 @@ private:
 	const int m_ScreenWidth, m_ScreenHeight;
 	std::string m_appName;
 	//graphics, inputMgr
-	std::shared_ptr<Graphics> m_graphics;
-	std::shared_ptr<Scene> m_scene;
+	GraphicsPtr m_graphics;
+	ScenePtr m_scene;
 };

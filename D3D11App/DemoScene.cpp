@@ -1,9 +1,10 @@
 #include "DemoScene.h"
 
 #include "SimpleMath.h"
-using namespace DirectX::SimpleMath;
+#include "Effect.h"
+#include "Model.h"
 
-#include <fstream>
+using namespace DirectX::SimpleMath;
 
 DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)

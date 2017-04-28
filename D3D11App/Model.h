@@ -44,5 +44,3 @@ private:
 
 	std::shared_ptr<Effect> m_effect;
 };
-
-using ModelPtr = std::shared_ptr<Model>;

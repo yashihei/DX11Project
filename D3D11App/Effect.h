@@ -24,5 +24,3 @@ private:
 	ComPtr<ID3D11SamplerState> m_samplerState;
 	ComPtr<ID3D11ShaderResourceView> m_texture;
 };
-
-using EffectPtr = std::shared_ptr<Effect>;

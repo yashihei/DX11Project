@@ -1,6 +1,7 @@
 #include "App.h"
 
 #include "DemoScene.h"
+#include "Graphics.h"
 
 App::App() :
 	m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)),
