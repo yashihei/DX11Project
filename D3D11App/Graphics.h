@@ -22,6 +22,7 @@ private:
 	bool createRenderTarget();
 	bool createDepthStencil(int screenWidth, int screenHeight);
 	bool createRasterizerState();
+	bool createBlendState();
 
 	ComPtr<ID3D11Device> m_device;
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
