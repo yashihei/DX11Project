@@ -1,7 +1,7 @@
 #pragma once
 
 #include <d3d11.h>
-#include <wrl\client.h>
+#include <wrl/client.h>
 
 #include "Scene.h"
 #include "Fwd.h"

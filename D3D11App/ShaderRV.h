@@ -1,16 +1,16 @@
 #pragma once
 
-#include <wrl\client.h>
+#include <wrl/client.h>
 #include <stdexcept>
 #include <memory>
 #include <Shlwapi.h>
 #pragma comment(lib, "Shlwapi.lib")
 
-#include "DirectXTex\DirectXTex.h"
+#include "DirectXTex/DirectXTex.h"
 #if defined(DEBUG) || defined(_DEBUG)
-	#pragma comment(lib, "DirectXTexD.lib")
+	#pragma comment(lib, "lib/DirectXTexD.lib")
 #else
-	#pragma comment(lib, "DirectXTex.lib")
+	#pragma comment(lib, "lib/DirectXTex.lib")
 #endif
 
 using Microsoft::WRL::ComPtr;
