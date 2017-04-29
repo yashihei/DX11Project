@@ -5,15 +5,16 @@
 #include <memory>
 #include <vector>
 #include "SimpleMath.h"
+#include "Fwd.h"
 
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
-class Effect;
 
 class Model {
 public:
-	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
-	void draw(std::shared_ptr<Effect> effect);
+	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, EffectPtr effect);
+	void createFromPmx(const std::string& filePath);
+	void draw();
 private:
 	struct MyVertex {
 		Vector3 pos;
@@ -26,7 +27,6 @@ private:
 		int indexCount;
 	};
 
-	void createFromPmx(const std::string& filePath);
 	void createVertexBuffer();
 	void createIndexBuffer();
 
@@ -42,5 +42,5 @@ private:
 	std::vector<ComPtr<ID3D11ShaderResourceView>> m_textures;
 	std::vector<Material> m_materials;
 
-	std::shared_ptr<Effect> m_effect;
+	EffectPtr m_effect;
 };

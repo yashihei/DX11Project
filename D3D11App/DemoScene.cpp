@@ -10,7 +10,8 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_device(device), m_deviceContext(deviceContext)
 {
 	m_effect = std::make_shared<Effect>(m_device, m_deviceContext);
-	m_model = std::make_shared<Model>(m_device, m_deviceContext);
+	m_model = std::make_shared<Model>(m_device, m_deviceContext, m_effect);
+	m_model->createFromPmx("assets/alicia/Alicia_solid.pmx");
 }
 
 Scene* DemoScene::update()
@@ -36,5 +37,5 @@ void DemoScene::draw()
 	proj = XMMatrixTranspose(proj);
 
 	m_effect->setParam(world, view, proj, lightDir, diffuseColor);
-	m_model->draw(m_effect);
+	m_model->draw();
 }

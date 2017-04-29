@@ -6,18 +6,17 @@
 #include "Utility.h"
 #include "Effect.h"
 
-Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
+Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, EffectPtr effect) :
 	m_device(device), m_deviceContext(deviceContext),
-	m_vertexCount(0), m_indexCount(0)
+	m_vertexCount(0), m_indexCount(0),
+	m_effect(effect)
 {
-	createFromPmx("assets/alicia/Alicia_solid.pmx");
-	//createFromPmx("assets/aichan/kizunaai.pmx");
-	createVertexBuffer();
-	createIndexBuffer();
 }
 
-void Model::draw(std::shared_ptr<Effect> effect)
+void Model::draw()
 {
+	assert(m_vertexCount != 0);
+
 	unsigned int stride = sizeof(MyVertex);
 	unsigned int offset = 0;
 	m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
@@ -26,8 +25,8 @@ void Model::draw(std::shared_ptr<Effect> effect)
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {
-		effect->setTexture(m_textures[mat.diffuseTexureIndex]);
-		effect->apply();
+		m_effect->setTexture(m_textures[mat.diffuseTexureIndex]);
+		m_effect->apply();
 		m_deviceContext->DrawIndexed(mat.indexCount, countIndex, 0);
 		countIndex += mat.indexCount;
 	}
@@ -87,6 +86,9 @@ void Model::createFromPmx(const std::string& filePath)
 		};
 		m_materials.push_back(mat);
 	}
+
+	createVertexBuffer();
+	createIndexBuffer();
 }
 
 void Model::createVertexBuffer()
