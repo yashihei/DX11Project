@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SimpleMath.h"
+#include "DirectXTK/SimpleMath.h"
 using namespace DirectX::SimpleMath;
 
 class Camera

@@ -1,6 +1,6 @@
 #include "DemoScene.h"
 
-#include "SimpleMath.h"
+#include "DirectXTK/SimpleMath.h"
 #include "Effect.h"
 #include "Model.h"
 

@@ -4,7 +4,7 @@
 #include <wrl\client.h>
 #include <memory>
 #include <vector>
-#include "SimpleMath.h"
+#include "DirectXTK/SimpleMath.h"
 #include "Fwd.h"
 
 using namespace DirectX::SimpleMath;
