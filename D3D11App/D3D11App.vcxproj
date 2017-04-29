@@ -70,12 +70,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <EnableCppCoreCheck>false</EnableCppCoreCheck>
-    <LibraryPath>./Lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <IncludePath>C:\boost\boost_1_64_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <EnableCppCoreCheck>false</EnableCppCoreCheck>
-    <LibraryPath>./Lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <IncludePath>C:\boost\boost_1_64_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -103,6 +103,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -134,10 +135,10 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Fwd.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="MMD\Pmx.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="ShaderRV.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
