@@ -18,5 +18,6 @@ private:
 	ModelPtr m_model;
 	EffectPtr m_effect;
 	InputManagerPtr m_inputManager;
+	CameraPtr m_camera;
 	float m_angle = 0;
 };
