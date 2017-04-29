@@ -3,6 +3,7 @@
 #include "DirectXTK/SimpleMath.h"
 #include "Effect.h"
 #include "Model.h"
+#include "InputManager.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -12,11 +13,16 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_effect = std::make_shared<Effect>(m_device, m_deviceContext);
 	m_model = std::make_shared<Model>(m_device, m_deviceContext, m_effect);
 	m_model->createFromPmx("assets/alicia/Alicia_solid.pmx");
+	m_inputManager = std::make_shared<InputManager>();
 }
 
 Scene* DemoScene::update()
 {
-	m_angle += 0.01f;
+	m_inputManager->update();
+	if (m_inputManager->isPressedButton1())
+		m_angle += 0.01f;
+	if (m_inputManager->isPressedButton2())
+		m_angle -= 0.01f;
 	return this;
 }
 

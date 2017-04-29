@@ -2,7 +2,6 @@
 
 #include <d3d11.h>
 #include <wrl/client.h>
-
 #include "Scene.h"
 #include "Fwd.h"
 
@@ -18,5 +17,6 @@ private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ModelPtr m_model;
 	EffectPtr m_effect;
+	InputManagerPtr m_inputManager;
 	float m_angle = 0;
 };
