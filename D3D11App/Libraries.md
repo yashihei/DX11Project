@@ -1,0 +1,5 @@
+- Boost 1.64.0
+- DIRECTX TEXTURE LIBRARY (DirectXTex)
+- DirectXTK - the DirectX Tool Kit for DirectX 11
+- MikuMikuFormats
+- tinyobjloader
