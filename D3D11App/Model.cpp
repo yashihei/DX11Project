@@ -11,6 +11,7 @@ Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCont
 	m_vertexCount(0), m_indexCount(0)
 {
 	createFromPmx("assets/alicia/Alicia_solid.pmx");
+	//createFromPmx("assets/aichan/kizunaai.pmx");
 	createVertexBuffer();
 	createIndexBuffer();
 }

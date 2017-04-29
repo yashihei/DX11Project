@@ -30,6 +30,10 @@ template <typename Container, typename Pred> inline void Erase_if(Container& c, 
 	c.erase(std::remove_if(c.begin(), c.end(), pred), c.end());
 }
 
+template<class T, class F> inline void Each(T &v, const F &f) {
+	std::for_each(v.begin(), v.end(), f);
+}
+
 //from:http://nekko1119.hatenablog.com/entry/2017/01/02/054629
 inline std::wstring s2ws(const std::string& src) {
 	auto const dest_size = ::MultiByteToWideChar(CP_ACP, 0U, src.data(), -1, nullptr, 0U);

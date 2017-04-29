@@ -19,8 +19,10 @@ class Effect;
 class Model;
 class Graphics;
 class Scene;
+class Camera;
 
 using EffectPtr = std::shared_ptr<Effect>;
 using ModelPtr = std::shared_ptr<Model>;
 using GraphicsPtr = std::shared_ptr<Graphics>;
 using ScenePtr = std::shared_ptr<Scene>;
+using CameraPtr = std::shared_ptr<Camera>;

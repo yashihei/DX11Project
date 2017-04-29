@@ -178,7 +178,6 @@ bool Graphics::createBlendState()
 	if (FAILED(hr))
 		return false;
 
-	const float blendFactor[] = { 0, 0, 0, 0 };
 	m_deviceContext->OMSetBlendState(blendState.Get(), nullptr, 0xFFffFFff);
 
 	return true;

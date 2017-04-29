@@ -27,7 +27,7 @@ void DemoScene::draw()
 
 	world = DirectX::XMMatrixRotationY(m_angle);
 
-	view = DirectX::XMMatrixLookAtLH({ 0, 10, -30 }, { 0, 10, 0 }, { 0, 1, 0 });
+	view = DirectX::XMMatrixLookAtLH({ 0, 15, -15 }, { 0, 15, 0 }, { 0, 1, 0 });
 	proj = DirectX::XMMatrixPerspectiveFovLH(3.141592654f / 4.0f, 800.0f / 600.0f, 1.0f, 1000.0f);
 
 	//“]’u
