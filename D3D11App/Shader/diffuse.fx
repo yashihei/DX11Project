@@ -51,11 +51,13 @@ float4 PS(PSInput input) : SV_TARGET
 {
 	float4 texColor;
 	float lightIntensity;
-	float4 outColor;
+	float4 outColor = { 0.2f, 0.2f, 0.2f, 1.0f };
 
 	texColor = tex2d.Sample(sampleType, input.uv);
 	lightIntensity = saturate(dot(input.normal, -lightDir));
-	outColor = saturate(diffuseColor * lightIntensity);
+	if (lightIntensity > 0)
+		outColor += (diffuseColor * lightIntensity);
+	outColor = saturate(outColor);
 	outColor = outColor * texColor;
 
 	return outColor;
