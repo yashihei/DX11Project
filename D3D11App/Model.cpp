@@ -37,7 +37,7 @@ void Model::createFromPmx(const std::string& filePath)
 	pmx::PmxModel pmxModel;
 	std::filebuf fb;
 	if (!fb.open(filePath, std::ios::in | std::ios::binary)) {
-		throw std::runtime_error("Pmx Load Failed.");
+		throw std::runtime_error(filePath + " Load Failed.");
 	}
 	std::istream is(&fb);
 	pmxModel.Read(&is);
@@ -67,7 +67,7 @@ void Model::createFromPmx(const std::string& filePath)
 
 	//load idx
 	for (int i = 0; i < m_indexCount; i++) {
-		m_indices.emplace_back(pmxModel.indices[i]);
+		m_indices.push_back(pmxModel.indices[i]);
 	}
 
 	//load tex
@@ -81,6 +81,12 @@ void Model::createFromPmx(const std::string& filePath)
 	//load material
 	for (int i = 0; i < pmxModel.material_count; i++) {
 		Material mat = {
+			{
+				pmxModel.materials[i].diffuse[0],
+				pmxModel.materials[i].diffuse[1],
+				pmxModel.materials[i].diffuse[2],
+				pmxModel.materials[i].diffuse[3]
+			},
 			pmxModel.materials[i].diffuse_texture_index,
 			pmxModel.materials[i].index_count,
 		};
