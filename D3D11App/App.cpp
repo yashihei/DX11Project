@@ -45,9 +45,10 @@ void App::run()
 				m_scene->draw();
 				m_graphics->endScene();
 			}
+
 		}
-	} catch (const std::runtime_error& error) {
-		MessageBox(NULL, error.what(), "Runtime error", MB_OK | MB_ICONERROR);
+	} catch (const std::exception& error) {
+		MessageBox(NULL, error.what(), "Exception", MB_OK | MB_ICONERROR);
 	} catch (...) {
 		MessageBox(NULL, "Unknown error", "Error", MB_OK | MB_ICONERROR);
 	}
