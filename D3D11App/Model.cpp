@@ -8,14 +8,13 @@
 
 Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, EffectPtr effect) :
 	m_device(device), m_deviceContext(deviceContext),
-	m_vertexCount(0), m_indexCount(0),
 	m_effect(effect)
 {
 }
 
 void Model::draw()
 {
-	assert(m_vertexCount != 0);
+	assert(m_vertices.size() != 0);
 
 	unsigned int stride = sizeof(MyVertex);
 	unsigned int offset = 0;
@@ -42,12 +41,8 @@ void Model::createFromPmx(const std::string& filePath)
 	std::istream is(&fb);
 	pmxModel.Read(&is);
 
-	//make model data
-	m_vertexCount = pmxModel.vertex_count;
-	m_indexCount = pmxModel.index_count;
-
 	//load vtx
-	for (int i = 0; i < m_vertexCount; i++) {
+	for (int i = 0; i < pmxModel.vertex_count; i++) {
 		Vector3 pos = {
 			pmxModel.vertices[i].positon[0],
 			pmxModel.vertices[i].positon[1],
@@ -66,7 +61,7 @@ void Model::createFromPmx(const std::string& filePath)
 	}
 
 	//load idx
-	for (int i = 0; i < m_indexCount; i++) {
+	for (int i = 0; i < pmxModel.index_count; i++) {
 		m_indices.push_back(pmxModel.indices[i]);
 	}
 
@@ -100,7 +95,7 @@ void Model::createFromPmx(const std::string& filePath)
 void Model::createVertexBuffer()
 {
 	D3D11_BUFFER_DESC desc = {};
-	desc.ByteWidth = sizeof(MyVertex) * m_vertexCount;
+	desc.ByteWidth = sizeof(MyVertex) * m_vertices.size();
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	desc.CPUAccessFlags = 0;
@@ -116,7 +111,7 @@ void Model::createVertexBuffer()
 void Model::createIndexBuffer()
 {
 	D3D11_BUFFER_DESC desc = {};
-	desc.ByteWidth = sizeof(unsigned long) * m_indexCount;
+	desc.ByteWidth = sizeof(unsigned long) * m_indices.size();
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	desc.CPUAccessFlags = 0;

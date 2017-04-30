@@ -14,6 +14,7 @@ class Model {
 public:
 	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, EffectPtr effect);
 	void createFromPmx(const std::string& filePath);
+	//void createFromObj(const std::string& filePath);
 	void draw();
 private:
 	struct MyVertex {
@@ -22,7 +23,7 @@ private:
 		Vector3 normal;
 	};
 	struct Material {
-		//Color diffuse, specular, ambient, power;
+		Color diffuse;//and... specular, ambient, power;
 		int diffuseTexureIndex;//and... sphereTexureIndex, toonTexureIndex;
 		int indexCount;
 	};
@@ -36,7 +37,6 @@ private:
 	ComPtr<ID3D11Buffer> m_indexBuffer;
 	ComPtr<ID3D11ShaderResourceView> m_resource;
 
-	UINT m_vertexCount, m_indexCount;
 	std::vector<MyVertex> m_vertices;
 	std::vector<unsigned long> m_indices;
 	std::vector<ComPtr<ID3D11ShaderResourceView>> m_textures;
