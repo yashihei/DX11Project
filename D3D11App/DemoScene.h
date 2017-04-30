@@ -2,6 +2,7 @@
 
 #include <d3d11.h>
 #include <wrl/client.h>
+#include <boost/timer.hpp>
 #include "Scene.h"
 #include "Fwd.h"
 
@@ -18,6 +19,8 @@ private:
 	ModelPtr m_model;
 	EffectPtr m_effect;
 	InputManagerPtr m_inputManager;
+	AudioManagerPtr m_audioManager;
 	CameraPtr m_camera;
+	boost::timer m_timer;
 	float m_angle = 0;
 };
