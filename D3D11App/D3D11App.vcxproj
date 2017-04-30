@@ -121,6 +121,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Graphics.cpp" />
@@ -130,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DemoScene.h" />
     <ClInclude Include="Effect.h" />
@@ -140,6 +142,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderRV.h" />
+    <ClInclude Include="Types.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
