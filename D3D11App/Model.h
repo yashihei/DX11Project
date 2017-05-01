@@ -17,7 +17,7 @@ public:
 	//void createFromObj(const std::string& filePath);
 	void draw();
 private:
-	struct MyVertex {
+	struct ModelVertex {
 		Vector3 pos;
 		Vector2 uv;
 		Vector3 normal;
@@ -37,7 +37,7 @@ private:
 	ComPtr<ID3D11Buffer> m_indexBuffer;
 	ComPtr<ID3D11ShaderResourceView> m_resource;
 
-	std::vector<MyVertex> m_vertices;
+	std::vector<ModelVertex> m_vertices;
 	std::vector<unsigned long> m_indices;
 	std::vector<ComPtr<ID3D11ShaderResourceView>> m_textures;
 	std::vector<Material> m_materials;

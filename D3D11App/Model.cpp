@@ -16,7 +16,7 @@ void Model::draw()
 {
 	assert(m_vertices.size() != 0);
 
-	unsigned int stride = sizeof(MyVertex);
+	unsigned int stride = sizeof(ModelVertex);
 	unsigned int offset = 0;
 	m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
@@ -95,7 +95,7 @@ void Model::createFromPmx(const std::string& filePath)
 void Model::createVertexBuffer()
 {
 	D3D11_BUFFER_DESC desc = {};
-	desc.ByteWidth = sizeof(MyVertex) * m_vertices.size();
+	desc.ByteWidth = sizeof(ModelVertex) * m_vertices.size();
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	desc.CPUAccessFlags = 0;
