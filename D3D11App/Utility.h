@@ -6,27 +6,27 @@
 #include <vector>
 #include <stdexcept>
 
-template <typename Type> inline void OutputDebugValue(Type& value) {
+template <class Type> inline void OutputDebugValue(Type& value) {
 #if defined(DEBUG) || defined(_DEBUG)
 	OutputDebugString(std::to_string(value).c_str());
 	OutputDebugString("\n");
 #endif
 }
 
-template <typename Type> inline const Type& Clamp(const Type& x, const Type& min, const Type& max) {
+template <class Type> inline const Type& Clamp(const Type& x, const Type& min, const Type& max) {
 	return (x < min) ? min : ((max < x) ? max : x);
 }
 
-template <typename Type> inline Type Wrap(const Type& x, const Type& min, const Type& max) {
+template <class Type> inline Type Wrap(const Type& x, const Type& min, const Type& max) {
 	const Type n = (x - min) % (max - min);
 	return (n >= 0) ? (n + min) : (n + max);
 }
 
-template <typename Type> inline bool InRange(const Type& x, const Type& min, const Type& max) {
+template <class Type> inline bool InRange(const Type& x, const Type& min, const Type& max) {
 	return (min <= x) && (x <= max);
 }
 
-template <typename Container, typename Pred> inline void Erase_if(Container& c, Pred pred) {
+template <class Container, class Pred> inline void Erase_if(Container& c, Pred pred) {
 	c.erase(std::remove_if(c.begin(), c.end(), pred), c.end());
 }
 
