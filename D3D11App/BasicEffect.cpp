@@ -1,4 +1,4 @@
-#include "Effect.h"
+#include "BasicEffect.h"
 
 #include <d3dcompiler.h>
 #include <stdexcept>
@@ -10,7 +10,6 @@ namespace {
 		Matrix world;
 		Matrix view;
 		Matrix proj;
-		//light params
 		Vector4 diffuseColor;
 		Vector3 lightDir;
 		float padding;
@@ -33,7 +32,7 @@ void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID
 		throw std::runtime_error((char*)errorBlob->GetBufferPointer());
 }
 
-Effect::Effect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
+BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
 	WCHAR* filePath = L"./Shader/diffuse.fx";
@@ -91,7 +90,7 @@ Effect::Effect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCo
 		throw std::runtime_error("CreateSamplerState() Failed.");
 }
 
-void Effect::setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor)
+void BasicEffect::setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
@@ -109,7 +108,7 @@ void Effect::setParam(const Matrix& world, const Matrix& view, const Matrix& pro
 	}
 }
 
-void Effect::apply()
+void BasicEffect::apply()
 {
 	//set shader
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), NULL, 0);

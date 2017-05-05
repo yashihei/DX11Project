@@ -6,7 +6,7 @@
 #include <vector>
 #include <stdexcept>
 
-template <class Type> inline void OutputDebugValue(Type& value) {
+template <class Type> inline void OutputDebugValue(const Type& value) {
 #if defined(DEBUG) || defined(_DEBUG)
 	OutputDebugString(std::to_string(value).c_str());
 	OutputDebugString("\n");
@@ -30,7 +30,7 @@ template <class Container, class Pred> inline void Erase_if(Container& c, Pred p
 	c.erase(std::remove_if(c.begin(), c.end(), pred), c.end());
 }
 
-template<class T, class F> inline void Each(T &v, const F &f) {
+template<class T, class F> inline void Each(const T &v, const F &f) {
 	std::for_each(v.begin(), v.end(), f);
 }
 

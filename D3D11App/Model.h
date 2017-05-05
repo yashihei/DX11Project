@@ -12,7 +12,7 @@ using Microsoft::WRL::ComPtr;
 
 class Model {
 public:
-	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, EffectPtr effect);
+	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, BasicEffectPtr effect);
 	void createFromPmx(const std::string& filePath);
 	//void createFromObj(const std::string& filePath);
 	void draw();
@@ -35,12 +35,11 @@ private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ComPtr<ID3D11Buffer> m_vertexBuffer;
 	ComPtr<ID3D11Buffer> m_indexBuffer;
-	ComPtr<ID3D11ShaderResourceView> m_resource;
 
 	std::vector<ModelVertex> m_vertices;
 	std::vector<unsigned long> m_indices;
 	std::vector<ComPtr<ID3D11ShaderResourceView>> m_textures;
 	std::vector<Material> m_materials;
 
-	EffectPtr m_effect;
+	BasicEffectPtr m_effect;
 };

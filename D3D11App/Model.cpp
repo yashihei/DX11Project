@@ -4,9 +4,9 @@
 #include "MMD/Pmx.h"
 #include "ShaderRV.h"
 #include "Utility.h"
-#include "Effect.h"
+#include "BasicEffect.h"
 
-Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, EffectPtr effect) :
+Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, BasicEffectPtr effect) :
 	m_device(device), m_deviceContext(deviceContext),
 	m_effect(effect)
 {
