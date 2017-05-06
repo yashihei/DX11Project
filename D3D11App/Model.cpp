@@ -14,7 +14,9 @@ Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCont
 
 void Model::draw()
 {
-	assert(m_vertices.size() != 0);
+	if (m_vertices.size() == 0) {
+		throw std::runtime_error("Model uninit.");
+	}
 
 	unsigned int stride = sizeof(ModelVertex);
 	unsigned int offset = 0;
@@ -24,6 +26,7 @@ void Model::draw()
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {
+		if (mat.diffuseTexureIndex == -1) continue;//FIXME
 		m_effect->setTexture(m_textures[mat.diffuseTexureIndex]);
 		m_effect->apply();
 		m_deviceContext->DrawIndexed(mat.indexCount, countIndex, 0);
@@ -43,16 +46,16 @@ void Model::createFromPmx(const std::string& filePath)
 
 	//load vtx
 	for (int i = 0; i < pmxModel.vertex_count; i++) {
-		Vector3 pos = {
+		Vector3 pos {
 			pmxModel.vertices[i].positon[0],
 			pmxModel.vertices[i].positon[1],
 			pmxModel.vertices[i].positon[2]
 		};
-		Vector2 uv = {
+		Vector2 uv {
 			pmxModel.vertices[i].uv[0],
 			pmxModel.vertices[i].uv[1]
 		};
-		Vector3 normal = {
+		Vector3 normal {
 			pmxModel.vertices[i].normal[0],
 			pmxModel.vertices[i].normal[1],
 			pmxModel.vertices[i].normal[2]
@@ -75,7 +78,7 @@ void Model::createFromPmx(const std::string& filePath)
 
 	//load material
 	for (int i = 0; i < pmxModel.material_count; i++) {
-		Material mat = {
+		Material mat {
 			{
 				pmxModel.materials[i].diffuse[0],
 				pmxModel.materials[i].diffuse[1],

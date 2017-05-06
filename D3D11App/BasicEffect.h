@@ -23,4 +23,7 @@ private:
 	ComPtr<ID3D11InputLayout> m_layout;
 	ComPtr<ID3D11SamplerState> m_samplerState;
 	ComPtr<ID3D11ShaderResourceView> m_texture;
+
+	//Matrix m_world, m_view, m_proj;
+	//Vector3 m_lightDir, m_LightDiffuseColor;
 };

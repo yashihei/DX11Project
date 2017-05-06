@@ -6,6 +6,7 @@
 #include <Shlwapi.h>
 #include "DirectXTex/DirectXTex.h"
 #include "Utility.h"
+#include "Log.h"
 
 #pragma comment(lib, "Shlwapi.lib")
 #if defined(DEBUG) || defined(_DEBUG)
@@ -33,6 +34,7 @@ inline ComPtr<ID3D11ShaderResourceView> CreateShaderResourceViewFromFile(ComPtr<
 		if (FAILED(hr))
 			throw std::runtime_error(ws2s(filePath) + " LoadFromWICFile() Failed.");
 	}
+	Log("Load %1%.\n", ws2s(filePath));
 
 	hr = CreateShaderResourceView(device.Get(), image.GetImages(), image.GetImageCount(), info, &resource);
 	if (FAILED(hr))
