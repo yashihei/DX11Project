@@ -12,10 +12,10 @@ using Microsoft::WRL::ComPtr;
 
 class Model {
 public:
-	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, BasicEffectPtr effect);
+	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
 	void createFromPmx(const std::string& filePath);
 	//void createFromObj(const std::string& filePath);
-	void draw();
+	void draw(const Matrix& world, const Matrix& view, const Matrix& proj);
 private:
 	struct ModelVertex {
 		Vector3 pos;

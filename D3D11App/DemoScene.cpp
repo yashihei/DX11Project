@@ -1,7 +1,6 @@
 #include "DemoScene.h"
 
 #include "DirectXTK/SimpleMath.h"
-#include "BasicEffect.h"
 #include "Model.h"
 #include "InputManager.h"
 #include "AudioManager.h"
@@ -12,8 +11,7 @@ using namespace DirectX::SimpleMath;
 DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
-	m_effect = std::make_shared<BasicEffect>(m_device, m_deviceContext);
-	m_model = std::make_shared<Model>(m_device, m_deviceContext, m_effect);
+	m_model = std::make_shared<Model>(m_device, m_deviceContext);
 	//m_model->createFromPmx("assets/1go/おんだ式ハッカドール1号_v1.00.pmx");
 	m_model->createFromPmx("assets/alicia/Alicia_solid.pmx");
 	//m_model->createFromPmx("assets/aichan/kizunaai.pmx");
@@ -50,11 +48,8 @@ Scene* DemoScene::update()
 void DemoScene::draw()
 {
 	Matrix world, view, proj;
-	Vector3 lightDir = { 0, 0, 1 };
-	Vector4 diffuseColor = { 1, 1, 1, 1 };
 
 	world = DirectX::XMMatrixRotationY(m_angle);
-
 	view = m_camera->getViewMat();
 	proj = m_camera->getProjMat();
 
@@ -63,6 +58,5 @@ void DemoScene::draw()
 	view = XMMatrixTranspose(view);
 	proj = XMMatrixTranspose(proj);
 
-	m_effect->setParam(world, view, proj, lightDir, diffuseColor);
-	m_model->draw();
+	m_model->draw(world, view, proj);
 }

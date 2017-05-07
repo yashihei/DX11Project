@@ -6,13 +6,13 @@
 #include "Utility.h"
 #include "BasicEffect.h"
 
-Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, BasicEffectPtr effect) :
-	m_device(device), m_deviceContext(deviceContext),
-	m_effect(effect)
+Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
+	m_device(device), m_deviceContext(deviceContext)
 {
+	m_effect = std::make_shared<BasicEffect>(m_device, m_deviceContext);
 }
 
-void Model::draw()
+void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 {
 	if (m_vertices.size() == 0) {
 		throw std::runtime_error("Model uninit.");
@@ -23,6 +23,8 @@ void Model::draw()
 	m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	m_effect->setParam(world, view, proj, { 0, 0, 1 }, { 1, 1, 1, 1 });
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {
