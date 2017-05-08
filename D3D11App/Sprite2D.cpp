@@ -27,13 +27,13 @@ Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> devi
 	createIndexBuffer();
 }
 
-void Sprite2D::draw(const Vector2& pos, float radian, float scale)
+void Sprite2D::draw(const Vector2& pos, float radian, float scale, const Color& color)
 {
 	std::vector<SpriteVertex> vertices {
-		{{-m_size.x/2.0f, m_size.y/2.0f, 0.0f}, {0.0f, 0.0f}},
-		{{m_size.x/2.0f,  m_size.y/2.0f, 0.0f}, {1.0f, 0.0f}},
-		{{-m_size.x/2.0f, -m_size.y/2.0f, 0.0f}, {0.0f, 1.0f}},
-		{{m_size.x/2.0f,  -m_size.y/2.0f, 0.0f}, {1.0f, 1.0f}},
+		{{-m_size.x / 2.0f, m_size.y / 2.0f,  0.0f}, {0.0f, 0.0f}, color},
+		{{m_size.x / 2.0f,  m_size.y / 2.0f,  0.0f}, {1.0f, 0.0f}, color},
+		{{-m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f}, {0.0f, 1.0f}, color},
+		{{m_size.x / 2.0f,  -m_size.y / 2.0f, 0.0f}, {1.0f, 1.0f}, color},
 	};
 
 	for (auto& vertex : vertices) {

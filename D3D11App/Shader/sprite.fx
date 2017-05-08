@@ -14,12 +14,14 @@ struct VSInput
 {
 	float4 pos : POSITION;
 	float2 uv : TEXCOORD0;
+	float4 color : COLOR0;
 };
 
 struct PSInput
 {
 	float4 pos : SV_POSITION;
 	float2 uv : TEXCOORD0;
+	float4 color : COLOR0;
 };
 
 PSInput VS(VSInput input)
@@ -33,11 +35,12 @@ PSInput VS(VSInput input)
 	output.pos = mul(output.pos, proj);
 
 	output.uv = input.uv;
+	output.color = input.color;
 
 	return output;
 }
 
 float4 PS(PSInput input) : SV_TARGET
 {
-	return tex2d.Sample(sampleType, input.uv);
+	return tex2d.Sample(sampleType, input.uv) * input.color;
 }

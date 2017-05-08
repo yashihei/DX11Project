@@ -63,5 +63,6 @@ void DemoScene::draw()
 	view = XMMatrixTranspose(view);
 	proj = XMMatrixTranspose(proj);
 
-	m_sprite->draw({ 0, 0 }, m_timer.elapsed(), std::sin(m_timer.elapsed()));
+	m_model->draw(world, view, proj);
+	m_sprite->draw({ 0, 0 }, static_cast<float>(m_timer.elapsed()), 1.0f, { 1.0f, 1.0f, 1.0f, 0.5f });
 }
