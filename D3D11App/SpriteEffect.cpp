@@ -104,6 +104,8 @@ void SpriteEffect::setParam(const Matrix & world, const Matrix & view, const Mat
 
 void SpriteEffect::apply()
 {
+	//set input layout
+	m_deviceContext->IASetInputLayout(m_layout.Get());
 	//set shader
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), NULL, 0);
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), NULL, 0);
@@ -112,6 +114,4 @@ void SpriteEffect::apply()
 	m_deviceContext->PSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 	m_deviceContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 	m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
-	//set input layout
-	m_deviceContext->IASetInputLayout(m_layout.Get());
 }
