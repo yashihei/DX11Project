@@ -35,7 +35,7 @@ inline void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderMo
 BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
-	WCHAR* filePath = L"./Shader/diffuse.fx";
+	WCHAR* filePath = L"./Shader/basic.fx";
 
 	//create vs
 	ComPtr<ID3DBlob> VSbuffer;

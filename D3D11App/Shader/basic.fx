@@ -1,5 +1,4 @@
-// diffuse.fx
-// ƒ‰ƒ“ƒo[ƒg‚µ‚¿‚á‚¤‚¼
+// basic.fx
 
 Texture2D tex2d : register(t0);
 SamplerState sampleType : register(s0);
