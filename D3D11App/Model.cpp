@@ -97,6 +97,10 @@ void Model::createFromPmx(const std::string& filePath)
 	createIndexBuffer();
 }
 
+void Model::createFromObj(const std::string & filePath)
+{
+}
+
 void Model::createVertexBuffer()
 {
 	D3D11_BUFFER_DESC desc = {};
