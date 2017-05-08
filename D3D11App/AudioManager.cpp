@@ -62,3 +62,11 @@ void AudioManager::stop(const std::string& alias)
 		m_soundEffectsInstance[alias]->Stop();
 	}
 }
+
+void AudioManager::setVolume(const std::string& alias, float volume)
+{
+	assert(m_soundEffects.count(alias) != 0);
+	if (m_soundEffectsInstance[alias]->GetState() == DirectX::SoundState::PLAYING) {
+		m_soundEffectsInstance[alias]->SetVolume(volume);
+	}
+}
