@@ -39,7 +39,5 @@ PSInput VS(VSInput input)
 
 float4 PS(PSInput input) : SV_TARGET
 {
-	float4 texColor;
-	texColor = tex2d.Sample(sampleType, input.uv);
-	return texColor;
+	return tex2d.Sample(sampleType, input.uv);
 }

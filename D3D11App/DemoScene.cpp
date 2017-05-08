@@ -5,6 +5,8 @@
 #include "InputManager.h"
 #include "AudioManager.h"
 #include "Camera.h"
+#include "ShaderRV.h"
+#include "Sprite2D.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -13,12 +15,15 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 {
 	m_model = std::make_shared<Model>(m_device, m_deviceContext);
 	//m_model->createFromPmx("assets/1go/おんだ式ハッカドール1号_v1.00.pmx");
-	m_model->createFromPmx("assets/alicia/Alicia_solid.pmx");
 	//m_model->createFromPmx("assets/aichan/kizunaai.pmx");
-	m_inputManager = std::make_shared<InputManager>();
-	m_audioManager = std::make_shared<AudioManager>();
+	m_model->createFromPmx("assets/alicia/Alicia_solid.pmx");
+
+	m_texture = CreateShaderResourceViewFromFile(m_device, L"./assets/mayuki_toka.png");
+	m_sprite = std::make_shared<Sprite2D>(m_device, m_deviceContext, m_texture);
 	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, 800.0f / 600.0f);
 
+	m_inputManager = std::make_shared<InputManager>();
+	m_audioManager = std::make_shared<AudioManager>();
 	m_audioManager->load("assets/pyonpyon.wav", "test");
 }
 
@@ -58,5 +63,5 @@ void DemoScene::draw()
 	view = XMMatrixTranspose(view);
 	proj = XMMatrixTranspose(proj);
 
-	m_model->draw(world, view, proj);
+	m_sprite->draw({ 0, 0 }, m_timer.elapsed(), std::sin(m_timer.elapsed()));
 }

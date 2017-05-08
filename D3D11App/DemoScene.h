@@ -17,6 +17,8 @@ private:
 	ComPtr<ID3D11Device> m_device;
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ModelPtr m_model;
+	ComPtr<ID3D11ShaderResourceView> m_texture;
+	Sprite2DPtr m_sprite;
 	InputManagerPtr m_inputManager;
 	AudioManagerPtr m_audioManager;
 	CameraPtr m_camera;
