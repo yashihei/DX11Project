@@ -4,11 +4,15 @@
 #include "Graphics.h"
 #include "DirectXTK/Keyboard.h"
 #include "DirectXTK/Mouse.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_dx11.h"
 
-#if defined(DEBUG) || defined(_DEBUG)
+#if defined(_DEBUG)
 	#pragma comment(lib, "lib/DirectXTKD.lib")
+	#pragma comment(lib, "lib/imguiD.lib")
 #else
 	#pragma comment(lib, "lib/DirectXTK.lib")
+	#pragma comment(lib, "lib/imgui.lib")
 #endif
 
 App::App() :
@@ -17,7 +21,9 @@ App::App() :
 {
 }
 
-App::~App() {}
+App::~App() {
+	ImGui_ImplDX11_Shutdown();
+}
 
 void App::run()
 {
@@ -34,18 +40,20 @@ void App::run()
 	try {
 		m_graphics = std::make_shared<Graphics>(m_ScreenWidth, m_ScreenHeight, m_hWnd, fullScreen);
 		m_scene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext());
+		ImGui_ImplDX11_Init(m_hWnd, m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
 
 		while (msg.message != WM_QUIT) {
 			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			} else {
+				ImGui_ImplDX11_NewFrame();
 				m_scene->update();
 				m_graphics->beginScene();
 				m_scene->draw();
+				ImGui::Render();
 				m_graphics->endScene();
 			}
-
 		}
 	} catch (const std::exception& error) {
 		MessageBox(NULL, error.what(), "Exception", MB_OK | MB_ICONERROR);
@@ -113,6 +121,8 @@ bool App::initWindow(bool fullScreen)
 
 LRESULT CALLBACK App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	ImGui_ImplDX11_WndProcHandler(hWnd, msg, wParam, lParam);
+
 	switch (msg)
 	{
 	case WM_ACTIVATEAPP:

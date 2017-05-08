@@ -7,6 +7,13 @@
 #include "Camera.h"
 #include "ShaderRV.h"
 #include "Sprite2D.h"
+#include "imgui/imgui.h"
+
+#if defined(_DEBUG)
+	#pragma comment(lib, "lib/imguiD.lib")
+#else
+	#pragma comment(lib, "lib/imgui.lib")
+#endif
 
 using namespace DirectX::SimpleMath;
 
@@ -64,5 +71,13 @@ void DemoScene::draw()
 	proj = XMMatrixTranspose(proj);
 
 	m_model->draw(world, view, proj);
-	m_sprite->draw({ 0, 0 }, static_cast<float>(m_timer.elapsed()), 1.0f, { 1.0f, 1.0f, 1.0f, 0.5f });
+
+	static bool flag = false;
+	if (flag)
+		m_sprite->draw({ 0, 0 }, 0.0f, 1.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+
+	ImGui::Begin("config");
+	ImGui::SliderFloat("Rotation", &m_angle, 0, DirectX::XM_2PI);
+	ImGui::Checkbox("View Sprite", &flag);
+    ImGui::End();
 }
