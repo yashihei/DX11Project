@@ -8,8 +8,8 @@ cbuffer Params : register(b0)
 	matrix world;
 	matrix view;
 	matrix proj;
-
 	float4 diffuseColor;
+	float4 ambientColor;
 	float3 lightDir;
 	float padding;
 };
@@ -50,7 +50,7 @@ float4 PS(PSInput input) : SV_TARGET
 {
 	float4 texColor;
 	float lightIntensity;
-	float4 outColor = { 0.2f, 0.2f, 0.2f, 1.0f };
+	float4 outColor = ambientColor;
 
 	texColor = tex2d.Sample(sampleType, input.uv);
 	lightIntensity = saturate(dot(input.normal, -lightDir));

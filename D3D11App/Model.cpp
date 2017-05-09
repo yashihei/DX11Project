@@ -24,7 +24,7 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_effect->setParam(world, view, proj, { 0, 0, 1 }, { 1, 1, 1, 1 });
+	m_effect->setParam(world, view, proj, { 0, 0, 1 }, { 1, 1, 1, 1 }, { 0.5f, 0.5f, 0.5f, 1.0f });
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {
