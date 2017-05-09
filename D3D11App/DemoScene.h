@@ -3,10 +3,14 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 #include <boost/timer.hpp>
+#include <deque>
+#include <vector>
+#include "DirectXTK/SimpleMath.h"
 #include "Scene.h"
 #include "Fwd.h"
 
 using Microsoft::WRL::ComPtr;
+using namespace DirectX::SimpleMath;
 
 class DemoScene : public Scene {
 public:
@@ -23,5 +27,7 @@ private:
 	AudioManagerPtr m_audioManager;
 	CameraPtr m_camera;
 	boost::timer m_timer;
-	float m_angle = 0;
+	std::deque<float> m_deltaTimes;
+	Vector3 m_rotation;
+	float m_volume = 0;
 };
