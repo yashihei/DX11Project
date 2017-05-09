@@ -25,6 +25,9 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	//m_model->createFromPmx("assets/aichan/kizunaai.pmx");
 	m_model->createFromPmx("assets/alicia/Alicia_solid.pmx");
 
+	m_sky = std::make_shared<Model>(m_device, m_deviceContext);
+	m_sky->createFromPmx("assets/sky/Dome_X501.pmx");
+
 	m_texture = CreateShaderResourceViewFromFile(m_device, L"./assets/mayuki_toka.png");
 	m_sprite = std::make_shared<Sprite2D>(m_device, m_deviceContext, m_texture);
 	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, 800.0f / 600.0f);
@@ -70,6 +73,7 @@ void DemoScene::draw()
 	view = XMMatrixTranspose(view);
 	proj = XMMatrixTranspose(proj);
 
+	m_sky->draw(Matrix::Identity, view, proj);
 	m_model->draw(world, view, proj);
 
 	static bool flag = false;
