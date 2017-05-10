@@ -20,14 +20,12 @@ public:
 private:
 	ComPtr<ID3D11Device> m_device;
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
-	ModelPtr m_model, m_sky;
+	ModelPtr m_model, m_sky, m_fighter;
 	ComPtr<ID3D11ShaderResourceView> m_texture;
 	Sprite2DPtr m_sprite;
 	InputManagerPtr m_inputManager;
 	AudioManagerPtr m_audioManager;
 	CameraPtr m_camera;
-	boost::timer m_timer;
-	std::deque<float> m_deltaTimes;
-	Vector3 m_rotation;
+	PlayerPtr m_player;
 	float m_volume = 0;
 };
