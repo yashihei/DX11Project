@@ -48,6 +48,9 @@
     <ClCompile Include="SpriteEffect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Billboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -104,15 +107,24 @@
     <ClInclude Include="SpriteEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Actors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Billboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\test.fx">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\diffuse.fx">
+    <FxCompile Include="Shader\sprite.fx">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\sprite.fx">
+    <FxCompile Include="Shader\basic.fx">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
