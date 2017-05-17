@@ -12,6 +12,7 @@ class Billboard {
 public:
 	Billboard(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, ComPtr<ID3D11ShaderResourceView> texture, CameraPtr camera);
 	void draw(const Vector3& pos, float scale);
+	void draw(const Vector3& pos, const Color& color, float scale);
 private:
 	void createVertexBuffer();
 	void createIndexBuffer();
