@@ -4,6 +4,14 @@
 #include <stdexcept>
 #include "SpriteEffect.h"
 
+namespace {
+	struct SpriteVertex {
+		Vector3 pos;
+		Vector2 uv;
+		Vector4 color;
+	};
+}
+
 Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, ComPtr<ID3D11ShaderResourceView> texture)
 	: m_device(device), m_deviceContext(deviceContext), m_texture(texture)
 {
