@@ -124,9 +124,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\test.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
     <FxCompile Include="Shader\sprite.fx">
       <Filter>Shader</Filter>
     </FxCompile>
