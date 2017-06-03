@@ -1,5 +1,6 @@
 #include "Model.h"
 
+#include <algorithm>
 #include <stdexcept>
 #include "MMD/Pmx.h"
 #include "ShaderRV.h"
@@ -7,6 +8,8 @@
 #include "BasicEffect.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "ObjLoader/tiny_obj_loader.h"
+#undef min
+#undef max
 
 Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
@@ -26,7 +29,7 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_effect->setParam(world, view, proj, { 0, 0, 1 }, { 1, 1, 1, 1 }, { 0.5f, 0.5f, 0.5f, 1.0f });
+	m_effect->setParam(world, view, proj, { 0, 0, 1 }, { 1, 1, 1, 1 }, { 1, 1, 1, 1 });
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {
@@ -141,6 +144,46 @@ void Model::createFromObj(const std::string & filePath)
 			shapes[s].mesh.material_ids[f];
 		}
 	}
+}
+
+void Model::getBoudingSphere(Vector3 * center, float * r)
+{
+	if (m_vertices.size() == 0) {
+		throw std::runtime_error("Model uninit.");
+	}
+
+	// calc center pos
+	// --------------------------------------------------
+	Vector3 minPos, maxPos;
+	minPos = maxPos = m_vertices[0].pos;
+
+	for (const auto& vertex : m_vertices) {
+		//min
+		minPos.x = std::min(minPos.x, vertex.pos.x);
+		minPos.y = std::min(minPos.y, vertex.pos.y);
+		minPos.z = std::min(minPos.z, vertex.pos.z);
+		//max
+		maxPos.x = std::max(maxPos.x, vertex.pos.x);
+		maxPos.y = std::max(maxPos.y, vertex.pos.y);
+		maxPos.z = std::max(maxPos.z, vertex.pos.z);
+	}
+
+	center->x = (maxPos.x + minPos.x) / 2;
+	center->y = (maxPos.y + minPos.y) / 2;
+	center->z = (maxPos.z + minPos.z) / 2;
+
+	// calc radius
+	// --------------------------------------------------
+	float maxDistance = 0;
+
+	for (const auto& vertex : m_vertices) {
+		//right?
+		//float distance = std::powf(vertex.pos.x - center->x, 2.0f) + std::powf(vertex.pos.y - center->y, 2.0f) + std::powf(vertex.pos.z - center->z, 2.0f);
+		float distance = Vector3::Distance(*center, vertex.pos);
+		maxDistance = std::max(maxDistance, distance);
+	}
+
+	*r = maxDistance;
 }
 
 void Model::createVertexBuffer()

@@ -15,6 +15,7 @@ public:
 	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
 	void createFromPmx(const std::string& filePath);
 	void createFromObj(const std::string& filePath);
+	void getBoudingSphere(Vector3* center, float* r);
 	void draw(const Matrix& world, const Matrix& view, const Matrix& proj);
 private:
 	struct ModelVertex {
