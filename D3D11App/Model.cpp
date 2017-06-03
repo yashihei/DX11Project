@@ -30,8 +30,8 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {
-		if (mat.diffuseTexureIndex == -1) continue;//FIXME
-		m_effect->setTexture(m_textures[mat.diffuseTexureIndex]);
+		if (mat.diffuseTexureIndex != -1)
+			m_effect->setTexture(m_textures[mat.diffuseTexureIndex]);
 		m_effect->apply();
 		m_deviceContext->DrawIndexed(mat.indexCount, countIndex, 0);
 		countIndex += mat.indexCount;
