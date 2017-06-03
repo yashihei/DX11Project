@@ -91,7 +91,7 @@ BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext
 		throw std::runtime_error("CreateSamplerState() Failed.");
 }
 
-void BasicEffect::setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor, const Vector4 ambientColor)
+void BasicEffect::setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor, const Vector4& ambientColor)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
