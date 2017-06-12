@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "ShaderRV.h"
 #include "Sprite2D.h"
+#include "Billboard.h"
 #include "imgui/imgui.h"
 #include "Actors.h"
 
@@ -19,21 +20,21 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_device(device), m_deviceContext(deviceContext)
 {
 	m_model = std::make_shared<Model>(m_device, m_deviceContext);
-	//m_model->createFromPmx("assets/1go/おんだ式ハッカドール1号_v1.00.pmx");
-	//m_model->createFromPmx("assets/aichan/kizunaai.pmx");
-	m_model->createFromPmx("assets/alicia/Alicia_solid.pmx");
 	m_sky = std::make_shared<Model>(m_device, m_deviceContext);
 	m_sky->createFromPmx("assets/sky/Dome_X501.pmx");
 	m_fighter = std::make_shared<Model>(m_device, m_deviceContext);
-	m_fighter->createFromPmx("assets/fighter/eurofighter.pmx");
+	m_fighter->createFromPmx("assets/fighter/eurofighter_mini.pmx");
+	m_sphere = std::make_shared<Model>(m_device, m_deviceContext);
+	m_sphere->createFromPmx("assets/sphere/sphere_tex.pmx");
+
+	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, 800.0f / 600.0f);
+	m_camera->pos = Vector3(0, 8, -25);
+	m_camera->lookAt = Vector3(0, 0, 0);
 
 	//create 2d sprite
 	m_texture = CreateShaderResourceViewFromFile(m_device, L"./assets/mayuki_toka.png");
 	m_sprite = std::make_shared<Sprite2D>(m_device, m_deviceContext, m_texture);
-
-	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, 800.0f / 600.0f);
-	m_camera->pos = Vector3(0, 2, -15);
-	m_camera->lookAt = Vector3(0, 0, 0);
+	m_billboard = std::make_shared<Billboard>(m_device, m_deviceContext, m_texture, m_camera);
 
 	m_inputManager = std::make_shared<InputManager>();
 
@@ -41,7 +42,8 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_audioManager->load("assets/pyonpyon.wav", "test");
 	m_audioManager->play("test", true, m_volume);
 
-	m_player = std::make_shared<Player>(m_fighter, m_inputManager, m_camera);
+	m_playerA = std::make_shared<DebugPlayer>(m_fighter, m_sphere, m_camera, "PlayerA");
+	m_playerB = std::make_shared<DebugPlayer>(m_fighter, m_sphere, m_camera, "PlayerB");
 }
 
 Scene* DemoScene::update()
@@ -49,24 +51,34 @@ Scene* DemoScene::update()
 	m_inputManager->update();
 	m_audioManager->update();
 	m_audioManager->setVolume("test", m_volume);
-	m_player->update();
+
+	m_playerA->update();
+	m_playerB->update();
+
 	return this;
 }
 
 void DemoScene::draw()
 {
-	m_sky->draw(Matrix::Identity, m_camera->getViewMat().Transpose(), m_camera->getProjMat().Transpose());
-	m_player->draw();
+	m_sky->draw(Matrix::CreateScale(5.0f), m_camera->getViewMat().Transpose(), m_camera->getProjMat().Transpose());
 
 	static bool flag = false;
 	if (flag)
-		m_sprite->draw({ 0, 0 }, 0.0f, 0.5f, { 1.0f, 1.0f, 1.0f, 1.0f });
+		m_sprite->draw({ 0, 0 }, 0, 0.5f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
-	ImGui::Begin("config");
-	//ImGui::SliderFloat("RotationX", &m_rotation.x, 0, DirectX::XM_2PI);
-	//ImGui::SliderFloat("RotationY", &m_rotation.y, 0, DirectX::XM_2PI);
-	//ImGui::SliderFloat("RotationZ", &m_rotation.z, 0, DirectX::XM_2PI);
-	ImGui::SliderFloat("Volume", &m_volume, 0, 1.0f);
-	ImGui::Checkbox("View Sprite", &flag);
-    ImGui::End();
+	//ImGui::Begin("config");
+	//ImGui::SliderFloat("Volume", &m_volume, 0, 1.0f);
+	//ImGui::Checkbox("View Sprite", &flag);
+	//ImGui::End();
+
+	float distance = Vector3::Distance(m_playerA->getPos(), m_playerB->getPos());
+	ImGui::Begin("DebugInfo");
+	if (distance < m_playerA->getRadius() + m_playerB->getRadius()) {
+		ImGui::Text("Hit!");
+	}
+	ImGui::Text("Distance: %f", distance);
+	ImGui::End();
+
+	m_playerA->draw();
+	m_playerB->draw();
 }
