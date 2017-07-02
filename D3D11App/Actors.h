@@ -17,7 +17,6 @@ public:
 		m_pos(Vector3::Zero), m_rotation(Vector3::Zero) {
 	}
 	void update() {
-		//FIXME:クォータニオンか何かで行き先示して補間しろ
 		if (m_inputManager->isPressedLeft()) {
 			m_advance.y -= 0.003f;
 			m_advance.z += 0.006f;
@@ -45,7 +44,7 @@ public:
 		//tps camera
 		const Matrix nowRotMat = *m_track.rbegin();
 		m_camera->up = nowRotMat.Up();
-		m_camera->pos = m_pos + nowRotMat.Forward() * 20;
+		m_camera->pos = m_pos + nowRotMat.Forward() * 7;
 		m_camera->lookAt = m_pos + nowRotMat.Backward();
 	}
 	void draw() {

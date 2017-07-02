@@ -42,8 +42,7 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_audioManager->load("assets/pyonpyon.wav", "test");
 	m_audioManager->play("test", true, m_volume);
 
-	m_playerA = std::make_shared<DebugPlayer>(m_fighter, m_sphere, m_camera, "PlayerA");
-	m_playerB = std::make_shared<DebugPlayer>(m_fighter, m_sphere, m_camera, "PlayerB");
+	m_player = std::make_shared<Player>(m_fighter, m_inputManager, m_camera);
 }
 
 Scene* DemoScene::update()
@@ -52,8 +51,7 @@ Scene* DemoScene::update()
 	m_audioManager->update();
 	m_audioManager->setVolume("test", m_volume);
 
-	m_playerA->update();
-	m_playerB->update();
+	m_player->update();
 
 	return this;
 }
@@ -71,14 +69,5 @@ void DemoScene::draw()
 	//ImGui::Checkbox("View Sprite", &flag);
 	//ImGui::End();
 
-	float distance = Vector3::Distance(m_playerA->getPos(), m_playerB->getPos());
-	ImGui::Begin("DebugInfo");
-	if (distance < m_playerA->getRadius() + m_playerB->getRadius()) {
-		ImGui::Text("Hit!");
-	}
-	ImGui::Text("Distance: %f", distance);
-	ImGui::End();
-
-	m_playerA->draw();
-	m_playerB->draw();
+	m_player->draw();
 }

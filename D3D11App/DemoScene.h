@@ -11,7 +11,7 @@
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX::SimpleMath;
-class DebugPlayer;
+class Player;
 
 class DemoScene : public Scene {
 public:
@@ -28,6 +28,6 @@ private:
 	InputManagerPtr m_inputManager;
 	AudioManagerPtr m_audioManager;
 	CameraPtr m_camera;
-	std::shared_ptr<DebugPlayer> m_playerA, m_playerB;
+	std::shared_ptr<Player> m_player;
 	float m_volume = 0;
 };
