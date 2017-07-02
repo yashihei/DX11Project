@@ -168,9 +168,7 @@ void Model::getBoudingSphere(Vector3 * center, float * r)
 		maxPos.z = std::max(maxPos.z, vertex.pos.z);
 	}
 
-	center->x = (maxPos.x + minPos.x) / 2;
-	center->y = (maxPos.y + minPos.y) / 2;
-	center->z = (maxPos.z + minPos.z) / 2;
+	*center = (maxPos + minPos) / 2;
 
 	// calc radius
 	// --------------------------------------------------
@@ -178,7 +176,6 @@ void Model::getBoudingSphere(Vector3 * center, float * r)
 
 	for (const auto& vertex : m_vertices) {
 		//right?
-		//float distance = std::powf(vertex.pos.x - center->x, 2.0f) + std::powf(vertex.pos.y - center->y, 2.0f) + std::powf(vertex.pos.z - center->z, 2.0f);
 		float distance = Vector3::Distance(*center, vertex.pos);
 		maxDistance = std::max(maxDistance, distance);
 	}
