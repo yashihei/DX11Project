@@ -24,7 +24,5 @@ private:
 	InputManagerPtr m_inputManager;
 	AudioManagerPtr m_audioManager;
 	CameraPtr m_camera;
-	ModelPtr m_model, m_sky, m_fighter, m_sphere;
-	std::shared_ptr<DebugPlayer> m_playerA, m_playerB;
-	float m_volume = 0;
+	ModelPtr m_alicia;
 };
