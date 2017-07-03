@@ -6,6 +6,7 @@
 #include "ShaderRV.h"
 #include "Utility.h"
 #include "BasicEffect.h"
+#include "ToonEffect.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "ObjLoader/tiny_obj_loader.h"
 #undef min
@@ -14,7 +15,7 @@
 Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
-	m_effect = std::make_shared<BasicEffect>(m_device, m_deviceContext);
+	m_effect = std::make_shared<ToonEffect>(m_device, m_deviceContext);
 }
 
 void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
@@ -29,7 +30,7 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_effect->setParam(world, view, proj, { 0, 0, 1 }, { 1, 1, 1, 1 }, { 1, 1, 1, 1 });
+	m_effect->setParam(world, view, proj, { 0, 0, 1 }, { 1, 1, 1, 1 }, { 0.0f, 0.0f, 0.0f, 1 });
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {

@@ -4,6 +4,7 @@
 
 class BasicEffect;
 class SpriteEffect;
+class ToonEffect;
 class Model;
 class Sprite2D;
 class Billboard;
@@ -16,6 +17,7 @@ class Player;
 
 using BasicEffectPtr = std::shared_ptr<BasicEffect>;
 using SpriteEffectPtr = std::shared_ptr<SpriteEffect>;
+using ToonEffectPtr = std::shared_ptr<ToonEffect>;
 using ModelPtr = std::shared_ptr<Model>;
 using Sprite2DPtr = std::shared_ptr<Sprite2D>;
 using BillboardPtr = std::shared_ptr<Billboard>;
