@@ -57,6 +57,9 @@
     <ClCompile Include="SpriteEffect.cpp">
       <Filter>Source Files\lib</Filter>
     </ClCompile>
+    <ClCompile Include="ToonEffect.cpp">
+      <Filter>Source Files\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -122,12 +125,18 @@
     <ClInclude Include="Utility.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
+    <ClInclude Include="ToonEffect.h">
+      <Filter>Header Files\lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\sprite.fx">
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="Shader\basic.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\toon.fx">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
