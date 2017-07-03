@@ -40,19 +40,20 @@ Scene* DemoScene::update()
 
 void DemoScene::draw()
 {
-	Vector3 rot;
-
 	ImGui::Begin("config");
-	float vRot[3] = { rot.x, rot.y, rot.z };
-	ImGui::SliderFloat3("Rotation", vRot, 0, DirectX::XM_2PI, "%.3f");
-	rot = Vector3(vRot);
+	ImGui::SliderFloat("RotationX", &m_rot.x, 0, DirectX::XM_2PI, "%.3f");
+	ImGui::SliderFloat("RotationY", &m_rot.y, 0, DirectX::XM_2PI, "%.3f");
+	ImGui::SliderFloat("RotationZ", &m_rot.z, 0, DirectX::XM_2PI, "%.3f");
+	ImGui::End();
+
+	ImGui::Begin("info");
+	ImGui::Text("%lf FPS", 1.0f / m_timer.elapsed());
+	m_timer.restart();
 	ImGui::End();
 
 	Matrix world, view, proj;
-	Vector3 lightDir = { 0, 0, 1 };
-	Vector4 diffuseColor = { 1, 1, 1, 1 };
 
-	world = Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+	world = Matrix::CreateFromYawPitchRoll(m_rot.y, m_rot.x, m_rot.z);
 	view = m_camera->getViewMat();
 	proj = m_camera->getProjMat();
 
