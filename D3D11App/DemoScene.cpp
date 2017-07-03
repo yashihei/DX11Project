@@ -32,15 +32,8 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_camera->lookAt = Vector3(0, 0, 0);
 
 	//create 2d sprite
-	m_texture = CreateShaderResourceViewFromFile(m_device, L"./assets/mayuki_toka.png");
-	m_sprite = std::make_shared<Sprite2D>(m_device, m_deviceContext, m_texture);
-	m_billboard = std::make_shared<Billboard>(m_device, m_deviceContext, m_texture, m_camera);
-
 	m_inputManager = std::make_shared<InputManager>();
-
 	m_audioManager = std::make_shared<AudioManager>();
-	m_audioManager->load("assets/pyonpyon.wav", "test");
-	m_audioManager->play("test", true, m_volume);
 
 	m_playerA = std::make_shared<DebugPlayer>(m_fighter, m_sphere, m_camera, "PlayerA");
 	m_playerB = std::make_shared<DebugPlayer>(m_fighter, m_sphere, m_camera, "PlayerB");
@@ -50,7 +43,6 @@ Scene* DemoScene::update()
 {
 	m_inputManager->update();
 	m_audioManager->update();
-	m_audioManager->setVolume("test", m_volume);
 
 	m_playerA->update();
 	m_playerB->update();
@@ -61,15 +53,6 @@ Scene* DemoScene::update()
 void DemoScene::draw()
 {
 	m_sky->draw(Matrix::CreateScale(5.0f), m_camera->getViewMat().Transpose(), m_camera->getProjMat().Transpose());
-
-	static bool flag = false;
-	if (flag)
-		m_sprite->draw({ 0, 0 }, 0, 0.5f, { 1.0f, 1.0f, 1.0f, 1.0f });
-
-	//ImGui::Begin("config");
-	//ImGui::SliderFloat("Volume", &m_volume, 0, 1.0f);
-	//ImGui::Checkbox("View Sprite", &flag);
-	//ImGui::End();
 
 	float distance = Vector3::Distance(m_playerA->getPos(), m_playerB->getPos());
 	ImGui::Begin("DebugInfo");
