@@ -26,6 +26,12 @@ Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> devi
 	m_size.x = static_cast<float>(desc.Width);
 	m_size.y = static_cast<float>(desc.Height);
 
+	//set offset
+	UINT vpCount = 1;
+	D3D11_VIEWPORT vp = {};
+	m_deviceContext->RSGetViewports(&vpCount, &vp);
+	m_offset.x = vp.Width / 2; m_offset.y = vp.Height / 2;
+
 	const Matrix orthoMat = DirectX::XMMatrixOrthographicLH(800.0f, 600.0f, 0, 1000.0f);
 	m_spriteEffect = std::make_shared<SpriteEffect>(m_device, m_deviceContext);
 	m_spriteEffect->setTexture(m_texture);

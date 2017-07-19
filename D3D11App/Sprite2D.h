@@ -22,6 +22,6 @@ private:
 	ComPtr<ID3D11Buffer> m_indexBuffer;
 	ComPtr<ID3D11ShaderResourceView> m_texture;
 
-	Vector2 m_size;
+	Vector2 m_size, m_offset;
 	SpriteEffectPtr m_spriteEffect;
 };
