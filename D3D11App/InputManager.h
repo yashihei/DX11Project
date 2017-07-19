@@ -5,10 +5,6 @@
 #include "DirectXTK/Keyboard.h"
 #include "DirectXTK/GamePad.h"
 
-// TODO:
-// キーコンフィグ
-// DIしたげる？
-
 class InputManager {
 public:
 	InputManager() {

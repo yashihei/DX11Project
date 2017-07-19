@@ -11,7 +11,6 @@
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX::SimpleMath;
-class DebugPlayer;
 
 class DemoScene : public Scene {
 public:
