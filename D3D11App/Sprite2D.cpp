@@ -30,7 +30,7 @@ Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> devi
 	UINT vpCount = 1;
 	D3D11_VIEWPORT vp = {};
 	m_deviceContext->RSGetViewports(&vpCount, &vp);
-	m_offset.x = vp.Width / 2; m_offset.y = vp.Height / 2;
+	m_offset.x = vp.Width / 2.0f; m_offset.y = vp.Height / 2.0f;
 
 	const Matrix orthoMat = DirectX::XMMatrixOrthographicLH(800.0f, 600.0f, 0, 1000.0f);
 	m_spriteEffect = std::make_shared<SpriteEffect>(m_device, m_deviceContext);
@@ -50,9 +50,10 @@ void Sprite2D::draw(const Vector2& pos, float radian, float scale, const Color& 
 		{{m_size.x / 2.0f,  -m_size.y / 2.0f, 0.0f}, {1.0f, 1.0f}, color},
 	};
 
+	auto newPos = Vector2(pos.x - m_offset.x, -pos.y + m_offset.y);
 	for (auto& vertex : vertices) {
 		//scale * rot * trans
-		const Matrix trans = Matrix::CreateScale(scale) * Matrix::CreateRotationZ(radian) * Matrix::CreateTranslation(pos.x, pos.y, 0.0f);
+		const Matrix trans = Matrix::CreateScale(scale) * Matrix::CreateRotationZ(radian) * Matrix::CreateTranslation(newPos.x, newPos.y, 0.0f);
 		Vector3::Transform(vertex.pos, trans, vertex.pos);
 	}
 
