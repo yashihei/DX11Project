@@ -10,12 +10,6 @@
 #include "imgui/imgui.h"
 #include "Actors.h"
 
-#if defined(_DEBUG)
-	#pragma comment(lib, "lib/imguiD.lib")
-#else
-	#pragma comment(lib, "lib/imgui.lib")
-#endif
-
 DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {

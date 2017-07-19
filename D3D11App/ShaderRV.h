@@ -8,13 +8,6 @@
 #include "Utility.h"
 #include "Log.h"
 
-#pragma comment(lib, "Shlwapi.lib")
-#if defined(DEBUG) || defined(_DEBUG)
-	#pragma comment(lib, "lib/DirectXTexD.lib")
-#else
-	#pragma comment(lib, "lib/DirectXTex.lib")
-#endif
-
 inline ComPtr<ID3D11ShaderResourceView> CreateShaderResourceViewFromFile(ComPtr<ID3D11Device> device, const WCHAR* filePath) {
 	using Microsoft::WRL::ComPtr;
 	using namespace DirectX;

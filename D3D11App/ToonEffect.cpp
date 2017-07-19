@@ -4,8 +4,6 @@
 #include <stdexcept>
 #include "ShaderRV.h"
 
-#pragma comment(lib, "d3dcompiler.lib")
-
 namespace {
 	struct ConstantBuffer {
 		Matrix world;

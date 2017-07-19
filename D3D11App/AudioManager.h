@@ -4,12 +4,6 @@
 #include <unordered_map>
 #include "DirectXTK/Audio.h"
 
-#if defined(DEBUG) || defined(_DEBUG)
-	#pragma comment(lib, "lib/DirectXTKAudioWin8D.lib")
-#else
-	#pragma comment(lib, "lib/DirectXTKAudioWin8.lib")
-#endif
-
 class AudioManager {
 public:
 	AudioManager();

@@ -3,8 +3,6 @@
 #include <d3dcompiler.h>
 #include <stdexcept>
 
-#pragma comment(lib, "d3dcompiler.lib")
-
 namespace {
 	struct ConstantBuffer {
 		Matrix world;

@@ -7,14 +7,6 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_dx11.h"
 
-#if defined(_DEBUG)
-	#pragma comment(lib, "lib/DirectXTKD.lib")
-	#pragma comment(lib, "lib/imguiD.lib")
-#else
-	#pragma comment(lib, "lib/DirectXTK.lib")
-	#pragma comment(lib, "lib/imgui.lib")
-#endif
-
 App::App() :
 	m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)),
 	m_appName("TestApp"), m_ScreenWidth(800), m_ScreenHeight(600)

@@ -6,10 +6,6 @@
 #include <wrl/client.h>
 using Microsoft::WRL::ComPtr;
 
-//Lib linked
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3d11.lib")
-
 class Graphics {
 public:
 	Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen);

@@ -5,12 +5,6 @@
 #include "DirectXTK/Keyboard.h"
 #include "DirectXTK/GamePad.h"
 
-#if defined(DEBUG) || defined(_DEBUG)
-	#pragma comment(lib, "lib/DirectXTKD.lib")
-#else
-	#pragma comment(lib, "lib/DirectXTK.lib")
-#endif
-
 // TODO:
 // キーコンフィグ
 // DIしたげる？
