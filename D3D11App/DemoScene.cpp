@@ -16,6 +16,9 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_alicia = std::make_shared<Model>(m_device, m_deviceContext);
 	m_alicia->createFromPmx("assets/alicia/Alicia_solid.pmx");
 
+	auto tex = CreateShaderResourceViewFromFile(m_device, L"assets/alice.png");
+	m_sprite = std::make_shared<Sprite2D>(m_device, m_deviceContext, tex);
+
 	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, 800.0f / 600.0f);
 	m_camera->pos = Vector3(0, 15, -15);
 	m_camera->lookAt = Vector3(0, 15, 0);
@@ -40,16 +43,13 @@ void DemoScene::draw()
 	ImGui::SliderFloat("RotationZ", &m_rot.z, 0, DirectX::XM_2PI, "%.3f");
 	ImGui::End();
 
-	ImGui::Begin("info");
-	ImGui::Text("%lf FPS", 1.0f / m_timer.elapsed());
-	m_timer.restart();
-	ImGui::End();
-
 	Matrix world, view, proj;
 
 	world = Matrix::CreateFromYawPitchRoll(m_rot.y, m_rot.x, m_rot.z);
 	view = m_camera->getViewMat();
 	proj = m_camera->getProjMat();
 
-	m_alicia->draw(world.Transpose(), view.Transpose(), proj.Transpose());
+	m_alicia->draw(world, view, proj);
+
+	m_sprite->draw({ 400, 300 }, DirectX::XM_2PI/3.f);
 }
