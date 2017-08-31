@@ -71,9 +71,6 @@
     <ClInclude Include="Fwd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Actors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
