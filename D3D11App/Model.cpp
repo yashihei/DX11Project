@@ -142,7 +142,7 @@ void Model::createFromObj(const std::string & filePath)
 			index_offset += fv;
 
 			// per-face material
-			shapes[s].mesh.material_ids[f];
+			//shapes[s].mesh.material_ids[f];
 		}
 	}
 }

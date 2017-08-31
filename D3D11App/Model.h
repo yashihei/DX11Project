@@ -23,6 +23,7 @@ private:
 		Vector2 uv;
 		Vector3 normal;
 	};
+
 	struct Material {
 		Color diffuse;//and... specular, ambient, power;
 		int diffuseTexureIndex;//and... sphereTexureIndex, toonTexureIndex;

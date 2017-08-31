@@ -20,7 +20,7 @@ App::~App() {
 void App::run()
 {
 	const int answer = MessageBox(NULL, "フルスクリーンで起動しますか？", m_appName.c_str(), MB_YESNO | MB_ICONQUESTION);
-	const float fullScreen = (answer == IDYES) ? true : false;
+	const bool fullScreen = (answer == IDYES) ? true : false;
 
 	if (!registerWndClass())
 		return;
@@ -39,12 +39,7 @@ void App::run()
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			} else {
-				ImGui_ImplDX11_NewFrame();
-				m_scene->update();
-				m_graphics->beginScene();
-				m_scene->draw();
-				ImGui::Render();
-				m_graphics->endScene();
+				frame();
 			}
 		}
 	} catch (const std::exception& error) {
@@ -52,6 +47,18 @@ void App::run()
 	} catch (...) {
 		MessageBox(NULL, "Unknown error", "Error", MB_OK | MB_ICONERROR);
 	}
+}
+
+void App::frame()
+{
+	ImGui_ImplDX11_NewFrame();
+
+	m_scene->update();
+
+	m_graphics->beginScene();
+	m_scene->draw();
+	ImGui::Render();
+	m_graphics->endScene();
 }
 
 bool App::registerWndClass()
