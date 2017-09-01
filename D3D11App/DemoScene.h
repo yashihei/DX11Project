@@ -23,6 +23,8 @@ private:
 	InputManagerPtr m_inputManager;
 	AudioManagerPtr m_audioManager;
 	CameraPtr m_camera;
-	ModelPtr m_model;
+	ModelPtr m_alicia;
+	Sprite2DPtr m_sprite;
+	Vector3 m_rot;
 	boost::timer m_timer;
 };
