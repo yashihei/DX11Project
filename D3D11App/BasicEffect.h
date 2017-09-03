@@ -10,7 +10,7 @@ using Microsoft::WRL::ComPtr;
 class BasicEffect {
 public:
 	BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
-	void setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor, const Vector4& ambientColor);
+	void setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& lightDiffuseColor, const Vector4& lightAmbientColor);
 	void setTexture(ComPtr<ID3D11ShaderResourceView> texture) { m_texture = texture; }
 	void apply();
 private:

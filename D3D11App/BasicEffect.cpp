@@ -8,8 +8,9 @@ namespace {
 		Matrix world;
 		Matrix view;
 		Matrix proj;
-		Vector4 diffuseColor;
-		Vector4 ambientColor;
+		//light params
+		Vector4 lightDiffuseColor;
+		Vector4 lightAmbientColor;
 		Vector3 lightDir;
 		float padding;
 	};
@@ -89,7 +90,7 @@ BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext
 		throw std::runtime_error("CreateSamplerState() Failed.");
 }
 
-void BasicEffect::setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor, const Vector4& ambientColor)
+void BasicEffect::setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& lightDiffuseColor, const Vector4& lightAmbientColor)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
@@ -100,8 +101,8 @@ void BasicEffect::setParam(const Matrix& world, const Matrix& view, const Matrix
 		data->world = world;
 		data->view = view;
 		data->proj = proj;
-		data->diffuseColor = diffuseColor;
-		data->ambientColor = ambientColor;
+		data->lightDiffuseColor = lightDiffuseColor;
+		data->lightAmbientColor = lightAmbientColor;
 		data->lightDir = lightDir;
 		data->padding = 0.0f;
 		m_deviceContext->Unmap(m_constantBuffer.Get(), 0);
