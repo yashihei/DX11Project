@@ -20,7 +20,10 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_deviceContext->OMSetDepthStencilState(m_states->DepthNone(), 0);
 	m_deviceContext->OMSetBlendState(m_states->Additive(), 0, 0xFfFfFfFf);
 
-	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, 800.0f / 600.0f);
+	UINT vpCount = 1;
+	D3D11_VIEWPORT vp = {};
+	m_deviceContext->RSGetViewports(&vpCount, &vp);
+	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, vp.Width / vp.Height);
 	m_camera->pos = Vector3(0, 0, -30);
 	m_camera->lookAt = Vector3(0, 0, 0);
 
