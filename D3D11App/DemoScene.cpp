@@ -16,6 +16,10 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_inputManager = std::make_shared<InputManager>();
 	m_audioManager = std::make_shared<AudioManager>();
 
+	m_states = std::make_unique<DirectX::CommonStates>(m_device.Get());
+	m_deviceContext->OMSetDepthStencilState(m_states->DepthNone(), 0);
+	m_deviceContext->OMSetBlendState(m_states->Additive(), 0, 0xFfFfFfFf);
+
 	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, 800.0f / 600.0f);
 	m_camera->pos = Vector3(0, 30, -30);
 	m_camera->lookAt = Vector3(0, 0, 0);

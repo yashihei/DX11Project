@@ -6,6 +6,7 @@
 #include <deque>
 #include <vector>
 #include "DirectXTK/SimpleMath.h"
+#include "DirectXTK/CommonStates.h"
 #include "Scene.h"
 #include "Fwd.h"
 #include "Particle.h"
@@ -21,6 +22,7 @@ public:
 private:
 	ComPtr<ID3D11Device> m_device;
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
+	std::unique_ptr<DirectX::CommonStates> m_states;
 	InputManagerPtr m_inputManager;
 	AudioManagerPtr m_audioManager;
 	CameraPtr m_camera;
