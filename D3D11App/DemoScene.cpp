@@ -12,15 +12,15 @@
 DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
-	m_alicia = std::make_shared<Model>(m_device, m_deviceContext);
-	m_alicia->createFromPmx("assets/alicia/Alicia_solid.pmx");
+	m_inputManager = std::make_shared<InputManager>();
+	m_audioManager = std::make_shared<AudioManager>();
 
 	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, 800.0f / 600.0f);
 	m_camera->pos = Vector3(0, 15, -15);
 	m_camera->lookAt = Vector3(0, 15, 0);
 
-	m_inputManager = std::make_shared<InputManager>();
-	m_audioManager = std::make_shared<AudioManager>();
+	m_alicia = std::make_shared<Model>(m_device, m_deviceContext);
+	m_alicia->createFromPmx("assets/alicia/Alicia_solid.pmx");
 }
 
 Scene* DemoScene::update()
