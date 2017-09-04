@@ -14,6 +14,13 @@ namespace {
 		Vector3 lightDir;
 		float padding;
 	};
+
+	struct ConstantBufferMaterial {
+		Vector4 diffuseColor;
+		Vector4 ambientColor;
+		Vector4 specularColor;
+		Vector4 power;
+	};
 }
 
 inline void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob ** blobOut)
@@ -30,6 +37,19 @@ inline void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderMo
 
 	if (FAILED(hr))
 		throw std::runtime_error((char*)errorBlob->GetBufferPointer());
+}
+
+inline void createConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteSize, ComPtr<ID3D11Buffer>& constantBuffer)
+{
+	D3D11_BUFFER_DESC constantBufferDesc = {};
+	constantBufferDesc.ByteWidth = byteSize;
+	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	HRESULT hr = device->CreateBuffer(&constantBufferDesc, NULL, &constantBuffer);
+	if (FAILED(hr))
+		throw std::runtime_error("CreateConstantBuffer Failed.");
 }
 
 BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
@@ -51,6 +71,11 @@ BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext
 	if (FAILED(hr))
 		throw std::runtime_error("CreatePixelShader() Failed.");
 
+	//create constant buf
+	createConstantBuffer(m_device, sizeof(ConstantBuffer), m_constantBuffer);
+	createConstantBuffer(m_device, sizeof(ConstantBufferMaterial), m_constantBufferMaterial);
+
+	//--------------------------------------------------
 	//create input layout
 	const D3D11_INPUT_ELEMENT_DESC layout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -63,17 +88,7 @@ BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext
 	if (FAILED(hr))
 		throw std::runtime_error("CreateInputLayout() Failed.");
 
-	//create constant buf
-	D3D11_BUFFER_DESC constantBufferDesc = {};
-	constantBufferDesc.ByteWidth = sizeof(ConstantBuffer);
-	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-	hr = m_device->CreateBuffer(&constantBufferDesc, NULL, &m_constantBuffer);
-	if (FAILED(hr))
-		throw std::runtime_error("CreateConstantBuffer Failed.");
-
+	//--------------------------------------------------
 	//create sampler
 	D3D11_SAMPLER_DESC samplerDesc = {};
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -90,11 +105,12 @@ BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext
 		throw std::runtime_error("CreateSamplerState() Failed.");
 }
 
-void BasicEffect::setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& lightDiffuseColor, const Vector4& lightAmbientColor)
+void BasicEffect::setParams(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& lightDiffuseColor, const Vector4& lightAmbientColor)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	//コンスタントバッファ書き換え
+	//TODO: apply時にコンスタントバッファ書き換えるように
 	HRESULT hr = m_deviceContext->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
 		ConstantBuffer* data = reinterpret_cast<ConstantBuffer*>(resource.pData);
@@ -109,16 +125,33 @@ void BasicEffect::setParam(const Matrix& world, const Matrix& view, const Matrix
 	}
 }
 
+void BasicEffect::setMaterialsParams(const Vector4& diffuse, const Vector4& ambient, const Vector4& specular, float power)
+{
+	D3D11_MAPPED_SUBRESOURCE resource;
+
+	HRESULT hr = m_deviceContext->Map(m_constantBufferMaterial.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	if (SUCCEEDED(hr)) {
+		ConstantBufferMaterial* data = reinterpret_cast<ConstantBufferMaterial*>(resource.pData);
+		data->diffuseColor = diffuse;
+		data->ambientColor = ambient;
+		data->specularColor = specular;
+		data->power = Vector4(power, 0, 0, 0);
+		m_deviceContext->Unmap(m_constantBufferMaterial.Get(), 0);
+	}
+}
+
 void BasicEffect::apply()
 {
-	//set input layout
+	//set InputLayout (TODO:move model class)
 	m_deviceContext->IASetInputLayout(m_layout.Get());
+	//set samplers (TODO: move model class)
+	m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
+	//set texture
+	m_deviceContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 	//set shader
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), NULL, 0);
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), NULL, 0);
-	//set constants
+	//set constantsbuf
 	m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 	m_deviceContext->PSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
-	m_deviceContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
-	m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
 }

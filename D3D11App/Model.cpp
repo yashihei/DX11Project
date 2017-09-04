@@ -30,12 +30,13 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_effect->setParam(world.Transpose(), view.Transpose(), proj.Transpose(), { 0, 0, 1 }, { 1, 1, 1, 1 }, { 0.3f, 0.3f, 0.3f, 1 });
+	m_effect->setParams(world.Transpose(), view.Transpose(), proj.Transpose(), { 0, 0, 1 }, { 1, 1, 1, 1 }, { 0.3f, 0.3f, 0.3f, 1 });
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {
 		if (mat.diffuseTexureIndex != -1)
 			m_effect->setTexture(m_textures[mat.diffuseTexureIndex]);
+		m_effect->setMaterialsParams(mat.diffuse, mat.ambient, mat.specular, mat.power);
 		m_effect->apply();
 		m_deviceContext->DrawIndexed(mat.indexCount, countIndex, 0);
 		countIndex += mat.indexCount;
