@@ -16,6 +16,14 @@ cbuffer Params : register(b0)
 	float padding;
 };
 
+cbuffer MaterialParams : register(b1)
+{
+	float4 diffuseColor;
+	float4 specularColor;
+	float4 ambientColor;
+	float4 power;
+};
+
 struct VSInput
 {
 	float4 pos : POSITION;

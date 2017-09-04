@@ -93,6 +93,19 @@ void Model::createFromPmx(const std::string& filePath)
 				pmxModel.materials[i].diffuse[2],
 				pmxModel.materials[i].diffuse[3]
 			},
+			{
+				pmxModel.materials[i].specular[0],
+				pmxModel.materials[i].specular[1],
+				pmxModel.materials[i].specular[2],
+				pmxModel.materials[i].specular[3],
+			},
+			{
+				pmxModel.materials[i].ambient[0],
+				pmxModel.materials[i].ambient[1],
+				pmxModel.materials[i].ambient[2],
+				pmxModel.materials[i].ambient[3],
+			},
+			pmxModel.materials[i].specularlity,
 			pmxModel.materials[i].diffuse_texture_index,
 			pmxModel.materials[i].index_count,
 		};
