@@ -44,13 +44,15 @@ Scene* DemoScene::update()
 	static float speed = 1.f;
 	static float colorAry[] = { 1.f, 0.7f, 0.2f, 1.f };
 	static float scale = 1.0f;
+	static bool gravity = false;
 
 	//num, speed, color
 	ImGui::Begin("config");
-	ImGui::SliderInt("Rate", &rate, 0, 30);
+	ImGui::SliderInt("Rate", &rate, 0, 100);
 	ImGui::SliderFloat("Speed", &speed, 0, 1);
 	ImGui::SliderFloat("Scale", &scale, 0, 2);
 	ImGui::ColorEdit4("Color", colorAry);
+	ImGui::Checkbox("Gravity", &gravity);
 	ImGui::Text(("Particle Num:" + std::to_string(m_particles->size())).c_str());
 	ImGui::End();
 
@@ -58,7 +60,7 @@ Scene* DemoScene::update()
 		Quaternion rotate = Quaternion::CreateFromYawPitchRoll(Random(DirectX::XM_2PI), Random(DirectX::XM_2PI), Random(DirectX::XM_2PI));
 		Vector3 vec(speed, 0, 0);
 		vec = Vector3::Transform(vec, rotate);
-		auto particle = std::make_shared<Particle>(m_sprite, Vector3::Zero, vec, Color(colorAry), scale);
+		auto particle = std::make_shared<Particle>(m_sprite, Vector3::Zero, vec, Color(colorAry), scale, gravity);
 		m_particles->add(particle);
 	}
 
