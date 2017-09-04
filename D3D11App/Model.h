@@ -26,8 +26,8 @@ private:
 
 	struct Material {
 		Color diffuse;
-		Color specular;
 		Color ambient;
+		Color specular;
 		float power;
 		int diffuseTexureIndex;//and... sphereTexureIndex, toonTexureIndex;
 		int indexCount;

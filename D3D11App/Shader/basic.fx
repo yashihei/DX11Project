@@ -19,8 +19,8 @@ cbuffer Params : register(b0)
 cbuffer MaterialParams : register(b1)
 {
 	float4 diffuseColor;
-	float4 specularColor;
 	float4 ambientColor;
+	float4 specularColor;
 	float4 power;
 };
 
