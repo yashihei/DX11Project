@@ -12,7 +12,7 @@ cbuffer Params : register(b0)
 	//light
 	float4 lightDiffuseColor;
 	float4 lightAmbientColor;
-	float3 lightDir;
+	float3 lightDirection;
 	float padding;
 };
 
@@ -63,7 +63,7 @@ float4 PS(PSInput input) : SV_TARGET
 	float4 outColor = lightAmbientColor;
 
 	texColor = tex2d.Sample(sampleType, input.texCoord);
-	lightIntensity = saturate(dot(input.normal, -lightDir));
+	lightIntensity = saturate(dot(input.normal, -lightDirection));
 	if (lightIntensity > 0)
 		outColor += (lightDiffuseColor * lightIntensity);
 	outColor = saturate(outColor);
