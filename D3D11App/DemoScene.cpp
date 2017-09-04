@@ -5,8 +5,8 @@
 #include "AudioManager.h"
 #include "Camera.h"
 #include "ShaderRV.h"
+#include "Sprite.h"
 #include "Sprite2D.h"
-#include "Billboard.h"
 #include "imgui/imgui.h"
 
 DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
@@ -33,17 +33,4 @@ Scene* DemoScene::update()
 
 void DemoScene::draw()
 {
-	ImGui::Begin("config");
-	ImGui::SliderFloat("RotationX", &m_rot.x, 0, DirectX::XM_2PI, "%.3f");
-	ImGui::SliderFloat("RotationY", &m_rot.y, 0, DirectX::XM_2PI, "%.3f");
-	ImGui::SliderFloat("RotationZ", &m_rot.z, 0, DirectX::XM_2PI, "%.3f");
-	ImGui::End();
-
-	Matrix world, view, proj;
-
-	world = Matrix::CreateFromYawPitchRoll(m_rot.y, m_rot.x, m_rot.z);
-	view = m_camera->getViewMat();
-	proj = m_camera->getProjMat();
-
-	m_alicia->draw(world, view, proj);
 }

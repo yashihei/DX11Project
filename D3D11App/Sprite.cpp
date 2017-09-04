@@ -1,4 +1,4 @@
-#include "Billboard.h"
+#include "Sprite.h"
 
 #include "Camera.h"
 #include "SpriteEffect.h"
@@ -13,7 +13,7 @@ namespace {
 	};
 }
 
-Billboard::Billboard(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, ComPtr<ID3D11ShaderResourceView> texture, CameraPtr camera)
+Sprite::Sprite(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, ComPtr<ID3D11ShaderResourceView> texture, CameraPtr camera)
 	: m_device(device), m_deviceContext(deviceContext), m_texture(texture), m_camera(camera)
 {
 	m_spriteEffect = std::make_shared<SpriteEffect>(m_device, m_deviceContext);
@@ -23,7 +23,7 @@ Billboard::Billboard(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	createIndexBuffer();
 }
 
-void Billboard::draw(const Vector3& pos, float scale)
+void Sprite::draw(const Vector3& pos, float scale)
 {
 	unsigned int stride = sizeof(SpriteVertex);
 	unsigned int offset = 0;
@@ -44,7 +44,7 @@ void Billboard::draw(const Vector3& pos, float scale)
 	m_deviceContext->DrawIndexed(4, 0, 0);
 }
 
-void Billboard::draw(const Vector3& pos, const Color& color, float scale)
+void Sprite::draw(const Vector3& pos, const Color& color, float scale)
 {
 	std::vector<SpriteVertex> vertices {
 		{{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f}, color},
@@ -64,7 +64,7 @@ void Billboard::draw(const Vector3& pos, const Color& color, float scale)
 	draw(pos, scale);
 }
 
-void Billboard::createVertexBuffer()
+void Sprite::createVertexBuffer()
 {
 	D3D11_BUFFER_DESC desc = {};
 	desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -87,7 +87,7 @@ void Billboard::createVertexBuffer()
 		throw std::runtime_error("CreateVertexBuffer Failed.");
 }
 
-void Billboard::createIndexBuffer()
+void Sprite::createIndexBuffer()
 {
 	D3D11_BUFFER_DESC desc = {};
 	desc.Usage = D3D11_USAGE_DEFAULT;
