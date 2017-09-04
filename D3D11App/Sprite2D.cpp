@@ -32,7 +32,7 @@ Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> devi
 	m_deviceContext->RSGetViewports(&vpCount, &vp);
 	m_offset.x = vp.Width / 2.0f; m_offset.y = vp.Height / 2.0f;
 
-	const Matrix orthoMat = DirectX::XMMatrixOrthographicLH(800.0f, 600.0f, 0, 1000.0f);
+	const Matrix orthoMat = DirectX::XMMatrixOrthographicLH(vp.Width, vp.Height, 0, 1000.0f);
 	m_spriteEffect = std::make_shared<SpriteEffect>(m_device, m_deviceContext);
 	m_spriteEffect->setTexture(m_texture);
 	m_spriteEffect->setParam(Matrix::Identity.Transpose(), Matrix::Identity.Transpose(), orthoMat.Transpose());
