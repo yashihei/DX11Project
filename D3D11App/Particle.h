@@ -6,9 +6,9 @@
 
 class Particle : public Actor {
 public:
-	Particle(SpritePtr sprite, const Vector3& pos, const Vector3& vector, const Color& color) :
+	Particle(SpritePtr sprite, const Vector3& pos, const Vector3& vector, const Color& color, const float scale) :
 		m_sprite(sprite),
-		m_pos(pos), m_vector(vector), m_color(color), m_scale(1.0f)
+		m_pos(pos), m_vector(vector), m_color(color), m_scale(scale)
 	{}
 	void update() override {
 		m_pos += m_vector;
