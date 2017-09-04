@@ -46,5 +46,5 @@ private:
 	std::vector<ComPtr<ID3D11ShaderResourceView>> m_textures;
 	std::vector<Material> m_materials;
 
-	ToonEffectPtr m_effect;
+	BasicEffectPtr m_effect;
 };
