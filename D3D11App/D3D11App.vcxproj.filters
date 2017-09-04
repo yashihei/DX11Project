@@ -125,6 +125,9 @@
     <ClInclude Include="Sprite.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\sprite.fx">

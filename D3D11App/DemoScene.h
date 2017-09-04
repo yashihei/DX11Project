@@ -8,6 +8,7 @@
 #include "DirectXTK/SimpleMath.h"
 #include "Scene.h"
 #include "Fwd.h"
+#include "Particle.h"
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX::SimpleMath;
@@ -25,5 +26,6 @@ private:
 	CameraPtr m_camera;
 	ModelPtr m_alicia;
 	SpritePtr m_sprite;
+	ParticleManagerPtr m_particles;
 	boost::timer m_timer;
 };
