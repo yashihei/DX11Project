@@ -14,7 +14,7 @@ public:
 		m_pos += m_vector;
 		m_vector *= 0.95f;
 		m_color.w *= 0.95f;
-		if (m_color.w < 0.1f)
+		if (m_color.w < 0.05f)
 			kill();
 
 		if (m_gravity)
