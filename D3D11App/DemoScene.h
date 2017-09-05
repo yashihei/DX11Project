@@ -29,5 +29,6 @@ private:
 	ModelPtr m_alicia;
 	SpritePtr m_sprite;
 	ParticleManagerPtr m_particles;
+	float m_rotation;
 	boost::timer m_timer;
 };

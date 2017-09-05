@@ -11,14 +11,11 @@
 #include "Random.h"
 
 DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
-	m_device(device), m_deviceContext(deviceContext)
+	m_device(device), m_deviceContext(deviceContext), m_rotation(0)
 {
 	m_inputManager = std::make_shared<InputManager>();
 	m_audioManager = std::make_shared<AudioManager>();
-
 	m_states = std::make_unique<DirectX::CommonStates>(m_device.Get());
-	m_deviceContext->OMSetDepthStencilState(m_states->DepthNone(), 0);
-	m_deviceContext->OMSetBlendState(m_states->Additive(), 0, 0xFfFfFfFf);
 
 	UINT vpCount = 1;
 	D3D11_VIEWPORT vp = {};
@@ -27,8 +24,8 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_camera->pos = Vector3(0, 0, -30);
 	m_camera->lookAt = Vector3(0, 0, 0);
 
-	m_alicia = std::make_shared<Model>(m_device, m_deviceContext);
-	m_alicia->createFromPmx("assets/alicia/Alicia_solid.pmx");
+	//m_alicia = std::make_shared<Model>(m_device, m_deviceContext);
+	//m_alicia->createFromPmx("assets/alicia/Alicia_solid.pmx");
 
 	auto spriteTex = CreateShaderResourceViewFromFile(m_device, L"assets/circle.png");
 	m_sprite = std::make_shared<Sprite>(m_device, m_deviceContext, spriteTex, m_camera);
@@ -41,15 +38,25 @@ Scene* DemoScene::update()
 	m_inputManager->update();
 	m_audioManager->update();
 
-	m_particles->update();
+	//--------------------------------------------------
+	// camera controll
+	if (m_inputManager->isPressedLeft()) {
+		m_rotation += 0.03f;
+	}
+	else if (m_inputManager->isPressedRight()) {
+		m_rotation -= 0.03f;
+	}
+	Quaternion rotate = Quaternion::CreateFromYawPitchRoll(m_rotation, 0, 0);
+	m_camera->pos = Vector3::Transform(Vector3(0, 0, -30), rotate);
 
+	//--------------------------------------------------
+	// particle controll
 	static int rate = 30;
 	static float speed = 1.f;
 	static float colorAry[] = { 1.f, 0.7f, 0.2f, 1.f };
 	static float scale = 1.0f;
 	static bool gravity = false;
 
-	//num, speed, color
 	ImGui::Begin("config");
 	ImGui::SliderInt("Rate", &rate, 0, 100);
 	ImGui::SliderFloat("Speed", &speed, 0, 1);
@@ -67,10 +74,16 @@ Scene* DemoScene::update()
 		m_particles->add(particle);
 	}
 
+	m_particles->update();
+
 	return this;
 }
 
 void DemoScene::draw()
 {
+	m_deviceContext->OMSetDepthStencilState(m_states->DepthNone(), 0);
+	m_deviceContext->OMSetBlendState(m_states->Additive(), 0, 0xFfFfFfFf);
 	m_particles->draw();
+	m_deviceContext->OMSetBlendState(m_states->AlphaBlend(), 0, 0xFfFfFfFf);
+	m_deviceContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
 }
