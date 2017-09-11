@@ -21,7 +21,7 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	D3D11_VIEWPORT vp = {};
 	m_deviceContext->RSGetViewports(&vpCount, &vp);
 	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, vp.Width / vp.Height);
-	m_camera->pos = Vector3(0, 0, -30);
+	m_camera->pos = Vector3(0, 0, -15);
 	m_camera->lookAt = Vector3(0, 0, 0);
 
 	m_alicia = std::make_shared<Model>(m_device, m_deviceContext);
@@ -33,20 +33,24 @@ Scene* DemoScene::update()
 	m_inputManager->update();
 	m_audioManager->update();
 
-	//--------------------------------------------------
-	// camera controll
-	if (m_inputManager->isPressedLeft()) {
-		m_rotation += 0.03f;
-	}
-	else if (m_inputManager->isPressedRight()) {
-		m_rotation -= 0.03f;
-	}
-	Quaternion rotate = Quaternion::CreateFromYawPitchRoll(m_rotation, 0, 0);
-	m_camera->pos = Vector3::Transform(Vector3(0, 0, -30), rotate);
-
 	return this;
 }
 
 void DemoScene::draw()
 {
+	static Vector3 rot = {};
+	ImGui::Begin("config");
+	ImGui::SliderFloat("RotationX", &rot.x, 0, DirectX::XM_2PI, "%.3f");
+	ImGui::SliderFloat("RotationY", &rot.y, 0, DirectX::XM_2PI, "%.3f");
+	ImGui::SliderFloat("RotationZ", &rot.z, 0, DirectX::XM_2PI, "%.3f");
+	ImGui::End();
+
+	Matrix world, view, proj;
+
+	world = Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+	world *= Matrix::CreateTranslation(0, -15, 0);
+	view = m_camera->getViewMat();
+	proj = m_camera->getProjMat();
+
+	m_alicia->draw(world, view, proj);
 }
