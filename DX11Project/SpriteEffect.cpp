@@ -1,3 +1,9 @@
+// -----------------------------------------------
+// File : SpriteEffect.cpp
+// Copyright (c) 2017 yashihei
+// Licensed under the MIT license
+// -----------------------------------------------
+
 #include "SpriteEffect.h"
 
 #include <d3dcompiler.h>

@@ -1,3 +1,9 @@
+// -----------------------------------------------
+// File : AudioManager.cpp
+// Copyright (c) 2017 yashihei
+// Licensed under the MIT license
+// -----------------------------------------------
+
 #include "AudioManager.h"
 
 #include "Utility.h"

@@ -1,3 +1,9 @@
+// -----------------------------------------------
+// File : Model.cpp
+// Copyright (c) 2017 yashihei
+// Licensed under the MIT license
+// -----------------------------------------------
+
 #include "Model.h"
 
 #include <algorithm>
@@ -129,7 +135,6 @@ void Model::createFromObj(const std::string & filePath)
 		throw std::runtime_error(filePath + " Load Failed.");
 	}
 
-	//TODO: attribÇ©ÇÁíºê⁄éÊÇÈ
 	// Loop over shapes
 	for (size_t s = 0; s < shapes.size(); s++) {
 		size_t index_offset = 0;

@@ -1,3 +1,9 @@
+// -----------------------------------------------
+// File : ToonEffect.cpp
+// Copyright (c) 2017 yashihei
+// Licensed under the MIT license
+// -----------------------------------------------
+
 #include "ToonEffect.h"
 
 #include <d3dcompiler.h>

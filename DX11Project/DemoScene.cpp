@@ -1,3 +1,9 @@
+// -----------------------------------------------
+// File : DemoScene.cpp
+// Copyright (c) 2017 yashihei
+// Licensed under the MIT license
+// -----------------------------------------------
+
 #include "DemoScene.h"
 
 #include "Model.h"

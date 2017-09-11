@@ -1,3 +1,9 @@
+// -----------------------------------------------
+// File : BasicEffect.cpp
+// Copyright (c) 2017 yashihei
+// Licensed under the MIT license
+// -----------------------------------------------
+
 #include "BasicEffect.h"
 
 #include <d3dcompiler.h>

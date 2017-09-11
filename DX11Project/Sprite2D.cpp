@@ -1,3 +1,9 @@
+// -----------------------------------------------
+// File : Sprite2D.cpp
+// Copyright (c) 2017 yashihei
+// Licensed under the MIT license
+// -----------------------------------------------
+
 #include "Sprite2D.h"
 
 #include <vector>

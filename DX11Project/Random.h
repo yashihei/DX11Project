@@ -1,3 +1,9 @@
+// -----------------------------------------------
+// File : Random.h
+// Copyright (c) 2017 yashihei
+// Licensed under the MIT license
+// -----------------------------------------------
+
 #pragma once
 
 #include <random>

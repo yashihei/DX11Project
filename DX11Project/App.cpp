@@ -1,3 +1,9 @@
+// -----------------------------------------------
+// File : App.cpp
+// Copyright (c) 2017 yashihei
+// Licensed under the MIT license
+// -----------------------------------------------
+
 #include "App.h"
 
 #include "DemoScene.h"

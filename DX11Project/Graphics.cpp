@@ -1,3 +1,9 @@
+// -----------------------------------------------
+// File : Graphics.cpp
+// Copyright (c) 2017 yashihei
+// Licensed under the MIT license
+// -----------------------------------------------
+
 #include "Graphics.h"
 
 #include <stdexcept>
