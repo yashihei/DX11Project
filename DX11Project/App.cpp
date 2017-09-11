@@ -9,7 +9,7 @@
 
 App::App() :
 	m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)),
-	m_appName("D3D11App"), m_ScreenWidth(1280), m_ScreenHeight(720)
+	m_appName("DX11App"), m_ScreenWidth(1280), m_ScreenHeight(720)
 {
 }
 
