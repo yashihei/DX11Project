@@ -129,6 +129,7 @@ void Model::createFromObj(const std::string & filePath)
 		throw std::runtime_error(filePath + " Load Failed.");
 	}
 
+	//TODO: attrib‚©‚ç’¼Úæ‚é
 	// Loop over shapes
 	for (size_t s = 0; s < shapes.size(); s++) {
 		size_t index_offset = 0;
@@ -154,10 +155,31 @@ void Model::createFromObj(const std::string & filePath)
 				tinyobj::real_t ty = attrib.texcoords[2 * idx.texcoord_index + 1];
 			}
 			index_offset += fv;
-
-			// per-face material
-			//shapes[s].mesh.material_ids[f];
 		}
+	}
+
+	// load materials
+	for (size_t m = 0; m < materials.size(); m++) {
+		Material mat {
+			{
+				materials[m].diffuse[0],
+				materials[m].diffuse[1],
+				materials[m].diffuse[2],
+				//TODO: alpha
+			},
+			{
+				materials[m].ambient[0],
+				materials[m].ambient[1],
+				materials[m].ambient[2],
+			},
+			{
+				materials[m].specular[0],
+				materials[m].specular[1],
+				materials[m].specular[2],
+			},
+		};
+
+		m_materials.push_back(mat);
 	}
 }
 
