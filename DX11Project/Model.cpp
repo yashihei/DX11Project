@@ -18,8 +18,8 @@
 #undef min
 #undef max
 
-Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
-	m_device(device), m_deviceContext(deviceContext)
+Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states) :
+	m_device(device), m_deviceContext(deviceContext), m_states(states)
 {
 	m_effect = std::make_shared<BasicEffect>(m_device, m_deviceContext);
 }

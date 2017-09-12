@@ -12,13 +12,14 @@
 #include <vector>
 #include "DirectXTK/SimpleMath.h"
 #include "Fwd.h"
+#include "DirectXTK/CommonStates.h"
 
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
 class Model {
 public:
-	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
+	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states);
 	void createFromPmx(const std::string& filePath);
 	void createFromObj(const std::string& filePath);
 	void getBoudingSphere(Vector3* center, float* r);
@@ -53,4 +54,5 @@ private:
 	std::vector<Material> m_materials;
 
 	BasicEffectPtr m_effect;
+	CommonStatesPtr m_states;
 };

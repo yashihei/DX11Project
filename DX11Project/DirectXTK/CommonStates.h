@@ -68,3 +68,5 @@ namespace DirectX
         std::shared_ptr<Impl> pImpl;
     };
 }
+
+using CommonStatesPtr = std::shared_ptr<DirectX::CommonStates>;

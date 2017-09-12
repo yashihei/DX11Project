@@ -21,7 +21,7 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 {
 	m_inputManager = std::make_shared<InputManager>();
 	m_audioManager = std::make_shared<AudioManager>();
-	m_states = std::make_unique<DirectX::CommonStates>(m_device.Get());
+	m_states = std::make_shared<DirectX::CommonStates>(m_device.Get());
 
 	UINT vpCount = 1;
 	D3D11_VIEWPORT vp = {};
