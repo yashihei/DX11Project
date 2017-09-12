@@ -45,7 +45,7 @@ inline void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderMo
 		throw std::runtime_error((char*)errorBlob->GetBufferPointer());
 }
 
-inline void createConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteSize, ComPtr<ID3D11Buffer>& constantBuffer)
+inline void createConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteSize, ID3D11Buffer ** constantBuffer)
 {
 	D3D11_BUFFER_DESC constantBufferDesc = {};
 	constantBufferDesc.ByteWidth = byteSize;
@@ -53,7 +53,7 @@ inline void createConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteS
 	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	HRESULT hr = device->CreateBuffer(&constantBufferDesc, NULL, &constantBuffer);
+	HRESULT hr = device->CreateBuffer(&constantBufferDesc, NULL, constantBuffer);
 	if (FAILED(hr))
 		throw std::runtime_error("CreateConstantBuffer Failed.");
 }
@@ -78,8 +78,8 @@ BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext
 		throw std::runtime_error("CreatePixelShader() Failed.");
 
 	//create constant buf
-	createConstantBuffer(m_device, sizeof(ConstantBuffer), m_constantBuffer);
-	createConstantBuffer(m_device, sizeof(ConstantBufferMaterial), m_constantBufferMaterial);
+	createConstantBuffer(m_device, sizeof(ConstantBuffer), &m_constantBuffer);
+	createConstantBuffer(m_device, sizeof(ConstantBufferMaterial), &m_constantBufferMaterial);
 
 	//--------------------------------------------------
 	//create input layout
