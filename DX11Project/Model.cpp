@@ -142,57 +142,7 @@ void Model::createFromObj(const std::string & filePath)
 		throw std::runtime_error(filePath + " Load Failed.");
 	}
 
-	// Loop over shapes
-	for (size_t s = 0; s < shapes.size(); s++) {
-		size_t index_offset = 0;
-		// Loop over faces(polygon)
-		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-			int fv = shapes[s].mesh.num_face_vertices[f];
-			// Loop over vertices in the face.
-			for (size_t v = 0; v < fv; v++) {
-				// access to vertex
-				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-
-				tinyobj::real_t vx = attrib.vertices[3 * idx.vertex_index + 0];
-				tinyobj::real_t vy = attrib.vertices[3 * idx.vertex_index + 1];
-				tinyobj::real_t vz = attrib.vertices[3 * idx.vertex_index + 2];
-
-				if (attrib.normals.size() == 0) break;
-				tinyobj::real_t nx = attrib.normals[3 * idx.normal_index + 0];
-				tinyobj::real_t ny = attrib.normals[3 * idx.normal_index + 1];
-				tinyobj::real_t nz = attrib.normals[3 * idx.normal_index + 2];
-
-				if (attrib.texcoords.size() == 0) break;
-				tinyobj::real_t tx = attrib.texcoords[2 * idx.texcoord_index + 0];
-				tinyobj::real_t ty = attrib.texcoords[2 * idx.texcoord_index + 1];
-			}
-			index_offset += fv;
-		}
-	}
-
-	// load materials
-	for (size_t m = 0; m < materials.size(); m++) {
-		Material mat {
-			{
-				materials[m].diffuse[0],
-				materials[m].diffuse[1],
-				materials[m].diffuse[2],
-				//TODO: alpha
-			},
-			{
-				materials[m].ambient[0],
-				materials[m].ambient[1],
-				materials[m].ambient[2],
-			},
-			{
-				materials[m].specular[0],
-				materials[m].specular[1],
-				materials[m].specular[2],
-			},
-		};
-
-		m_materials.push_back(mat);
-	}
+	//TODO:ƒ[ƒ_[ŽÀ‘•
 }
 
 void Model::getBoudingSphere(Vector3 * center, float * r)
