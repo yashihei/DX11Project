@@ -47,8 +47,12 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {
-		if (mat.diffuseTexureIndex != -1)
-			m_effect->setTexture(m_textures[mat.diffuseTexureIndex]);
+		//マテリアルにテクスチャが設定されて無ければ、nulltexを貼る
+		if (mat.diffuseTexureIndex != -1) {
+			m_effect->setTexture(m_textures[mat.diffuseTexureIndex + 1]);
+		} else {
+			m_effect->setTexture(m_textures[0]);
+		}
 		m_effect->setMaterialsParams(mat.diffuse, mat.ambient, mat.specular, mat.power);
 		m_effect->apply();
 		m_deviceContext->DrawIndexed(mat.indexCount, countIndex, 0);
@@ -91,6 +95,9 @@ void Model::createFromPmx(const std::string& filePath)
 	}
 	
 	//load tex
+	const auto nulltex = CreateShaderResourceViewFromFile(m_device, L"assets/null.png");
+	m_textures.push_back(nulltex);
+
 	const auto rootDir = GetDirPath(filePath);
 	for (int i = 0; i < pmxModel.texture_count; i++) {
 		const auto dir = s2ws(rootDir) + pmxModel.textures[i];
