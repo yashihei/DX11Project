@@ -80,21 +80,6 @@ ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 	if (FAILED(hr))
 		throw std::runtime_error("CreateConstantBuffer Failed.");
 
-	//create sampler
-	D3D11_SAMPLER_DESC samplerDesc = {};
-	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	samplerDesc.AddressU = samplerDesc.AddressV = samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.MipLODBias = 0.0f;
-	samplerDesc.MaxAnisotropy = 1;
-	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	samplerDesc.BorderColor[0] = samplerDesc.BorderColor[1] = samplerDesc.BorderColor[2] = samplerDesc.BorderColor[3] = 0;
-	samplerDesc.MinLOD = 0;
-	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-	hr = m_device->CreateSamplerState(&samplerDesc, &m_samplerState);
-	if (FAILED(hr))
-		throw std::runtime_error("CreateSamplerState() Failed.");
-
 	m_toonMap = CreateShaderResourceViewFromFile(m_device, L"assets/toon.png");
 }
 
@@ -119,15 +104,15 @@ void ToonEffect::setParam(const Matrix& world, const Matrix& view, const Matrix&
 
 void ToonEffect::apply()
 {
-	//set input layout
+	//set input layout (TODO:move model class)
 	m_deviceContext->IASetInputLayout(m_layout.Get());
+	//set texture
+	m_deviceContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
+	m_deviceContext->PSSetShaderResources(1, 1, m_toonMap.GetAddressOf());
 	//set shader
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), NULL, 0);
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), NULL, 0);
-	//set constants
+	//set constantsbuf
 	m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 	m_deviceContext->PSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
-	m_deviceContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
-	m_deviceContext->PSSetShaderResources(1, 1, m_toonMap.GetAddressOf());
-	m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
 }
