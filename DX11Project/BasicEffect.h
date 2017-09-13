@@ -28,6 +28,5 @@ private:
 	ComPtr<ID3D11Buffer> m_constantBuffer;
 	ComPtr<ID3D11Buffer> m_constantBufferMaterial;
 	ComPtr<ID3D11InputLayout> m_layout;
-	ComPtr<ID3D11SamplerState> m_samplerState;
 	ComPtr<ID3D11ShaderResourceView> m_texture;
 };

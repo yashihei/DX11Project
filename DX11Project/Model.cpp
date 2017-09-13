@@ -30,10 +30,17 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 		throw std::runtime_error("Model uninit.");
 	}
 
+	// setsampler
+	auto samplerState = m_states->LinearWrap();
+	m_deviceContext->PSSetSamplers(0, 1, &samplerState);
+
+	// set buffers
 	unsigned int stride = sizeof(ModelVertex);
 	unsigned int offset = 0;
 	m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+	// set topology
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	m_effect->setParams(world.Transpose(), view.Transpose(), proj.Transpose(), { 0, 0, 1 }, { 1, 1, 1, 1 }, { 0.3f, 0.3f, 0.3f, 1 });
