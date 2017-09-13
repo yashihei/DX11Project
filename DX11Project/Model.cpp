@@ -68,16 +68,16 @@ void Model::createFromPmx(const std::string& filePath)
 
 	//load vtx
 	for (int i = 0; i < pmxModel.vertex_count; i++) {
-		Vector3 pos {
+		const Vector3 pos {
 			pmxModel.vertices[i].positon[0],
 			pmxModel.vertices[i].positon[1],
 			pmxModel.vertices[i].positon[2]
 		};
-		Vector2 uv {
+		const Vector2 uv {
 			pmxModel.vertices[i].uv[0],
 			pmxModel.vertices[i].uv[1]
 		};
-		Vector3 normal {
+		const Vector3 normal {
 			pmxModel.vertices[i].normal[0],
 			pmxModel.vertices[i].normal[1],
 			pmxModel.vertices[i].normal[2]
@@ -89,18 +89,18 @@ void Model::createFromPmx(const std::string& filePath)
 	for (int i = 0; i < pmxModel.index_count; i++) {
 		m_indices.push_back(pmxModel.indices[i]);
 	}
-
+	
 	//load tex
 	const auto rootDir = GetDirPath(filePath);
 	for (int i = 0; i < pmxModel.texture_count; i++) {
 		const auto dir = s2ws(rootDir) + pmxModel.textures[i];
-		auto tex = CreateShaderResourceViewFromFile(m_device, dir.c_str());
+		const auto tex = CreateShaderResourceViewFromFile(m_device, dir.c_str());
 		m_textures.push_back(tex);
 	}
 
 	//load material
 	for (int i = 0; i < pmxModel.material_count; i++) {
-		Material mat {
+		const Material mat {
 			{
 				pmxModel.materials[i].diffuse[0],
 				pmxModel.materials[i].diffuse[1],
@@ -153,8 +153,8 @@ void Model::getBoudingSphere(Vector3 * center, float * r)
 
 	// calc center pos
 	// --------------------------------------------------
-	Vector3 minPos, maxPos;
-	minPos = maxPos = m_vertices[0].pos;
+	Vector3 maxPos;
+	Vector3 minPos = maxPos = m_vertices[0].pos;
 
 	for (const auto& vertex : m_vertices) {
 		//min
