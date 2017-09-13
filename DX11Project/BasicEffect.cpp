@@ -142,4 +142,7 @@ void BasicEffect::apply()
 	//set constantsbuf
 	m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 	m_deviceContext->PSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
+	//set constantbuf(material)
+	m_deviceContext->VSSetConstantBuffers(1, 1, m_constantBufferMaterial.GetAddressOf());
+	m_deviceContext->PSSetConstantBuffers(1, 1, m_constantBufferMaterial.GetAddressOf());
 }
