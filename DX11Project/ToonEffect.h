@@ -16,7 +16,7 @@ using Microsoft::WRL::ComPtr;
 class ToonEffect {
 public:
 	ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
-	void setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor, const Vector4& ambientColor);
+	void setParams(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor, const Vector4& ambientColor);
 	void setTexture(ComPtr<ID3D11ShaderResourceView> texture) { m_texture = texture; }
 	void apply();
 private:

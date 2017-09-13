@@ -83,7 +83,7 @@ ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 	m_toonMap = CreateShaderResourceViewFromFile(m_device, L"assets/toon.png");
 }
 
-void ToonEffect::setParam(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor, const Vector4& ambientColor)
+void ToonEffect::setParams(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor, const Vector4& ambientColor)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 

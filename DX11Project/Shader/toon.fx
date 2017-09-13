@@ -55,6 +55,7 @@ float4 PS(PSInput input) : SV_TARGET
 
 	texColor = tex2d.Sample(sampleType, input.texCoord);
 	lightIntensity = saturate(dot(input.normal, -lightDir));
+	//FIXME:lightIntensity == 1.0f‚Ì‚Æ‚«wrap‚³‚ê‚Ä‚é
 	texColor2 = toonMapTex.Sample(sampleType, float2(lightIntensity, 0));
 
 	outColor = texColor * texColor2; 
