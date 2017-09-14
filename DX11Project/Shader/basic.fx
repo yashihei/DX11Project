@@ -12,17 +12,17 @@ cbuffer ObjectParams : register(b0)
 
 cbuffer LightParams : register(b1)
 {
-	float4 lightDiffuseColor;
-	float4 lightAmbientColor;
+	float4 diffuseLight;
+	float4 ambientLight;
 	float3 lightDirection;
 	float padding;
 };
 
 cbuffer MaterialParams : register(b2)
 {
-	float4 diffuseColor;
-	float4 ambientColor;
-	float4 specularColor;
+	float4 diffuseMaterial;
+	float4 ambientMaterial;
+	float4 specularMaterial;
 	float4 power;
 };
 
@@ -62,12 +62,12 @@ float4 PS(PSInput input) : SV_TARGET
 {
 	float4 texColor;
 	float lightIntensity;
-	float4 outColor = lightAmbientColor;
+	float4 outColor = ambientLight;
 
 	texColor = tex2d.Sample(sampleType, input.texCoord);
 	lightIntensity = saturate(dot(input.normal, -lightDirection));
 	if (lightIntensity > 0)
-		outColor += (lightDiffuseColor * lightIntensity);
+		outColor += (diffuseLight * lightIntensity);
 	outColor = saturate(outColor);
 	outColor = outColor * texColor;
 

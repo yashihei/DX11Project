@@ -18,16 +18,16 @@ namespace {
 	};
 
 	struct LightConstants {
-		Vector4 lightDiffuseColor;
-		Vector4 lightAmbientColor;
+		Vector4 diffuseLight;
+		Vector4 ambientLight;
 		Vector3 lightDirection;
 		float padding;
 	};
 
 	struct MaterialConstants {
-		Vector4 diffuseColor;
-		Vector4 ambientColor;
-		Vector4 specularColor;
+		Vector4 diffuseMaterial;
+		Vector4 ambientMaterial;
+		Vector4 specularMaterial;
 		Vector4 power;
 	};
 }
@@ -123,8 +123,8 @@ void BasicEffect::setLightParams(const Vector4& diffuse, const Vector4& ambient,
 	HRESULT hr = m_deviceContext->Map(m_constantBufferLight.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
 		LightConstants* data = reinterpret_cast<LightConstants*>(resource.pData);
-		data->lightDiffuseColor = diffuse;
-		data->lightAmbientColor = ambient;
+		data->diffuseLight = diffuse;
+		data->ambientLight = ambient;
 		data->lightDirection = lightDir;
 		data->padding = 0.0f;
 		m_deviceContext->Unmap(m_constantBufferLight.Get(), 0);
@@ -138,9 +138,9 @@ void BasicEffect::setMaterialParams(const Vector4& diffuse, const Vector4& ambie
 	HRESULT hr = m_deviceContext->Map(m_constantBufferMaterial.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
 		MaterialConstants* data = reinterpret_cast<MaterialConstants*>(resource.pData);
-		data->diffuseColor = diffuse;
-		data->ambientColor = ambient;
-		data->specularColor = specular;
+		data->diffuseMaterial = diffuse;
+		data->ambientMaterial = ambient;
+		data->specularMaterial = specular;
 		data->power = Vector4(power, 0, 0, 0);
 		m_deviceContext->Unmap(m_constantBufferMaterial.Get(), 0);
 	}
