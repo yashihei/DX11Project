@@ -3,20 +3,22 @@
 Texture2D tex2d : register(t0);
 SamplerState sampleType : register(s0);
 
-cbuffer Params : register(b0)
+cbuffer ObjectParams : register(b0)
 {
 	matrix world;
 	matrix view;
 	matrix proj;
+};
 
-	//light
+cbuffer LightParams : register(b1)
+{
 	float4 lightDiffuseColor;
 	float4 lightAmbientColor;
 	float3 lightDirection;
 	float padding;
 };
 
-cbuffer MaterialParams : register(b1)
+cbuffer MaterialParams : register(b2)
 {
 	float4 diffuseColor;
 	float4 ambientColor;

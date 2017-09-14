@@ -43,7 +43,8 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 	// set topology
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_effect->setParams(world.Transpose(), view.Transpose(), proj.Transpose(), { 0, 0, 1 }, { 1, 1, 1, 1 }, { 0.3f, 0.3f, 0.3f, 1 });
+	m_effect->setLightParams({ 1, 1, 1, 1 }, { 0.3f, 0.3f, 0.3f, 1 }, { 0, 0, 1 });
+	m_effect->setObjectParams(world.Transpose(), view.Transpose(), proj.Transpose());
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {
@@ -53,7 +54,7 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 		} else {
 			m_effect->setTexture(m_textures[0]);
 		}
-		m_effect->setMaterialsParams(mat.diffuse, mat.ambient, mat.specular, mat.power);
+		m_effect->setMaterialParams(mat.diffuse, mat.ambient, mat.specular, mat.power);
 		m_effect->apply();
 		m_deviceContext->DrawIndexed(mat.indexCount, countIndex, 0);
 		countIndex += mat.indexCount;
