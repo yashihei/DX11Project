@@ -28,6 +28,9 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 
 	m_alicia = std::make_shared<Model>(m_device, m_deviceContext, m_states);
 	m_alicia->createFromPmx("assets/alicia/Alicia_solid.pmx");
+
+	m_sphere = std::make_shared<Model>(m_device, m_deviceContext, m_states);
+	m_sphere->createFromPmx("assets/sphere/sphere.pmx");
 }
 
 Scene* DemoScene::update()
@@ -51,5 +54,6 @@ void DemoScene::draw()
 	const Matrix view = m_camera->getViewMat();
 	const Matrix proj = m_camera->getProjMat();
 
-	m_alicia->draw(world, view, proj);
+	//m_alicia->draw(world, view, proj);
+	m_sphere->draw(Matrix::Identity, view, proj);
 }

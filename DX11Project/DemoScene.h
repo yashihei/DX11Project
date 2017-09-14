@@ -31,7 +31,7 @@ private:
 	InputManagerPtr m_inputManager;
 	AudioManagerPtr m_audioManager;
 	CameraPtr m_camera;
-	ModelPtr m_alicia;
+	ModelPtr m_alicia, m_sphere;
 	float m_rotation;
 	boost::timer m_timer;
 };
