@@ -58,18 +58,35 @@ PSInput VS(VSInput input)
 	return output;
 }
 
+float3 LambertLighting(
+	float3 lightNormal,
+	float3 surfaceNormal,
+	float3 lightColor,
+	float3 pixelColor
+)
+{
+	// compute amount of contribution per light
+	float diffuseAmount = saturate(dot(lightNormal, surfaceNormal));
+	float3 diffuse = diffuseAmount * lightColor * pixelColor;
+	return diffuse;
+}
+
+float4 CombineRGBWithAlpha(float3 rgb, float a) 
+{ 
+	return float4(rgb.r, rgb.g, rgb.b, a); 
+}
+
 float4 PS(PSInput input) : SV_TARGET
 {
-	float4 texColor;
-	float lightIntensity;
-	float4 outColor = ambientLight;
+	float4 outColor;
 
-	texColor = tex2d.Sample(sampleType, input.texCoord);
-	lightIntensity = saturate(dot(input.normal, -lightDirection));
-	if (lightIntensity > 0)
-		outColor += (diffuseLight * lightIntensity);
-	outColor = saturate(outColor);
-	outColor = outColor * texColor;
+	float3 temp = ambientMaterial.rgb * ambientLight.rgb;
+	temp += LambertLighting(-lightDirection, input.normal, diffuseLight.rgb, diffuseMaterial.rgb);
+	temp = saturate(temp);
+
+	float3 temp2 = tex2d.Sample(sampleType, input.texCoord).rgb * temp;
+	float temp3 = tex2d.Sample(sampleType, input.texCoord).a * diffuseMaterial.a;
+	outColor = CombineRGBWithAlpha(temp2, temp3);
 
 	return outColor;
 }
