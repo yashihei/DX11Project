@@ -26,6 +26,10 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_camera->pos = Vector3(0, 0, -15);
 	m_camera->lookAt = Vector3(0, 0, 0);
 
+	//set states
+	m_deviceContext->RSSetState(m_states->CullCounterClockwise());
+	m_deviceContext->OMSetBlendState(m_states->NonPremultiplied(), nullptr, 0xFFffFFff);
+
 	m_alicia = std::make_shared<Model>(m_device, m_deviceContext, m_states);
 	m_alicia->createFromPmx("assets/alicia/Alicia_solid.pmx");
 

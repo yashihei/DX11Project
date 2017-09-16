@@ -21,12 +21,6 @@ Graphics::Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen
 
 	m_deviceContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
 
-	//TODO:オブジェクト毎に切り替えたい
-	if (!createRasterizerState())
-		throw std::runtime_error("Error Create RasterizerState.");
-	if (!createBlendState())
-		throw std::runtime_error("Error Create BlendState.");
-
 	//setting viewport
 	D3D11_VIEWPORT vp = {};
 	vp.Width = static_cast<float>(screenWidth);
@@ -140,51 +134,6 @@ bool Graphics::createDepthStencil(int screenWidth, int screenHeight)
 	hr = m_device->CreateDepthStencilView(m_depthStencilBuffer.Get(), &dsvDesc, &m_depthStencilView);
 	if (FAILED(hr))
 		return false;
-
-	return true;
-}
-
-bool Graphics::createRasterizerState()
-{
-	D3D11_RASTERIZER_DESC rasterDesc = {};
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.CullMode = D3D11_CULL_BACK;
-	rasterDesc.FrontCounterClockwise = FALSE;
-	rasterDesc.DepthBias = 0;
-	rasterDesc.SlopeScaledDepthBias = 0;
-	rasterDesc.DepthBiasClamp = 0;
-	rasterDesc.DepthClipEnable = TRUE;
-	rasterDesc.ScissorEnable = FALSE;
-	rasterDesc.MultisampleEnable = FALSE;
-	rasterDesc.AntialiasedLineEnable = FALSE;
-
-	ComPtr<ID3D11RasterizerState> rasterState;
-	HRESULT hr = m_device->CreateRasterizerState(&rasterDesc, &rasterState);
-	if (FAILED(hr))
-		return false;
-	m_deviceContext->RSSetState(rasterState.Get());
-
-	return true;
-}
-
-bool Graphics::createBlendState()
-{
-	//アルファブレンディングを適用
-	D3D11_BLEND_DESC desc = {};
-	desc.RenderTarget[0].BlendEnable = TRUE;
-	desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
-	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-	desc.RenderTarget[0].BlendOp = desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-	ComPtr<ID3D11BlendState> blendState;
-	HRESULT hr = m_device->CreateBlendState(&desc, &blendState);
-	if (FAILED(hr))
-		return false;
-
-	m_deviceContext->OMSetBlendState(blendState.Get(), nullptr, 0xFFffFFff);
 
 	return true;
 }
