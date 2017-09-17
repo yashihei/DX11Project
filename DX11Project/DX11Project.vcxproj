@@ -129,6 +129,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="BasicEffect.cpp" />
+    <ClCompile Include="OBB.cpp" />
     <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
@@ -141,14 +142,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="AliasMath.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="BasicEffect.h" />
+    <ClInclude Include="OBB.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DemoScene.h" />
     <ClInclude Include="Fwd.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LightParam.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Particle.h" />
