@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <d3d11.h>
 #include "DirectXTK/SimpleMath.h"
 
 using Vector2 = DirectX::SimpleMath::Vector2;

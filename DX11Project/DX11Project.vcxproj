@@ -142,7 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
-    <ClInclude Include="Alias.h" />
+    <ClInclude Include="AliasMath.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="BasicEffect.h" />
