@@ -128,9 +128,6 @@
     <ClInclude Include="LightParam.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
-    <ClInclude Include="AliasMath.h">
-      <Filter>Header Files\lib</Filter>
-    </ClInclude>
     <ClInclude Include="OBB.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
@@ -142,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="SpriteEffect.h">
       <Filter>Header Files\lib\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Alias.h">
+      <Filter>Header Files\lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
