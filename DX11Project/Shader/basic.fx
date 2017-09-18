@@ -29,15 +29,15 @@ cbuffer MaterialParams : register(b2)
 struct VSInput
 {
 	float4 pos : POSITION;
-	float2 texCoord : TEXCOORD0;
 	float3 normal : NORMAL;
+	float2 texCoord : TEXCOORD0;
 };
 
 struct PSInput
 {
 	float4 pos : SV_POSITION;
-	float2 texCoord : TEXCOORD0;
 	float3 normal : NORMAL;
+	float2 texCoord : TEXCOORD0;
 };
 
 PSInput VS(VSInput input)
@@ -50,10 +50,10 @@ PSInput VS(VSInput input)
 	output.pos = mul(output.pos, view);
 	output.pos = mul(output.pos, proj);
 
-	output.texCoord = input.texCoord;
-
 	output.normal = mul(input.normal, (float3x3)world);
 	output.normal = normalize(output.normal);
+
+	output.texCoord = input.texCoord;
 
 	return output;
 }

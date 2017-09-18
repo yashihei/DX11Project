@@ -78,16 +78,16 @@ void Model::createFromPmx(const std::string& filePath)
 			pmxModel.vertices[i].positon[1],
 			pmxModel.vertices[i].positon[2]
 		};
-		const Vector2 uv {
-			pmxModel.vertices[i].uv[0],
-			pmxModel.vertices[i].uv[1]
-		};
 		const Vector3 normal {
 			pmxModel.vertices[i].normal[0],
 			pmxModel.vertices[i].normal[1],
 			pmxModel.vertices[i].normal[2]
 		};
-		m_vertices.push_back({ pos, uv, normal });
+		const Vector2 uv {
+			pmxModel.vertices[i].uv[0],
+			pmxModel.vertices[i].uv[1]
+		};
+		m_vertices.emplace_back(pos, normal, uv);
 	}
 
 	//load idx
@@ -162,17 +162,17 @@ void Model::getBoudingSphere(Vector3 * center, float * r)
 	// calc center pos
 	// --------------------------------------------------
 	Vector3 maxPos;
-	Vector3 minPos = maxPos = m_vertices[0].pos;
+	Vector3 minPos = maxPos = m_vertices[0].position;
 
 	for (const auto& vertex : m_vertices) {
 		//min
-		minPos.x = std::min(minPos.x, vertex.pos.x);
-		minPos.y = std::min(minPos.y, vertex.pos.y);
-		minPos.z = std::min(minPos.z, vertex.pos.z);
+		minPos.x = std::min(minPos.x, vertex.position.x);
+		minPos.y = std::min(minPos.y, vertex.position.y);
+		minPos.z = std::min(minPos.z, vertex.position.z);
 		//max
-		maxPos.x = std::max(maxPos.x, vertex.pos.x);
-		maxPos.y = std::max(maxPos.y, vertex.pos.y);
-		maxPos.z = std::max(maxPos.z, vertex.pos.z);
+		maxPos.x = std::max(maxPos.x, vertex.position.x);
+		maxPos.y = std::max(maxPos.y, vertex.position.y);
+		maxPos.z = std::max(maxPos.z, vertex.position.z);
 	}
 
 	*center = (maxPos + minPos) / 2;
@@ -183,7 +183,7 @@ void Model::getBoudingSphere(Vector3 * center, float * r)
 
 	for (const auto& vertex : m_vertices) {
 		//right?
-		float distance = Vector3::Distance(*center, vertex.pos);
+		float distance = Vector3::Distance(*center, vertex.position);
 		maxDistance = std::max(maxDistance, distance);
 	}
 

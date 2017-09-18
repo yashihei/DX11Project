@@ -11,11 +11,14 @@
 #include <memory>
 #include <vector>
 #include "DirectXTK/SimpleMath.h"
-#include "Fwd.h"
 #include "DirectXTK/CommonStates.h"
+#include "DirectXTK/VertexTypes.h"
+#include "Fwd.h"
 
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
+
+using ModelVertex = DirectX::VertexPositionNormalTexture;
 
 class Model {
 public:
@@ -25,12 +28,6 @@ public:
 	void getBoudingSphere(Vector3* center, float* r);
 	void draw(const Matrix& world, const Matrix& view, const Matrix& proj);
 private:
-	struct ModelVertex {
-		Vector3 pos;
-		Vector2 uv;
-		Vector3 normal;
-	};
-
 	struct Material {
 		Color diffuse;
 		Color ambient;
