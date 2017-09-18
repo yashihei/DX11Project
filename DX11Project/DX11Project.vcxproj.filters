@@ -22,12 +22,15 @@
     <Filter Include="Source Files\lib">
       <UniqueIdentifier>{836d4df3-264f-4d0d-9f33-a1de1cb18488}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\lib\Effects">
+      <UniqueIdentifier>{403d6822-81dc-4cbc-8a73-ff2e43841c43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\lib\Effects">
+      <UniqueIdentifier>{384a1f1e-1def-46d7-8186-848bf55d6fa7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp">
-      <Filter>Source Files\lib</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicEffect.cpp">
       <Filter>Source Files\lib</Filter>
     </ClCompile>
     <ClCompile Include="Graphics.cpp">
@@ -45,12 +48,6 @@
     <ClCompile Include="Sprite2D.cpp">
       <Filter>Source Files\lib</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteEffect.cpp">
-      <Filter>Source Files\lib</Filter>
-    </ClCompile>
-    <ClCompile Include="ToonEffect.cpp">
-      <Filter>Source Files\lib</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,15 +60,21 @@
     <ClCompile Include="OBB.cpp">
       <Filter>Source Files\lib</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteEffect.cpp">
+      <Filter>Source Files\lib\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="ToonEffect.cpp">
+      <Filter>Source Files\lib\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicEffect.cpp">
+      <Filter>Source Files\lib\Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
     <ClInclude Include="AudioManager.h">
-      <Filter>Header Files\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="BasicEffect.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -104,12 +107,6 @@
     <ClInclude Include="Sprite2D.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteEffect.h">
-      <Filter>Header Files\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="ToonEffect.h">
-      <Filter>Header Files\lib</Filter>
-    </ClInclude>
     <ClInclude Include="Types.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
@@ -136,6 +133,15 @@
     </ClInclude>
     <ClInclude Include="OBB.h">
       <Filter>Header Files\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicEffect.h">
+      <Filter>Header Files\lib\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="ToonEffect.h">
+      <Filter>Header Files\lib\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteEffect.h">
+      <Filter>Header Files\lib\Effects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
