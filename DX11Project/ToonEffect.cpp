@@ -10,17 +10,29 @@
 #include <stdexcept>
 #include "ShaderRV.h"
 
+#pragma pack(push, 1)
 namespace {
-	struct ConstantBuffer {
+	struct ObjectConstants {
 		Matrix world;
 		Matrix view;
 		Matrix proj;
-		Vector4 diffuseColor;
-		Vector4 ambientColor;
-		Vector3 lightDir;
+	};
+
+	struct LightConstants {
+		Vector4 diffuseLight;
+		Vector4 ambientLight;
+		Vector3 lightDirection;
 		float padding;
 	};
+
+	struct MaterialConstants {
+		Vector4 diffuseMaterial;
+		Vector4 ambientMaterial;
+		Vector4 specularMaterial;
+		Vector4 power;
+	};
 }
+#pragma pack(pop)
 
 inline void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob ** blobOut)
 {
@@ -36,6 +48,19 @@ inline void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderMo
 
 	if (FAILED(hr))
 		throw std::runtime_error((char*)errorBlob->GetBufferPointer());
+}
+
+inline void createConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteSize, ID3D11Buffer ** constantBuffer)
+{
+	D3D11_BUFFER_DESC constantBufferDesc = {};
+	constantBufferDesc.ByteWidth = byteSize;
+	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	HRESULT hr = device->CreateBuffer(&constantBufferDesc, NULL, constantBuffer);
+	if (FAILED(hr))
+		throw std::runtime_error("CreateConstantBuffer Failed.");
 }
 
 ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
@@ -57,6 +82,11 @@ ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 	if (FAILED(hr))
 		throw std::runtime_error("CreatePixelShader() Failed.");
 
+	//create constant buf
+	createConstantBuffer(m_device, sizeof(ObjectConstants), &m_constantBufferObject);
+	createConstantBuffer(m_device, sizeof(LightConstants), &m_constantBufferLight);
+	createConstantBuffer(m_device, sizeof(MaterialConstants), &m_constantBufferMaterial);
+
 	//create input layout
 	const D3D11_INPUT_ELEMENT_DESC layout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -69,36 +99,52 @@ ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 	if (FAILED(hr))
 		throw std::runtime_error("CreateInputLayout() Failed.");
 
-	//create constant buf
-	D3D11_BUFFER_DESC constantBufferDesc = {};
-	constantBufferDesc.ByteWidth = sizeof(ConstantBuffer);
-	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-	hr = m_device->CreateBuffer(&constantBufferDesc, NULL, &m_constantBuffer);
-	if (FAILED(hr))
-		throw std::runtime_error("CreateConstantBuffer Failed.");
-
 	m_toonMap = CreateShaderResourceViewFromFile(m_device, L"assets/toon.png");
 }
 
-void ToonEffect::setParams(const Matrix& world, const Matrix& view, const Matrix& proj, const Vector3& lightDir, const Vector4& diffuseColor, const Vector4& ambientColor)
+void ToonEffect::setObjectParams(const Matrix& world, const Matrix& view, const Matrix& proj)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	//コンスタントバッファ書き換え
-	HRESULT hr = m_deviceContext->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	//TODO: apply時にコンスタントバッファ書き換えるように
+	HRESULT hr = m_deviceContext->Map(m_constantBufferObject.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
-		ConstantBuffer* data = reinterpret_cast<ConstantBuffer*>(resource.pData);
+		ObjectConstants* data = reinterpret_cast<ObjectConstants*>(resource.pData);
 		data->world = world;
 		data->view = view;
 		data->proj = proj;
-		data->diffuseColor = diffuseColor;
-		data->ambientColor = ambientColor;
-		data->lightDir = lightDir;
+		m_deviceContext->Unmap(m_constantBufferObject.Get(), 0);
+	}
+}
+
+void ToonEffect::setLightParams(const Vector4& diffuse, const Vector4& ambient, const Vector3& lightDir)
+{
+	D3D11_MAPPED_SUBRESOURCE resource;
+
+	HRESULT hr = m_deviceContext->Map(m_constantBufferLight.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	if (SUCCEEDED(hr)) {
+		LightConstants* data = reinterpret_cast<LightConstants*>(resource.pData);
+		data->diffuseLight = diffuse;
+		data->ambientLight = ambient;
+		data->lightDirection = lightDir;
 		data->padding = 0.0f;
-		m_deviceContext->Unmap(m_constantBuffer.Get(), 0);
+		m_deviceContext->Unmap(m_constantBufferLight.Get(), 0);
+	}
+}
+
+void ToonEffect::setMaterialParams(const Vector4& diffuse, const Vector4& ambient, const Vector4& specular, float power)
+{
+	D3D11_MAPPED_SUBRESOURCE resource;
+
+	HRESULT hr = m_deviceContext->Map(m_constantBufferMaterial.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	if (SUCCEEDED(hr)) {
+		MaterialConstants* data = reinterpret_cast<MaterialConstants*>(resource.pData);
+		data->diffuseMaterial = diffuse;
+		data->ambientMaterial = ambient;
+		data->specularMaterial = specular;
+		data->power = Vector4(power, 0, 0, 0);
+		m_deviceContext->Unmap(m_constantBufferMaterial.Get(), 0);
 	}
 }
 
@@ -112,7 +158,8 @@ void ToonEffect::apply()
 	//set shader
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), NULL, 0);
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), NULL, 0);
-	//set constantsbuf
-	m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
-	m_deviceContext->PSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
+	//set constant buffers
+	ID3D11Buffer* buffers[3] = { m_constantBufferObject.Get(), m_constantBufferLight.Get(), m_constantBufferMaterial.Get() };
+	m_deviceContext->VSSetConstantBuffers(0, 3, buffers);
+	m_deviceContext->PSSetConstantBuffers(0, 3, buffers);
 }
