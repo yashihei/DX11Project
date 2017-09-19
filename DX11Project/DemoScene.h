@@ -15,6 +15,7 @@
 #include "DirectXTK/CommonStates.h"
 #include "Scene.h"
 #include "Fwd.h"
+#include "OBB.h"
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX::SimpleMath;
@@ -33,5 +34,6 @@ private:
 	CameraPtr m_camera;
 	ModelPtr m_alicia, m_sphere;
 	float m_rotation;
+	OBB m_obbA, m_obbB;
 	boost::timer m_timer;
 };
