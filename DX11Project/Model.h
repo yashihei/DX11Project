@@ -27,7 +27,6 @@ public:
 	void createFromObj(const std::string& filePath);
 	void draw(const Matrix& world, const Matrix& view, const Matrix& proj);
 	void getBoudingSphere(Vector3* center, float* r);
-	std::vector<ModelVertex> getVertices() const { return m_vertices; }
 private:
 	struct Material {
 		Color diffuse;

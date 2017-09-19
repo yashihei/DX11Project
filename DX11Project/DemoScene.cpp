@@ -31,16 +31,10 @@ DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> de
 	m_deviceContext->OMSetBlendState(m_states->NonPremultiplied(), nullptr, 0xFFffFFff);
 
 	m_alicia = std::make_shared<Model>(m_device, m_deviceContext, m_states);
-	m_alicia->createFromPmx("assets/alicia/Alicia_blade.pmx");
+	m_alicia->createFromPmx("assets/alicia/Alicia_solid.pmx");
 
 	m_sphere = std::make_shared<Model>(m_device, m_deviceContext, m_states);
 	m_sphere->createFromPmx("assets/sphere/sphere.pmx");
-
-	//create obb
-	m_obbA.buildBoundingBox(m_alicia->getVertices());
-	m_obbB.buildBoundingBox(m_alicia->getVertices());
-	m_obbA.createBoxMesh(m_deviceContext.Get());
-	m_obbB.createBoxMesh(m_deviceContext.Get());
 }
 
 Scene* DemoScene::update()
@@ -60,29 +54,9 @@ void DemoScene::draw()
 	ImGui::SliderFloat("RotationZ", &rot.z, 0, DirectX::XM_2PI, "%.3f");
 	ImGui::End();
 
-	Color color(1, 1, 1, 0.5f);
-	if (m_obbA.intersets(m_obbB))
-	{
-		color = Color(1, 0.5, 0.5, 0.5);
-	}
-
-	Matrix world = Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z) * Matrix::CreateTranslation(-5, 0, 0);
+	const Matrix world = Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z) * Matrix::CreateTranslation(0, -15, 0);
 	const Matrix view = m_camera->getViewMat();
 	const Matrix proj = m_camera->getProjMat();
 
 	m_alicia->draw(world, view, proj);
-	m_obbA.transform(world);
-	m_obbA.draw(world, view, proj, color);
-
-	static Vector3 rot2 = {};
-	ImGui::Begin("config2");
-	ImGui::SliderFloat("RotationX", &rot2.x, 0, DirectX::XM_2PI, "%.3f");
-	ImGui::SliderFloat("RotationY", &rot2.y, 0, DirectX::XM_2PI, "%.3f");
-	ImGui::SliderFloat("RotationZ", &rot2.z, 0, DirectX::XM_2PI, "%.3f");
-	ImGui::End();
-
-	Matrix world2 = Matrix::CreateFromYawPitchRoll(rot2.y, rot2.x, rot2.z) * Matrix::CreateTranslation(5, 0, 0);
-	m_alicia->draw(world2, view, proj);
-	m_obbB.transform(world2);
-	m_obbB.draw(world2, view, proj, color);
 }
