@@ -149,6 +149,9 @@
     <ClInclude Include="Particle.h">
       <Filter>Header Files\app</Filter>
     </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Header Files\lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\basic.fx">
