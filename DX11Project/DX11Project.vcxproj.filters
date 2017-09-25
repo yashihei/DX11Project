@@ -54,9 +54,6 @@
     <ClCompile Include="Sprite2D.cpp">
       <Filter>Source Files\lib</Filter>
     </ClCompile>
-    <ClCompile Include="OBB.cpp">
-      <Filter>Source Files\lib</Filter>
-    </ClCompile>
     <ClCompile Include="SpriteEffect.cpp">
       <Filter>Source Files\lib\Effects</Filter>
     </ClCompile>
@@ -123,9 +120,6 @@
       <Filter>Header Files\lib</Filter>
     </ClInclude>
     <ClInclude Include="AliasMath.h">
-      <Filter>Header Files\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="OBB.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
     <ClInclude Include="BasicEffect.h">
