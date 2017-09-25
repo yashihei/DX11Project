@@ -28,6 +28,12 @@
     <Filter Include="Header Files\lib\Effects">
       <UniqueIdentifier>{384a1f1e-1def-46d7-8186-848bf55d6fa7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\app">
+      <UniqueIdentifier>{b8289e96-bb20-4872-b762-834ce3d345eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\app">
+      <UniqueIdentifier>{b5e585c8-bda1-4e10-84f5-1ec7fc93158f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp">
@@ -48,15 +54,6 @@
     <ClCompile Include="Sprite2D.cpp">
       <Filter>Source Files\lib</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DemoScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="App.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OBB.cpp">
       <Filter>Source Files\lib</Filter>
     </ClCompile>
@@ -68,6 +65,15 @@
     </ClCompile>
     <ClCompile Include="BasicEffect.cpp">
       <Filter>Source Files\lib\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="DemoScene.cpp">
+      <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\app</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,18 +119,6 @@
     <ClInclude Include="Utility.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DemoScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Fwd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="App.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LightParam.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
@@ -142,6 +136,18 @@
     </ClInclude>
     <ClInclude Include="SpriteEffect.h">
       <Filter>Header Files\lib\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h">
+      <Filter>Header Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="DemoScene.h">
+      <Filter>Header Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="Fwd.h">
+      <Filter>Header Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Header Files\app</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
