@@ -190,6 +190,16 @@ void Model::getBoudingSphere(Vector3 * center, float * r)
 	*r = maxDistance;
 }
 
+void Model::getBoudingSphere(DirectX::BoundingSphere& sphere)
+{
+	std::vector<Vector3> points;
+	for (const auto& vertex : m_vertices) {
+		points.push_back(vertex.position);
+	}
+
+	DirectX::BoundingSphere::CreateFromPoints(sphere, points.size(), points.data(), sizeof(Vector3));
+}
+
 void Model::createVertexBuffer()
 {
 	D3D11_BUFFER_DESC desc = {};

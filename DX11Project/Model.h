@@ -27,6 +27,7 @@ public:
 	void createFromObj(const std::string& filePath);
 	void draw(const Matrix& world, const Matrix& view, const Matrix& proj);
 	void getBoudingSphere(Vector3* center, float* r);
+	void getBoudingSphere(DirectX::BoundingSphere& sphere);
 private:
 	struct Material {
 		Color diffuse;
