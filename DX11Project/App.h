@@ -27,5 +27,5 @@ private:
 	const int m_ScreenWidth, m_ScreenHeight;
 	std::string m_appName;
 	GraphicsPtr m_graphics;
-	ScenePtr m_scene;
+	ScenePtr m_currentScene;
 };

@@ -37,7 +37,7 @@ void App::run()
 
 	try {
 		m_graphics = std::make_shared<Graphics>(m_ScreenWidth, m_ScreenHeight, m_hWnd, fullScreen);
-		m_scene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext());
+		m_currentScene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext());
 		ImGui_ImplDX11_Init(m_hWnd, m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
 
 		while (msg.message != WM_QUIT) {
@@ -59,10 +59,14 @@ void App::frame()
 {
 	ImGui_ImplDX11_NewFrame();
 
-	m_scene->update();
+	const auto nextScene = m_currentScene->update();
+	if (m_currentScene.get() != nextScene)
+	{
+		m_currentScene.reset(nextScene);
+	}
 
 	m_graphics->beginScene();
-	m_scene->draw();
+	m_currentScene->draw();
 	ImGui::Render();
 	m_graphics->endScene();
 }
