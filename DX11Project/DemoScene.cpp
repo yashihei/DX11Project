@@ -11,6 +11,7 @@
 #include "AudioManager.h"
 #include "Camera.h"
 #include "imgui/imgui.h"
+#include "Log.h"
 
 DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext), m_rotation(0)
@@ -42,21 +43,37 @@ Scene* DemoScene::update()
 	m_inputManager->update();
 	m_audioManager->update();
 
+	if (m_inputManager->isClicledButton1())
+	{
+	}
+
 	return this;
 }
 
 void DemoScene::draw()
 {
+	static bool wireFlag = false, autoRotate = true;
 	static Vector3 rot = {};
+
 	ImGui::Begin("config");
 	ImGui::SliderFloat("RotationX", &rot.x, 0, DirectX::XM_2PI, "%.3f");
 	ImGui::SliderFloat("RotationY", &rot.y, 0, DirectX::XM_2PI, "%.3f");
 	ImGui::SliderFloat("RotationZ", &rot.z, 0, DirectX::XM_2PI, "%.3f");
+	ImGui::Checkbox("Wire", &wireFlag);
+	ImGui::Checkbox("AutoRotate", &autoRotate);
 	ImGui::End();
 
 	const Matrix world = Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z) * Matrix::CreateTranslation(0, -15, 0);
 	const Matrix view = m_camera->getViewMat();
 	const Matrix proj = m_camera->getProjMat();
 
-	m_alicia->draw(world, view, proj);
+	if (wireFlag) {
+		m_deviceContext->RSSetState(m_states->Wireframe());
+		m_alicia->draw(world, view, proj);
+	} else {
+		m_deviceContext->RSSetState(m_states->CullCounterClockwise());
+		m_alicia->draw(world, view, proj);
+	}
+
+	if (autoRotate) rot.y += 0.01f;
 }
