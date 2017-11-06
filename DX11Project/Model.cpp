@@ -13,6 +13,7 @@
 #include "Utility.h"
 #include "BasicEffect.h"
 #include "ToonEffect.h"
+#include "DirectXTK/CommonStates.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "ObjLoader/tiny_obj_loader.h"
 #undef min

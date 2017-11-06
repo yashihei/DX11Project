@@ -11,7 +11,6 @@
 #include <memory>
 #include <vector>
 #include "DirectXTK/SimpleMath.h"
-#include "DirectXTK/CommonStates.h"
 #include "DirectXTK/VertexTypes.h"
 #include "Fwd.h"
 

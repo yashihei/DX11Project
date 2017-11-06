@@ -8,10 +8,13 @@
 
 #include "DemoScene.h"
 #include "Graphics.h"
+#include "InputManager.h"
+#include "AudioManager.h"
 #include "DirectXTK/Keyboard.h"
 #include "DirectXTK/Mouse.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_dx11.h"
+#include "DirectXTK/CommonStates.h"
 
 App::App() :
 	m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)),
@@ -37,7 +40,11 @@ void App::run()
 
 	try {
 		m_graphics = std::make_shared<Graphics>(m_ScreenWidth, m_ScreenHeight, m_hWnd, fullScreen);
-		m_currentScene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext());
+		m_inputManager = std::make_shared<InputManager>();
+		m_audioManager = std::make_shared<AudioManager>();
+		m_states = std::make_shared<DirectX::CommonStates>(m_graphics->getDevice().Get());
+		m_currentScene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext(), m_inputManager, m_audioManager, m_states);
+
 		ImGui_ImplDX11_Init(m_hWnd, m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
 
 		while (msg.message != WM_QUIT) {

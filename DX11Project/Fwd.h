@@ -20,6 +20,10 @@ class Camera;
 class InputManager;
 class AudioManager;
 class Player;
+namespace DirectX
+{
+	class CommonStates;
+}
 
 using BasicEffectPtr = std::shared_ptr<BasicEffect>;
 using SpriteEffectPtr = std::shared_ptr<SpriteEffect>;
@@ -32,4 +36,5 @@ using ScenePtr = std::shared_ptr<Scene>;
 using CameraPtr = std::shared_ptr<Camera>;
 using InputManagerPtr = std::shared_ptr<InputManager>;
 using AudioManagerPtr = std::shared_ptr<AudioManager>;
+using CommonStatesPtr = std::shared_ptr<DirectX::CommonStates>;
 using PlayerPtr = std::shared_ptr<Player>;

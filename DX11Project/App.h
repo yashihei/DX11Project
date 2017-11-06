@@ -27,5 +27,8 @@ private:
 	const int m_ScreenWidth, m_ScreenHeight;
 	std::string m_appName;
 	GraphicsPtr m_graphics;
+	InputManagerPtr m_inputManager;
+	AudioManagerPtr m_audioManager;
+	CommonStatesPtr m_states;
 	ScenePtr m_currentScene;
 };

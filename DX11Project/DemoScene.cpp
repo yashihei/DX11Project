@@ -11,15 +11,15 @@
 #include "AudioManager.h"
 #include "Camera.h"
 #include "imgui/imgui.h"
-#include "Log.h"
+#include "DirectXTK/CommonStates.h"
 
-DemoScene::DemoScene(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
-	m_device(device), m_deviceContext(deviceContext), m_rotation(0)
+DemoScene::DemoScene(
+	ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext,
+	InputManagerPtr inputManager, AudioManagerPtr audioManager, CommonStatesPtr states) :
+	m_device(device), m_deviceContext(deviceContext),
+	m_states(states), m_inputManager(inputManager), m_audioManager(audioManager),
+	m_rotation(0)
 {
-	m_inputManager = std::make_shared<InputManager>();
-	m_audioManager = std::make_shared<AudioManager>();
-	m_states = std::make_shared<DirectX::CommonStates>(m_device.Get());
-
 	UINT vpCount = 1;
 	D3D11_VIEWPORT vp = {};
 	m_deviceContext->RSGetViewports(&vpCount, &vp);
