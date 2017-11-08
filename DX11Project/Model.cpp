@@ -49,10 +49,10 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {
-		if (mat.diffuseTexureIndex != -1) {
-			m_effect->setTexture(m_textures[mat.diffuseTexureIndex + 1]);
+		if (!mat.textureName.empty()) {
+			m_effect->setTexture(m_textures[mat.textureName]);
 		} else {
-			m_effect->setTexture(m_textures[0]);
+			m_effect->setTexture(m_textures["nulltex"]);
 		}
 		m_effect->setMaterialParams(mat.diffuse, mat.ambient, mat.specular, mat.power);
 		m_effect->apply();
@@ -97,17 +97,20 @@ void Model::createFromPmx(const std::string& filePath)
 	
 	//load tex
 	const auto nulltex = CreateShaderResourceViewFromFile(m_device, L"assets/null.png");
-	m_textures.push_back(nulltex);
+	m_textures["nulltex"] = nulltex;
 
 	const auto rootDir = GetDirPath(filePath);
 	for (int i = 0; i < pmxModel.texture_count; i++) {
 		const auto dir = s2ws(rootDir) + pmxModel.textures[i];
 		const auto tex = CreateShaderResourceViewFromFile(m_device, dir.c_str());
-		m_textures.push_back(tex);
+		m_textures[ws2s(pmxModel.textures[i])] = tex;
 	}
 
 	//load material
 	for (int i = 0; i < pmxModel.material_count; i++) {
+		const int texIdx = pmxModel.materials[i].diffuse_texture_index;
+		const std::string texName = (texIdx != -1) ? ws2s(pmxModel.textures[texIdx]) : "";
+
 		const Material mat {
 			{
 				pmxModel.materials[i].diffuse[0],
@@ -128,7 +131,7 @@ void Model::createFromPmx(const std::string& filePath)
 				pmxModel.materials[i].specular[3],
 			},
 			pmxModel.materials[i].specularlity,
-			pmxModel.materials[i].diffuse_texture_index,
+			texName,
 			pmxModel.materials[i].index_count,
 		};
 		m_materials.push_back(mat);
@@ -192,7 +195,18 @@ void Model::createFromObj(const std::string & filePath)
 
 	//TODO:load tex
 	const auto nulltex = CreateShaderResourceViewFromFile(m_device, L"assets/null.png");
-	m_textures.push_back(nulltex);
+	m_textures["nulltex"] = nulltex;
+
+	const auto rootDir = GetDirPath(filePath);
+	for (int i = 0; i < materials.size(); i++) {
+		const auto texName = materials[i].diffuse_texname;
+		if (!texName.empty())
+		{
+			const auto dir = rootDir + texName;
+			const auto tex = CreateShaderResourceViewFromFile(m_device, s2ws(dir).c_str());
+			m_textures[texName] = tex;
+		}
+	}
 
 	//load materials
 	for (int i = 0; i < materials.size(); i++) {
@@ -216,8 +230,7 @@ void Model::createFromObj(const std::string & filePath)
 				materials[i].dissolve
 			},
 			materials[i].shininess,
-			//TODO:テクスチャ対応
-			-1,
+			materials[i].diffuse_texname,
 			indexCount[i],
 		};
 		m_materials.push_back(mat);

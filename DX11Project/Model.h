@@ -13,6 +13,7 @@
 #include "DirectXTK/SimpleMath.h"
 #include "DirectXTK/VertexTypes.h"
 #include "Fwd.h"
+#include <unordered_map>
 
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
@@ -33,7 +34,7 @@ private:
 		Color ambient;
 		Color specular;
 		float power;
-		int diffuseTexureIndex;//and... sphereTexureIndex, toonTexureIndex;
+		std::string textureName;
 		int indexCount;
 	};
 
@@ -47,7 +48,7 @@ private:
 
 	std::vector<ModelVertex> m_vertices;
 	std::vector<unsigned long> m_indices;
-	std::vector<ComPtr<ID3D11ShaderResourceView>> m_textures;
+	std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_textures;
 	std::vector<Material> m_materials;
 
 	BasicEffectPtr m_effect;
