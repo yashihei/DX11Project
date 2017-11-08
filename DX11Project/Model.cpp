@@ -49,7 +49,6 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 
 	int countIndex = 0;
 	for (const auto& mat : m_materials) {
-		//マテリアルにテクスチャが設定されて無ければ、nulltexを貼る
 		if (mat.diffuseTexureIndex != -1) {
 			m_effect->setTexture(m_textures[mat.diffuseTexureIndex + 1]);
 		} else {
@@ -151,7 +150,81 @@ void Model::createFromObj(const std::string & filePath)
 		throw std::runtime_error(filePath + " Load Failed.");
 	}
 
-	//TODO:ローダー実装
+	std::vector<int> indexCount;
+	indexCount.resize(materials.size());
+
+	for (int s = 0; s < shapes.size(); s++) {
+		int indexOffset = 0;
+		for (int f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+			//loop face
+			const int fv = shapes[s].mesh.num_face_vertices[f];
+			for (int v = 0; v < fv; v++) {
+				const auto idx = shapes[s].mesh.indices[indexOffset + v];
+
+				Vector3 pos = {};
+				pos.x = attrib.vertices[3 * idx.vertex_index + 0];
+				pos.y = attrib.vertices[3 * idx.vertex_index + 1];
+				pos.z = attrib.vertices[3 * idx.vertex_index + 2];
+
+				Vector3 normal = {};
+				if (attrib.normals.size() > 0) {
+					normal.x = attrib.normals[3 * idx.normal_index + 0];
+					normal.y = attrib.normals[3 * idx.normal_index + 1];
+					normal.z = attrib.normals[3 * idx.normal_index + 2];
+				} else {
+					//TODO: calc normal
+				}
+
+				Vector2 texCoord = {};
+				if (attrib.texcoords.size() > 0) {
+					texCoord.x = attrib.texcoords[2 * idx.texcoord_index + 0];
+					texCoord.y = attrib.texcoords[2 * idx.texcoord_index + 1];
+				}
+
+				m_vertices.emplace_back(pos, normal, texCoord);
+				m_indices.push_back(indexOffset + v);
+			}
+			indexOffset += fv;
+
+			indexCount[shapes[s].mesh.material_ids[f]] += fv;
+		}
+	}
+
+	//TODO:load tex
+	const auto nulltex = CreateShaderResourceViewFromFile(m_device, L"assets/null.png");
+	m_textures.push_back(nulltex);
+
+	//load materials
+	for (int i = 0; i < materials.size(); i++) {
+		const Material mat {
+			{
+				materials[i].diffuse[0],
+				materials[i].diffuse[1],
+				materials[i].diffuse[2],
+				materials[i].dissolve
+			},
+			{
+				materials[i].ambient[0],
+				materials[i].ambient[1],
+				materials[i].ambient[2],
+				materials[i].dissolve
+			},
+			{
+				materials[i].specular[0],
+				materials[i].specular[1],
+				materials[i].specular[2],
+				materials[i].dissolve
+			},
+			materials[i].shininess,
+			//TODO:テクスチャ対応
+			-1,
+			indexCount[i],
+		};
+		m_materials.push_back(mat);
+	}
+
+	createVertexBuffer();
+	createIndexBuffer();
 }
 
 void Model::getBoudingSphere(Vector3 * center, float * r)
