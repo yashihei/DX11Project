@@ -9,6 +9,7 @@
 #include <memory>
 #include <list>
 #include <functional>
+#include <algorithm>
 
 class Actor {
 public:
