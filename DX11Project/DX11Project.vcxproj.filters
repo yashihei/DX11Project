@@ -48,9 +48,6 @@
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\lib</Filter>
     </ClCompile>
-    <ClCompile Include="MMD\Pmx.cpp">
-      <Filter>Source Files\lib</Filter>
-    </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>Source Files\lib</Filter>
     </ClCompile>
