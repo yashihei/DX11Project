@@ -60,10 +60,4 @@ void DemoScene::draw()
 	m_font->DrawString(m_sprite.get(), L"DEMOPLAY", Vector2::Zero, DirectX::Colors::White, 0, Vector2::Zero, 0.5f);
 	m_sprite->End();
 	m_deviceContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
-
-	const Matrix world = Matrix::CreateScale(1.0f) * Matrix::CreateFromYawPitchRoll(y, y, 0);
-	const Matrix view = m_camera->getViewMat();
-	const Matrix proj = m_camera->getProjMat();
-
-	m_model->draw(world, view, proj);
 }

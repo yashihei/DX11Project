@@ -34,6 +34,9 @@
     <Filter Include="Header Files\app">
       <UniqueIdentifier>{b5e585c8-bda1-4e10-84f5-1ec7fc93158f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\app\actor">
+      <UniqueIdentifier>{0af75107-62a1-43d3-ad69-c7df5122f7e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp">
@@ -137,14 +140,26 @@
     <ClInclude Include="DemoScene.h">
       <Filter>Header Files\app</Filter>
     </ClInclude>
-    <ClInclude Include="Fwd.h">
-      <Filter>Header Files\app</Filter>
-    </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Header Files\app</Filter>
-    </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>Header Files\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\app\actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\app\actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Header Files\app\actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Fwd.h">
+      <Filter>Header Files\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Shot.h">
+      <Filter>Header Files\app\actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>Header Files\app\actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

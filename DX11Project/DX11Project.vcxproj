@@ -147,6 +147,7 @@
     <ClInclude Include="BasicEffect.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DemoScene.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fwd.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="InputManager.h" />
@@ -154,9 +155,12 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="ShaderRV.h" />
+    <ClInclude Include="Shot.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprite2D.h" />
