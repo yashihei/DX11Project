@@ -31,5 +31,7 @@ private:
 	AudioManagerPtr m_audioManager;
 	CameraPtr m_camera;
 	ModelPtr m_model;
+	SpriteBatchPtr m_sprite;
+	SpriteFontPtr m_font;
 	boost::timer m_timer;
 };

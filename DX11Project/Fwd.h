@@ -19,10 +19,12 @@ class Scene;
 class Camera;
 class InputManager;
 class AudioManager;
-class Player;
+
 namespace DirectX
 {
 	class CommonStates;
+	class SpriteFont;
+	class SpriteBatch;
 }
 
 using BasicEffectPtr = std::shared_ptr<BasicEffect>;
@@ -37,4 +39,5 @@ using CameraPtr = std::shared_ptr<Camera>;
 using InputManagerPtr = std::shared_ptr<InputManager>;
 using AudioManagerPtr = std::shared_ptr<AudioManager>;
 using CommonStatesPtr = std::shared_ptr<DirectX::CommonStates>;
-using PlayerPtr = std::shared_ptr<Player>;
+using SpriteFontPtr = std::shared_ptr<DirectX::SpriteFont>;
+using SpriteBatchPtr = std::shared_ptr<DirectX::SpriteBatch>;

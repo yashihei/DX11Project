@@ -12,6 +12,8 @@
 #include "Camera.h"
 #include "imgui/imgui.h"
 #include "DirectXTK/CommonStates.h"
+#include "DirectXTK/SpriteBatch.h"
+#include "DirectXTK/SpriteFont.h"
 
 DemoScene::DemoScene(
 	ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext,
@@ -31,8 +33,10 @@ DemoScene::DemoScene(
 	m_deviceContext->OMSetBlendState(m_states->NonPremultiplied(), nullptr, 0xFFffFFff);
 
 	m_model = std::make_shared<Model>(m_device, m_deviceContext, m_states);
-	//m_model->createFromPmx("assets/alicia/Alicia_solid.pmx");
-	m_model->createFromObj("assets/ball/ball3.obj");
+	m_model->createFromObj("assets/ball/player.obj");
+
+	m_sprite = std::make_shared<DirectX::SpriteBatch>(m_deviceContext.Get());
+	m_font = std::make_shared<DirectX::SpriteFont>(m_device.Get(), L"assets/orbitron.spritefont");
 }
 
 Scene* DemoScene::update()
@@ -50,9 +54,14 @@ Scene* DemoScene::update()
 void DemoScene::draw()
 {
 	static float y = 0.f;
-	y += 0.1f;
+	y += 0.01f;
 
-	const Matrix world = Matrix::CreateFromYawPitchRoll(y, 0, 0);
+	m_sprite->Begin();
+	m_font->DrawString(m_sprite.get(), L"DEMOPLAY", Vector2::Zero, DirectX::Colors::White, 0, Vector2::Zero, 0.5f);
+	m_sprite->End();
+	m_deviceContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
+
+	const Matrix world = Matrix::CreateScale(1.0f) * Matrix::CreateFromYawPitchRoll(y, y, 0);
 	const Matrix view = m_camera->getViewMat();
 	const Matrix proj = m_camera->getProjMat();
 
