@@ -26,8 +26,6 @@ public:
 	void createFromPmx(const std::string& filePath);
 	void createFromObj(const std::string& filePath);
 	void draw(const Matrix& world, const Matrix& view, const Matrix& proj);
-	void getBoudingSphere(Vector3* center, float* r);
-	void getBoudingSphere(DirectX::BoundingSphere& sphere);
 private:
 	struct Material {
 		Color diffuse;
@@ -38,19 +36,17 @@ private:
 		int indexCount;
 	};
 
-	void createVertexBuffer();
-	void createIndexBuffer();
+	void createVertexBuffer(const std::vector<ModelVertex>& vertices);
+	void createIndexBuffer(const std::vector<unsigned long>& indices);
 
 	ComPtr<ID3D11Device> m_device;
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
+	CommonStatesPtr m_states;
+
 	ComPtr<ID3D11Buffer> m_vertexBuffer;
 	ComPtr<ID3D11Buffer> m_indexBuffer;
-
-	std::vector<ModelVertex> m_vertices;
-	std::vector<unsigned long> m_indices;
-	std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_textures;
 	std::vector<Material> m_materials;
-
+	std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_textures;
+	DirectX::BoundingSphere m_boundingSphere;
 	BasicEffectPtr m_effect;
-	CommonStatesPtr m_states;
 };

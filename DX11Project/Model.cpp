@@ -19,6 +19,16 @@
 #undef min
 #undef max
 
+void GetBoudingSphere(DirectX::BoundingSphere& sphere, const std::vector<ModelVertex>& vertices)
+{
+	std::vector<Vector3> points;
+	for (const auto& vertex : vertices) {
+		points.push_back(vertex.position);
+	}
+
+	DirectX::BoundingSphere::CreateFromPoints(sphere, points.size(), points.data(), sizeof(Vector3));
+}
+
 Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states) :
 	m_device(device), m_deviceContext(deviceContext), m_states(states)
 {
@@ -27,10 +37,6 @@ Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCont
 
 void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 {
-	if (m_vertices.size() == 0) {
-		throw std::runtime_error("Model uninit.");
-	}
-
 	// setsampler
 	auto samplerState = m_states->LinearWrap();
 	m_deviceContext->PSSetSamplers(0, 1, &samplerState);
@@ -44,7 +50,7 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 	// set topology
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_effect->setLightParams({ 1, 1, 1, 1 }, { 0.3f, 0.3f, 0.3f, 1 }, { 0, 0, 1 });
+	m_effect->setLightParams({ 1, 1, 1, 1 }, { 0.3f, 0.3f, 0.3f, 1 }, { 0, -1, 0 });
 	m_effect->setObjectParams(world.Transpose(), view.Transpose(), proj.Transpose());
 
 	int countIndex = 0;
@@ -63,6 +69,9 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 
 void Model::createFromPmx(const std::string& filePath)
 {
+	std::vector<ModelVertex> vertices;
+	std::vector<unsigned long> indices;
+
 	pmx::PmxModel pmxModel;
 	std::filebuf fb;
 	if (!fb.open(filePath, std::ios::in | std::ios::binary)) {
@@ -87,12 +96,12 @@ void Model::createFromPmx(const std::string& filePath)
 			pmxModel.vertices[i].uv[0],
 			pmxModel.vertices[i].uv[1]
 		};
-		m_vertices.emplace_back(pos, normal, uv);
+		vertices.emplace_back(pos, normal, uv);
 	}
 
 	//load idx
 	for (int i = 0; i < pmxModel.index_count; i++) {
-		m_indices.push_back(pmxModel.indices[i]);
+		indices.push_back(pmxModel.indices[i]);
 	}
 	
 	//load tex
@@ -137,12 +146,16 @@ void Model::createFromPmx(const std::string& filePath)
 		m_materials.push_back(mat);
 	}
 
-	createVertexBuffer();
-	createIndexBuffer();
+	GetBoudingSphere(m_boundingSphere, vertices);
+	createVertexBuffer(vertices);
+	createIndexBuffer(indices);
 }
 
 void Model::createFromObj(const std::string & filePath)
 {
+	std::vector<ModelVertex> vertices;
+	std::vector<unsigned long> indices;
+
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
@@ -184,8 +197,8 @@ void Model::createFromObj(const std::string & filePath)
 					texCoord.y = attrib.texcoords[2 * idx.texcoord_index + 1];
 				}
 
-				m_vertices.emplace_back(pos, normal, texCoord);
-				m_indices.push_back(indexOffset + v);
+				vertices.emplace_back(pos, normal, texCoord);
+				indices.push_back(indexOffset + v);
 			}
 			indexOffset += fv;
 
@@ -236,83 +249,37 @@ void Model::createFromObj(const std::string & filePath)
 		m_materials.push_back(mat);
 	}
 
-	createVertexBuffer();
-	createIndexBuffer();
+	GetBoudingSphere(m_boundingSphere, vertices);
+	createVertexBuffer(vertices);
+	createIndexBuffer(indices);
 }
 
-void Model::getBoudingSphere(Vector3 * center, float * r)
-{
-	if (m_vertices.size() == 0) {
-		throw std::runtime_error("Model uninit.");
-	}
-
-	// calc center pos
-	// --------------------------------------------------
-	Vector3 maxPos;
-	Vector3 minPos = maxPos = m_vertices[0].position;
-
-	for (const auto& vertex : m_vertices) {
-		//min
-		minPos.x = std::min(minPos.x, vertex.position.x);
-		minPos.y = std::min(minPos.y, vertex.position.y);
-		minPos.z = std::min(minPos.z, vertex.position.z);
-		//max
-		maxPos.x = std::max(maxPos.x, vertex.position.x);
-		maxPos.y = std::max(maxPos.y, vertex.position.y);
-		maxPos.z = std::max(maxPos.z, vertex.position.z);
-	}
-
-	*center = (maxPos + minPos) / 2;
-
-	// calc radius
-	// --------------------------------------------------
-	float maxDistance = 0;
-
-	for (const auto& vertex : m_vertices) {
-		//right?
-		float distance = Vector3::Distance(*center, vertex.position);
-		maxDistance = std::max(maxDistance, distance);
-	}
-
-	*r = maxDistance;
-}
-
-void Model::getBoudingSphere(DirectX::BoundingSphere& sphere)
-{
-	std::vector<Vector3> points;
-	for (const auto& vertex : m_vertices) {
-		points.push_back(vertex.position);
-	}
-
-	DirectX::BoundingSphere::CreateFromPoints(sphere, points.size(), points.data(), sizeof(Vector3));
-}
-
-void Model::createVertexBuffer()
+void Model::createVertexBuffer(const std::vector<ModelVertex>& vertices)
 {
 	D3D11_BUFFER_DESC desc = {};
-	desc.ByteWidth = sizeof(ModelVertex) * m_vertices.size();
+	desc.ByteWidth = sizeof(ModelVertex) * vertices.size();
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	desc.CPUAccessFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA resource = {};
-	resource.pSysMem = m_vertices.data();
+	resource.pSysMem = vertices.data();
 
 	HRESULT hr = m_device->CreateBuffer(&desc, &resource, &m_vertexBuffer);
 	if (FAILED(hr))
 		throw std::runtime_error("CreateVertexBuffer Failed.");
 }
 
-void Model::createIndexBuffer()
+void Model::createIndexBuffer(const std::vector<unsigned long>& indices)
 {
 	D3D11_BUFFER_DESC desc = {};
-	desc.ByteWidth = sizeof(unsigned long) * m_indices.size();
+	desc.ByteWidth = sizeof(unsigned long) * indices.size();
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	desc.CPUAccessFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA resource = {};
-	resource.pSysMem = m_indices.data();
+	resource.pSysMem = indices.data();
 
 	HRESULT hr = m_device->CreateBuffer(&desc, &resource, &m_indexBuffer);
 	if (FAILED(hr))
