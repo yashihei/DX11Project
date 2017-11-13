@@ -11,5 +11,6 @@
 class Shot : public Actor
 {
 public:
-	
+	Shot() {}
+private:
 };

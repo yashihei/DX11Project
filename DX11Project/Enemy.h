@@ -11,4 +11,7 @@
 class Enemy : public Actor
 {
 public:
+	Enemy()
+	{
+	}
 };

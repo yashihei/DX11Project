@@ -25,8 +25,9 @@ DemoScene::DemoScene(
 	D3D11_VIEWPORT vp = {};
 	m_deviceContext->RSGetViewports(&vpCount, &vp);
 	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, vp.Width / vp.Height);
-	m_camera->pos = Vector3(0, 0, -15);
+	m_camera->pos = Vector3(0, 30, 0);
 	m_camera->lookAt = Vector3(0, 0, 0);
+	m_camera->up = Vector3::Backward;
 
 	//set states
 	m_deviceContext->RSSetState(m_states->CullCounterClockwise());
@@ -37,6 +38,8 @@ DemoScene::DemoScene(
 
 	m_sprite = std::make_shared<DirectX::SpriteBatch>(m_deviceContext.Get());
 	m_font = std::make_shared<DirectX::SpriteFont>(m_device.Get(), L"assets/orbitron.spritefont");
+
+	m_player = std::make_shared<Player>(m_inputManager, m_model, m_camera);
 }
 
 Scene* DemoScene::update()
@@ -48,16 +51,17 @@ Scene* DemoScene::update()
 	{
 	}
 
+	m_player->update();
+
 	return this;
 }
 
 void DemoScene::draw()
 {
-	static float y = 0.f;
-	y += 0.01f;
-
 	m_sprite->Begin();
 	m_font->DrawString(m_sprite.get(), L"DEMOPLAY", Vector2::Zero, DirectX::Colors::White, 0, Vector2::Zero, 0.5f);
 	m_sprite->End();
 	m_deviceContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
+
+	m_player->draw();
 }

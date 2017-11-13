@@ -12,6 +12,7 @@
 #include "DirectXTK/SimpleMath.h"
 #include "Scene.h"
 #include "Fwd.h"
+#include "Player.h"
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX::SimpleMath;
@@ -34,4 +35,5 @@ private:
 	SpriteBatchPtr m_sprite;
 	SpriteFontPtr m_font;
 	boost::timer m_timer;
+	PlayerPtr m_player;
 };
