@@ -6,18 +6,58 @@
 
 #include "Model.h"
 
-#include <algorithm>
-#include <stdexcept>
-#include "MMD/Pmx.h"
 #include "ShaderRV.h"
-#include "Utility.h"
 #include "BasicEffect.h"
-#include "ToonEffect.h"
+#include "Utility.h"
 #include "DirectXTK/CommonStates.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "ObjLoader/tiny_obj_loader.h"
-#undef min
-#undef max
+
+Mesh::Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std::vector<unsigned long>& indices, int materialID) :
+	m_indexCount(indices.size()), m_materialID(materialID)
+{
+	//Create VertexBuffer
+	{
+		D3D11_BUFFER_DESC desc = {};
+		desc.ByteWidth = sizeof(ModelVertex) * vertices.size();
+		desc.Usage = D3D11_USAGE_DEFAULT;
+		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		desc.CPUAccessFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA resource = {};
+		resource.pSysMem = vertices.data();
+
+		HRESULT hr = device->CreateBuffer(&desc, &resource, &m_vertexBuffer);
+		if (FAILED(hr))
+			throw std::runtime_error("CreateVertexBuffer Failed.");
+	}
+
+	//Create IndexBuffer
+	{
+		D3D11_BUFFER_DESC desc = {};
+		desc.ByteWidth = sizeof(unsigned long) * indices.size();
+		desc.Usage = D3D11_USAGE_DEFAULT;
+		desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		desc.CPUAccessFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA resource = {};
+		resource.pSysMem = indices.data();
+
+		HRESULT hr = device->CreateBuffer(&desc, &resource, &m_indexBuffer);
+		if (FAILED(hr))
+			throw std::runtime_error("CreateIndexBuffer Failed.");
+	}
+}
+
+void Mesh::draw(ComPtr<ID3D11DeviceContext> deviceContext)
+{
+	unsigned int stride = sizeof(ModelVertex);
+	unsigned int offset = 0;
+	deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
+	deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	deviceContext->DrawIndexed(m_indexCount, 0, 0);
+}
 
 void GetBoudingSphere(DirectX::BoundingSphere& sphere, const std::vector<ModelVertex>& vertices)
 {
@@ -35,144 +75,38 @@ Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCont
 	m_effect = std::make_shared<BasicEffect>(m_device, m_deviceContext);
 }
 
-void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
+void Model::createFromObj(const std::string& filePath)
 {
-	// setsampler
-	auto samplerState = m_states->LinearWrap();
-	m_deviceContext->PSSetSamplers(0, 1, &samplerState);
-
-	// set buffers
-	unsigned int stride = sizeof(ModelVertex);
-	unsigned int offset = 0;
-	m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
-	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-
-	// set topology
-	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	m_effect->setLightParams({ 1, 1, 1, 1 }, { 0.3f, 0.3f, 0.3f, 1 }, { 0, -1, 0 });
-	m_effect->setObjectParams(world.Transpose(), view.Transpose(), proj.Transpose());
-
-	int countIndex = 0;
-	for (const auto& mat : m_materials) {
-		if (!mat.textureName.empty()) {
-			m_effect->setTexture(m_textures[mat.textureName]);
-		} else {
-			m_effect->setTexture(m_textures["nulltex"]);
-		}
-		m_effect->setMaterialParams(mat.diffuse, mat.ambient, mat.specular, mat.power);
-		m_effect->apply();
-		m_deviceContext->DrawIndexed(mat.indexCount, countIndex, 0);
-		countIndex += mat.indexCount;
-	}
-}
-
-void Model::createFromPmx(const std::string& filePath)
-{
-	std::vector<ModelVertex> vertices;
-	std::vector<unsigned long> indices;
-
-	pmx::PmxModel pmxModel;
-	std::filebuf fb;
-	if (!fb.open(filePath, std::ios::in | std::ios::binary)) {
-		throw std::runtime_error(filePath + " Load Failed.");
-	}
-	std::istream is(&fb);
-	pmxModel.Read(&is);
-
-	//load vtx
-	for (int i = 0; i < pmxModel.vertex_count; i++) {
-		const Vector3 pos {
-			pmxModel.vertices[i].positon[0],
-			pmxModel.vertices[i].positon[1],
-			pmxModel.vertices[i].positon[2]
-		};
-		const Vector3 normal {
-			pmxModel.vertices[i].normal[0],
-			pmxModel.vertices[i].normal[1],
-			pmxModel.vertices[i].normal[2]
-		};
-		const Vector2 uv {
-			pmxModel.vertices[i].uv[0],
-			pmxModel.vertices[i].uv[1]
-		};
-		vertices.emplace_back(pos, normal, uv);
-	}
-
-	//load idx
-	for (int i = 0; i < pmxModel.index_count; i++) {
-		indices.push_back(pmxModel.indices[i]);
-	}
-	
-	//load tex
-	const auto nulltex = CreateShaderResourceViewFromFile(m_device, L"assets/null.png");
-	m_textures["nulltex"] = nulltex;
-
-	const auto rootDir = GetDirPath(filePath);
-	for (int i = 0; i < pmxModel.texture_count; i++) {
-		const auto dir = s2ws(rootDir) + pmxModel.textures[i];
-		const auto tex = CreateShaderResourceViewFromFile(m_device, dir.c_str());
-		m_textures[ws2s(pmxModel.textures[i])] = tex;
-	}
-
-	//load material
-	for (int i = 0; i < pmxModel.material_count; i++) {
-		const int texIdx = pmxModel.materials[i].diffuse_texture_index;
-		const std::string texName = (texIdx != -1) ? ws2s(pmxModel.textures[texIdx]) : "";
-
-		const Material mat {
-			{
-				pmxModel.materials[i].diffuse[0],
-				pmxModel.materials[i].diffuse[1],
-				pmxModel.materials[i].diffuse[2],
-				pmxModel.materials[i].diffuse[3]
-			},
-			{
-				pmxModel.materials[i].ambient[0],
-				pmxModel.materials[i].ambient[1],
-				pmxModel.materials[i].ambient[2],
-				pmxModel.materials[i].ambient[3],
-			},
-			{
-				pmxModel.materials[i].specular[0],
-				pmxModel.materials[i].specular[1],
-				pmxModel.materials[i].specular[2],
-				pmxModel.materials[i].specular[3],
-			},
-			pmxModel.materials[i].specularlity,
-			texName,
-			pmxModel.materials[i].index_count,
-		};
-		m_materials.push_back(mat);
-	}
-
-	GetBoudingSphere(m_boundingSphere, vertices);
-	createVertexBuffer(vertices);
-	createIndexBuffer(indices);
-}
-
-void Model::createFromObj(const std::string & filePath)
-{
-	std::vector<ModelVertex> vertices;
-	std::vector<unsigned long> indices;
-
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
-
+	
 	std::string err;
 	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filePath.c_str(), GetDirPath(filePath).c_str());
 	if (!err.empty()) {
 		throw std::runtime_error(filePath + " Load Failed.");
 	}
 
-	std::vector<int> indexCount;
-	indexCount.resize(materials.size());
-
+	//Loop over shapes (g or o)
 	for (int s = 0; s < shapes.size(); s++) {
-		int indexOffset = 0;
+		std::vector<ModelVertex> vertices;
+		std::vector<unsigned long> indices;
+		int materialID = shapes[s].mesh.material_ids[0];
+		int indexOffset = 0, indexCount = 0;
+
+		//Loop over faces
 		for (int f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-			//loop face
+			//マテリアルが異なる場合meshを分割する
+			if (materialID != shapes[s].mesh.material_ids[f]) {
+				auto mesh = std::make_shared<Mesh>(m_device, vertices, indices, materialID);
+				m_meshes.push_back(mesh);
+				//reset
+				vertices.clear();
+				indices.clear();
+				indexCount = 0;
+			}
+
+			//Loop over vertices in the
 			const int fv = shapes[s].mesh.num_face_vertices[f];
 			for (int v = 0; v < fv; v++) {
 				const auto idx = shapes[s].mesh.indices[indexOffset + v];
@@ -197,16 +131,25 @@ void Model::createFromObj(const std::string & filePath)
 					texCoord.y = attrib.texcoords[2 * idx.texcoord_index + 1];
 				}
 
+				//add vertex
 				vertices.emplace_back(pos, normal, texCoord);
-				indices.push_back(indexOffset + v);
+				//add index
+				indices.push_back(indexCount + v);
 			}
-			indexOffset += fv;
 
-			indexCount[shapes[s].mesh.material_ids[f]] += fv;
+			materialID = shapes[s].mesh.material_ids[f];
+			indexOffset += fv;
+			indexCount += fv;
 		}
+
+		//グループ毎にメッシュを作る
+		auto mesh = std::make_shared<Mesh>(m_device, vertices, indices, materialID);
+		m_meshes.push_back(mesh);
+
+		//TODO:Build BoundingSphere
 	}
 
-	//TODO:load tex
+	//Load texures
 	const auto nulltex = CreateShaderResourceViewFromFile(m_device, L"assets/null.png");
 	m_textures["nulltex"] = nulltex;
 
@@ -221,7 +164,7 @@ void Model::createFromObj(const std::string & filePath)
 		}
 	}
 
-	//load materials
+	//Load material
 	for (int i = 0; i < materials.size(); i++) {
 		const Material mat {
 			{
@@ -244,44 +187,30 @@ void Model::createFromObj(const std::string & filePath)
 			},
 			materials[i].shininess,
 			materials[i].diffuse_texname,
-			indexCount[i],
 		};
 		m_materials.push_back(mat);
 	}
-
-	GetBoudingSphere(m_boundingSphere, vertices);
-	createVertexBuffer(vertices);
-	createIndexBuffer(indices);
 }
 
-void Model::createVertexBuffer(const std::vector<ModelVertex>& vertices)
+void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 {
-	D3D11_BUFFER_DESC desc = {};
-	desc.ByteWidth = sizeof(ModelVertex) * vertices.size();
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	desc.CPUAccessFlags = 0;
+	auto samplerState = m_states->LinearWrap();
+	m_deviceContext->PSSetSamplers(0, 1, &samplerState);
 
-	D3D11_SUBRESOURCE_DATA resource = {};
-	resource.pSysMem = vertices.data();
+	m_effect->setLightParams({ 1, 1, 1, 1 }, { 0.3f, 0.3f, 0.3f, 1 }, { 0, -1, 0 });
+	m_effect->setObjectParams(world.Transpose(), view.Transpose(), proj.Transpose());
 
-	HRESULT hr = m_device->CreateBuffer(&desc, &resource, &m_vertexBuffer);
-	if (FAILED(hr))
-		throw std::runtime_error("CreateVertexBuffer Failed.");
-}
+	for (auto& mesh : m_meshes) {
+		auto mat = m_materials[mesh->getMatID()];
 
-void Model::createIndexBuffer(const std::vector<unsigned long>& indices)
-{
-	D3D11_BUFFER_DESC desc = {};
-	desc.ByteWidth = sizeof(unsigned long) * indices.size();
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	desc.CPUAccessFlags = 0;
+		if (!mat.textureName.empty())
+			m_effect->setTexture(m_textures[mat.textureName]);
+		else
+			m_effect->setTexture(m_textures["nulltex"]);
+		
+		m_effect->setMaterialParams(mat.diffuse, mat.ambient, mat.specular, mat.power);
+		m_effect->apply();
 
-	D3D11_SUBRESOURCE_DATA resource = {};
-	resource.pSysMem = indices.data();
-
-	HRESULT hr = m_device->CreateBuffer(&desc, &resource, &m_indexBuffer);
-	if (FAILED(hr))
-		throw std::runtime_error("CreateIndexBuffer Failed.");
+		mesh->draw(m_deviceContext);
+	}
 }
