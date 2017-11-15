@@ -43,13 +43,15 @@ private:
 class Model
 {
 public:
-	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states);
+	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states, CameraPtr camera);
 	void createFromObj(const std::string& filePath);
+	void draw(const Vector3& pos, const Vector3& rot = Vector3::Zero, const Vector3& scale = Vector3::One);
 	void draw(const Matrix& world, const Matrix& view, const Matrix& proj);
 private:
 	ComPtr<ID3D11Device> m_device;
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	CommonStatesPtr m_states;
+	CameraPtr m_camera;
 	std::vector<std::shared_ptr<Mesh>> m_meshes;
 	std::vector<Material> m_materials;
 	std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_textures;

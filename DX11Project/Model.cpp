@@ -8,6 +8,7 @@
 
 #include "ShaderRV.h"
 #include "BasicEffect.h"
+#include "Camera.h"
 #include "UtilStr.h"
 #include "DirectXTK/CommonStates.h"
 #define TINYOBJLOADER_IMPLEMENTATION
@@ -59,8 +60,8 @@ void Mesh::draw(ComPtr<ID3D11DeviceContext> deviceContext)
 	deviceContext->DrawIndexed(m_indexCount, 0, 0);
 }
 
-Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states) :
-	m_device(device), m_deviceContext(deviceContext), m_states(states)
+Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states, CameraPtr camera) :
+	m_device(device), m_deviceContext(deviceContext), m_states(states), m_camera(camera)
 {
 	m_effect = std::make_shared<BasicEffect>(m_device, m_deviceContext);
 }
@@ -184,6 +185,14 @@ void Model::createFromObj(const std::string& filePath)
 		};
 		m_materials.push_back(mat);
 	}
+}
+
+void Model::draw(const Vector3& pos, const Vector3& rot, const Vector3& scale)
+{
+	const Matrix world = Matrix::CreateScale(scale) * Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z) * Matrix::CreateTranslation(pos);
+	const Matrix view = m_camera->getViewMat();
+	const Matrix proj = m_camera->getProjMat();
+	draw(world, view, proj);
 }
 
 void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)

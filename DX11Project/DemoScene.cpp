@@ -33,13 +33,13 @@ DemoScene::DemoScene(
 	m_deviceContext->RSSetState(m_states->CullCounterClockwise());
 	m_deviceContext->OMSetBlendState(m_states->NonPremultiplied(), nullptr, 0xFFffFFff);
 
-	m_model = std::make_shared<Model>(m_device, m_deviceContext, m_states);
-	m_model->createFromObj("assets/ball/player.obj");
+	m_model = std::make_shared<Model>(m_device, m_deviceContext, m_states, m_camera);
+	m_model->createFromObj("assets/actors/player.obj");
 
 	m_sprite = std::make_shared<DirectX::SpriteBatch>(m_deviceContext.Get());
 	m_font = std::make_shared<DirectX::SpriteFont>(m_device.Get(), L"assets/orbitron.spritefont");
 
-	m_player = std::make_shared<Player>(m_inputManager, m_model, m_camera);
+	m_player = std::make_shared<Player>(m_inputManager, m_model);
 }
 
 Scene* DemoScene::update()

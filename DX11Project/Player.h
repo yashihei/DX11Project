@@ -15,9 +15,9 @@
 class Player : public Actor
 {
 public:
-	Player(InputManagerPtr inputManager, ModelPtr model, CameraPtr camera) :
+	Player(InputManagerPtr inputManager, ModelPtr model) :
 		m_inputManager(inputManager),
-		m_model(model), m_camera(camera),
+		m_model(model),
 		m_pos(Vector3::Zero), m_rot(Vector3::Zero), m_vec(Vector3::Zero)
 	{}
 
@@ -27,16 +27,11 @@ public:
 
 	void draw() override
 	{
-		const Matrix world = Matrix::CreateFromYawPitchRoll(m_rot.y, m_rot.x, m_rot.z);
-		const Matrix view = m_camera->getViewMat();
-		const Matrix proj = m_camera->getProjMat();
-
-		m_model->draw(world, view, proj);
+		m_model->draw(m_pos, m_rot);
 	}
 private:
 	InputManagerPtr m_inputManager;
 	ModelPtr m_model;
-	CameraPtr m_camera;
 	Vector3 m_pos, m_rot, m_vec;
 };
 
