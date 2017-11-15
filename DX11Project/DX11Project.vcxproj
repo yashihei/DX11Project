@@ -146,6 +146,7 @@
     <ClInclude Include="BasicEffect.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DemoScene.h" />
+    <ClInclude Include="Easing.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fwd.h" />
     <ClInclude Include="Graphics.h" />
