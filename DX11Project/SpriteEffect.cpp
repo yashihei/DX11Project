@@ -8,6 +8,7 @@
 
 #include <d3dcompiler.h>
 #include <stdexcept>
+#include "UtilDX.h"
 
 namespace {
 	struct ConstantBuffer {
@@ -17,22 +18,6 @@ namespace {
 	};
 }
 
-inline void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob ** blobOut)
-{
-	DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS;
-	ComPtr<ID3DBlob> errorBlob;
-
-#if defined(DEBUG) || defined(_DEBUG)
-	flags = D3DCOMPILE_SKIP_OPTIMIZATION;
-	flags |= D3DCOMPILE_DEBUG;
-#endif
-
-	HRESULT hr = D3DCompileFromFile(filePath, NULL, NULL, entryPoint, shaderModel, flags, 0, blobOut, &errorBlob);
-
-	if (FAILED(hr))
-		throw std::runtime_error((char*)errorBlob->GetBufferPointer());
-}
-
 SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
@@ -40,14 +25,14 @@ SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceConte
 
 	//create vs
 	ComPtr<ID3DBlob> VSbuffer;
-	compileFromFile(filePath, "VS", "vs_5_0", &VSbuffer);
+	CompileFromFile(filePath, "VS", "vs_5_0", &VSbuffer);
 	HRESULT hr = m_device->CreateVertexShader(VSbuffer->GetBufferPointer(), VSbuffer->GetBufferSize(), NULL, &m_vertexShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreateVertexShader() Failed.");
 	
 	//create ps
 	ComPtr<ID3DBlob> PSBuffer;
-	compileFromFile(filePath, "PS", "ps_5_0", &PSBuffer);
+	CompileFromFile(filePath, "PS", "ps_5_0", &PSBuffer);
 	hr = m_device->CreatePixelShader(PSBuffer->GetBufferPointer(), PSBuffer->GetBufferSize(), NULL, &m_pixelShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreatePixelShader() Failed.");

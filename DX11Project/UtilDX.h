@@ -41,3 +41,32 @@ inline Color GetColorFromHSV(float h_, float s_, float v_, float alpha = 1.0f)
 
 	return color;
 }
+
+inline void CompileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob ** blobOut)
+{
+	DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS;
+	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob;
+
+#if defined(DEBUG) || defined(_DEBUG)
+	flags = D3DCOMPILE_SKIP_OPTIMIZATION;
+	flags |= D3DCOMPILE_DEBUG;
+#endif
+
+	HRESULT hr = D3DCompileFromFile(filePath, NULL, NULL, entryPoint, shaderModel, flags, 0, blobOut, &errorBlob);
+
+	if (FAILED(hr))
+		throw std::runtime_error((char*)errorBlob->GetBufferPointer());
+}
+
+inline void CreateConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteSize, ID3D11Buffer ** constantBuffer)
+{
+	D3D11_BUFFER_DESC constantBufferDesc = {};
+	constantBufferDesc.ByteWidth = byteSize;
+	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	HRESULT hr = device->CreateBuffer(&constantBufferDesc, NULL, constantBuffer);
+	if (FAILED(hr))
+		throw std::runtime_error("CreateConstantBuffer Failed.");
+}

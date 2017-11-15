@@ -8,6 +8,7 @@
 
 #include <d3dcompiler.h>
 #include <stdexcept>
+#include "UtilDX.h"
 
 #pragma pack(push, 1)
 namespace {
@@ -33,35 +34,6 @@ namespace {
 }
 #pragma pack(pop)
 
-inline void compileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob ** blobOut)
-{
-	DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS;
-	ComPtr<ID3DBlob> errorBlob;
-
-#if defined(DEBUG) || defined(_DEBUG)
-	flags = D3DCOMPILE_SKIP_OPTIMIZATION;
-	flags |= D3DCOMPILE_DEBUG;
-#endif
-
-	HRESULT hr = D3DCompileFromFile(filePath, NULL, NULL, entryPoint, shaderModel, flags, 0, blobOut, &errorBlob);
-
-	if (FAILED(hr))
-		throw std::runtime_error((char*)errorBlob->GetBufferPointer());
-}
-
-inline void createConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteSize, ID3D11Buffer ** constantBuffer)
-{
-	D3D11_BUFFER_DESC constantBufferDesc = {};
-	constantBufferDesc.ByteWidth = byteSize;
-	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-	HRESULT hr = device->CreateBuffer(&constantBufferDesc, NULL, constantBuffer);
-	if (FAILED(hr))
-		throw std::runtime_error("CreateConstantBuffer Failed.");
-}
-
 BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
@@ -69,22 +41,22 @@ BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext
 
 	//create vs
 	ComPtr<ID3DBlob> VSbuffer;
-	compileFromFile(filePath, "VS", "vs_5_0", &VSbuffer);
+	CompileFromFile(filePath, "VS", "vs_5_0", &VSbuffer);
 	HRESULT hr = m_device->CreateVertexShader(VSbuffer->GetBufferPointer(), VSbuffer->GetBufferSize(), NULL, &m_vertexShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreateVertexShader() Failed.");
 	
 	//create ps
 	ComPtr<ID3DBlob> PSBuffer;
-	compileFromFile(filePath, "PS", "ps_5_0", &PSBuffer);
+	CompileFromFile(filePath, "PS", "ps_5_0", &PSBuffer);
 	hr = m_device->CreatePixelShader(PSBuffer->GetBufferPointer(), PSBuffer->GetBufferSize(), NULL, &m_pixelShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreatePixelShader() Failed.");
 
 	//create constant buf
-	createConstantBuffer(m_device, sizeof(ObjectConstants), &m_constantBufferObject);
-	createConstantBuffer(m_device, sizeof(LightConstants), &m_constantBufferLight);
-	createConstantBuffer(m_device, sizeof(MaterialConstants), &m_constantBufferMaterial);
+	CreateConstantBuffer(m_device, sizeof(ObjectConstants), &m_constantBufferObject);
+	CreateConstantBuffer(m_device, sizeof(LightConstants), &m_constantBufferLight);
+	CreateConstantBuffer(m_device, sizeof(MaterialConstants), &m_constantBufferMaterial);
 
 	//--------------------------------------------------
 	//create input layout
