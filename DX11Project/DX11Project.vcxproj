@@ -166,7 +166,9 @@
     <ClInclude Include="SpriteEffect.h" />
     <ClInclude Include="ToonEffect.h" />
     <ClInclude Include="Types.h" />
-    <ClInclude Include="Utility.h" />
+    <ClInclude Include="UtilDX.h" />
+    <ClInclude Include="UtilFunc.h" />
+    <ClInclude Include="UtilStr.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\basic.fx">

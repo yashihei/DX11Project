@@ -8,10 +8,9 @@
 
 #include <wrl/client.h>
 #include <stdexcept>
-#include <memory>
 #include <Shlwapi.h>
 #include "DirectXTex/DirectXTex.h"
-#include "Utility.h"
+#include "UtilStr.h"
 #include "Log.h"
 
 inline ComPtr<ID3D11ShaderResourceView> CreateShaderResourceViewFromFile(ComPtr<ID3D11Device> device, const WCHAR* filePath) {

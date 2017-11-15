@@ -113,9 +113,6 @@
     <ClInclude Include="Types.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
-    <ClInclude Include="Utility.h">
-      <Filter>Header Files\lib</Filter>
-    </ClInclude>
     <ClInclude Include="LightParam.h">
       <Filter>Header Files\lib</Filter>
     </ClInclude>
@@ -157,6 +154,15 @@
     </ClInclude>
     <ClInclude Include="Score.h">
       <Filter>Header Files\app\actor</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilDX.h">
+      <Filter>Header Files\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilStr.h">
+      <Filter>Header Files\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilFunc.h">
+      <Filter>Header Files\lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

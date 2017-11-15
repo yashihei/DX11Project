@@ -6,7 +6,7 @@
 
 #include "AudioManager.h"
 
-#include "Utility.h"
+#include "UtilStr.h"
 
 AudioManager::AudioManager() {
 	CoInitializeEx(nullptr, COINIT_MULTITHREADED);

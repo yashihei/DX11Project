@@ -8,7 +8,7 @@
 
 #include "ShaderRV.h"
 #include "BasicEffect.h"
-#include "Utility.h"
+#include "UtilStr.h"
 #include "DirectXTK/CommonStates.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "ObjLoader/tiny_obj_loader.h"
