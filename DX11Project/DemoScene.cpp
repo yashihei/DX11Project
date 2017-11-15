@@ -44,13 +44,6 @@ DemoScene::DemoScene(
 
 Scene* DemoScene::update()
 {
-	m_inputManager->update();
-	m_audioManager->update();
-
-	if (m_inputManager->isClicledButton1())
-	{
-	}
-
 	m_player->update();
 
 	return this;

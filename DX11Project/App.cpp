@@ -66,11 +66,15 @@ void App::frame()
 {
 	ImGui_ImplDX11_NewFrame();
 
+	//Scene change check (State pattern)
 	const auto nextScene = m_currentScene->update();
 	if (m_currentScene.get() != nextScene)
 	{
 		m_currentScene.reset(nextScene);
 	}
+
+	m_inputManager->update();
+	m_audioManager->update();
 
 	m_graphics->beginScene();
 	m_currentScene->draw();
