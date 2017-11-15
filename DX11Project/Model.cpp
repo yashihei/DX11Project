@@ -59,16 +59,6 @@ void Mesh::draw(ComPtr<ID3D11DeviceContext> deviceContext)
 	deviceContext->DrawIndexed(m_indexCount, 0, 0);
 }
 
-void GetBoudingSphere(DirectX::BoundingSphere& sphere, const std::vector<ModelVertex>& vertices)
-{
-	std::vector<Vector3> points;
-	for (const auto& vertex : vertices) {
-		points.push_back(vertex.position);
-	}
-
-	DirectX::BoundingSphere::CreateFromPoints(sphere, points.size(), points.data(), sizeof(Vector3));
-}
-
 Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states) :
 	m_device(device), m_deviceContext(deviceContext), m_states(states)
 {
@@ -131,9 +121,7 @@ void Model::createFromObj(const std::string& filePath)
 					texCoord.y = attrib.texcoords[2 * idx.texcoord_index + 1];
 				}
 
-				//add vertex
 				vertices.emplace_back(pos, normal, texCoord);
-				//add index
 				indices.push_back(indexCount + v);
 			}
 
@@ -145,9 +133,15 @@ void Model::createFromObj(const std::string& filePath)
 		//グループ毎にメッシュを作る
 		auto mesh = std::make_shared<Mesh>(m_device, vertices, indices, materialID);
 		m_meshes.push_back(mesh);
-
-		//TODO:Build BoundingSphere
 	}
+
+	//Calc bounds
+	std::vector<Vector3> points;
+	for (int i = 0; i < attrib.vertices.size()/3; i++)
+	{
+		points.emplace_back(attrib.vertices[3 * i + 0], attrib.vertices[3 * i + 1], attrib.vertices[3 * i + 2]);
+	}
+	DirectX::BoundingSphere::CreateFromPoints(m_boundingSphere, points.size(), points.data(), sizeof(Vector3));
 
 	//Load texures
 	const auto nulltex = CreateShaderResourceViewFromFile(m_device, L"assets/null.png");
