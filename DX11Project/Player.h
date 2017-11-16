@@ -10,6 +10,7 @@
 #include "Actor.h"
 #include "Model.h"
 #include "InputManager.h"
+#include "UtilFunc.h"
 
 class Player : public Actor
 {
@@ -42,6 +43,8 @@ public:
 
 		m_vec *= 0.85f;
 		m_pos += m_vec;
+		m_pos.x = Clamp(m_pos.x, -20.f, 20.f);
+		m_pos.z = Clamp(m_pos.z, -20.f, 20.f);
 
 		//reset
 		if (m_inputManager->isClicledButton1())
@@ -52,6 +55,8 @@ public:
 	{
 		m_model->draw(m_pos, m_rot);
 	}
+
+	Vector3 getPos() const { return m_pos; }
 private:
 	InputManagerPtr m_inputManager;
 	ModelPtr m_model;
