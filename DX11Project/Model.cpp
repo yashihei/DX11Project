@@ -15,8 +15,6 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "ObjLoader/tiny_obj_loader.h"
 
-#pragma warning(disable : 4018)
-
 Mesh::Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std::vector<unsigned long>& indices, int materialID) :
 	m_indexCount(indices.size()), m_materialID(materialID)
 {
@@ -85,14 +83,14 @@ void Model::createFromObj(const std::string& filePath)
 	}
 
 	//Loop over shapes (g or o)
-	for (int s = 0; s < shapes.size(); s++) {
+	for (unsigned int s = 0; s < shapes.size(); s++) {
 		std::vector<ModelVertex> vertices;
 		std::vector<unsigned long> indices;
 		int materialID = shapes[s].mesh.material_ids[0];
 		int indexOffset = 0, indexCount = 0;
 
 		//Loop over faces
-		for (int f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+		for (unsigned int f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
 			//ƒ}ƒeƒŠƒAƒ‹‚ªˆÙ‚È‚éê‡mesh‚ð•ªŠ„‚·‚é
 			if (materialID != shapes[s].mesh.material_ids[f]) {
 				auto mesh = std::make_shared<Mesh>(m_device, vertices, indices, materialID);
@@ -144,7 +142,7 @@ void Model::createFromObj(const std::string& filePath)
 
 	//Calc bounds
 	std::vector<Vector3> points;
-	for (int i = 0; i < attrib.vertices.size()/3; i++)
+	for (unsigned int i = 0; i < attrib.vertices.size()/3; i++)
 	{
 		points.emplace_back(attrib.vertices[3 * i + 0], attrib.vertices[3 * i + 1], attrib.vertices[3 * i + 2]);
 	}
@@ -155,7 +153,7 @@ void Model::createFromObj(const std::string& filePath)
 	m_textures["nulltex"] = nulltex;
 
 	const auto rootDir = GetDirPath(filePath);
-	for (int i = 0; i < materials.size(); i++) {
+	for (unsigned int i = 0; i < materials.size(); i++) {
 		const auto texName = materials[i].diffuse_texname;
 		if (!texName.empty())
 		{
@@ -166,7 +164,7 @@ void Model::createFromObj(const std::string& filePath)
 	}
 
 	//Load material
-	for (int i = 0; i < materials.size(); i++) {
+	for (unsigned int i = 0; i < materials.size(); i++) {
 		const Material mat {
 			{
 				materials[i].diffuse[0],
