@@ -68,6 +68,9 @@ Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceCont
 
 void Model::createFromObj(const std::string& filePath)
 {
+	if (StrCmp(".obj", PathFindExtension(filePath.c_str())))
+		throw std::runtime_error(filePath + " isn't obj file.");
+
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
