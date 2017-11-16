@@ -9,6 +9,7 @@
 #include "ShaderRV.h"
 #include "BasicEffect.h"
 #include "Camera.h"
+#include "LightParam.h"
 #include "UtilStr.h"
 #include "DirectXTK/CommonStates.h"
 #define TINYOBJLOADER_IMPLEMENTATION
@@ -60,8 +61,8 @@ void Mesh::draw(ComPtr<ID3D11DeviceContext> deviceContext)
 	deviceContext->DrawIndexed(m_indexCount, 0, 0);
 }
 
-Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states, CameraPtr camera) :
-	m_device(device), m_deviceContext(deviceContext), m_states(states), m_camera(camera)
+Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states, CameraPtr camera, LightParamPtr light) :
+	m_device(device), m_deviceContext(deviceContext), m_states(states), m_camera(camera), m_light(light)
 {
 	m_effect = std::make_shared<BasicEffect>(m_device, m_deviceContext);
 }
@@ -203,7 +204,7 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 	auto samplerState = m_states->LinearWrap();
 	m_deviceContext->PSSetSamplers(0, 1, &samplerState);
 
-	m_effect->setLightParams({ 1, 1, 1, 1 }, { 0.3f, 0.3f, 0.3f, 1 }, { 0, -1, 0 });
+	m_effect->setLightParams(m_light->diffuse, m_light->ambient, m_light->direction);
 	m_effect->setObjectParams(world.Transpose(), view.Transpose(), proj.Transpose());
 
 	for (auto& mesh : m_meshes) {

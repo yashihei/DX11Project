@@ -15,12 +15,12 @@ struct LightParam
 {
 	LightParam() = default;
 
-	LightParam(const Vector4& diffuse, const Vector4& ambient, const Vector3& direction)
+	LightParam(const Color& diffuse, const Color& ambient, const Vector3& direction)
 		: diffuse(diffuse),
 		  ambient(ambient),
 		  direction(direction) {}
 
-	Vector4 diffuse;
-	Vector4 ambient;
+	Color diffuse;
+	Color ambient;
 	Vector3 direction;
 };
