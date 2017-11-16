@@ -15,6 +15,8 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "ObjLoader/tiny_obj_loader.h"
 
+#pragma warning(disable : 4018)
+
 Mesh::Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std::vector<unsigned long>& indices, int materialID) :
 	m_indexCount(indices.size()), m_materialID(materialID)
 {
