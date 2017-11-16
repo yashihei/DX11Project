@@ -83,10 +83,10 @@ float4 PS(PSInput input) : SV_TARGET
 	float3 temp = ambientMaterial.rgb * ambientLight.rgb;
 	temp += LambertLighting(-lightDirection, input.normal, diffuseLight.rgb, diffuseMaterial.rgb);
 	temp = saturate(temp);
+	temp *= tex2d.Sample(sampleType, input.texCoord).rgb;
 
-	float3 temp2 = tex2d.Sample(sampleType, input.texCoord).rgb * temp;
-	float temp3 = tex2d.Sample(sampleType, input.texCoord).a * diffuseMaterial.a;
-	outColor = CombineRGBWithAlpha(temp2, temp3);
+	float alpha = tex2d.Sample(sampleType, input.texCoord).a * diffuseMaterial.a;
+	outColor = CombineRGBWithAlpha(temp, alpha);
 
 	return outColor;
 }
