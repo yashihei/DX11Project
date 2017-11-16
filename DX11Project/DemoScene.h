@@ -13,6 +13,7 @@
 #include "Scene.h"
 #include "Fwd.h"
 #include "Player.h"
+#include "Enemy.h"
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX::SimpleMath;
@@ -31,9 +32,12 @@ private:
 	InputManagerPtr m_inputManager;
 	AudioManagerPtr m_audioManager;
 	CameraPtr m_camera;
-	ModelPtr m_model;
-	SpriteBatchPtr m_sprite;
+	LightParamPtr m_light;
+	ModelPtr m_playerModel, m_enemyModel, m_tiledModel;
+	SpriteBatchPtr m_fontCanvas;
 	SpriteFontPtr m_font;
-	boost::timer m_timer;
+	boost::timer m_spawnTimer;
+	//actor
 	PlayerPtr m_player;
+	EnemyManagerPtr m_enemies;
 };
