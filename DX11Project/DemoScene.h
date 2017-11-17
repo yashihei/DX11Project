@@ -14,6 +14,7 @@
 #include "Fwd.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Particle.h"
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX::SimpleMath;
@@ -34,10 +35,12 @@ private:
 	CameraPtr m_camera;
 	LightParamPtr m_light;
 	ModelPtr m_playerModel, m_enemyModel, m_tiledModel;
+	SpritePtr m_particleSprite;
 	SpriteBatchPtr m_fontCanvas;
 	SpriteFontPtr m_font;
 	boost::timer m_spawnTimer;
 	//actor
 	PlayerPtr m_player;
 	EnemyManagerPtr m_enemies;
+	ParticleManagerPtr m_particles;
 };

@@ -47,8 +47,8 @@ public:
 		m_pos.z = Clamp(m_pos.z, -20.f, 20.f);
 
 		//reset
-		if (m_inputManager->isClicledButton1())
-			m_vec = m_pos = m_rot = Vector3::Zero;
+		//if (m_inputManager->isClicledButton1())
+		//	m_vec = m_pos = m_rot = Vector3::Zero;
 	}
 
 	void draw() override

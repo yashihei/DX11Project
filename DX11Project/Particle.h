@@ -12,13 +12,14 @@
 
 class Particle : public Actor {
 public:
-	Particle(SpritePtr sprite, const Vector3& pos, const Vector3& vector, const Color& color, const float scale, bool gravity) :
+	Particle(SpritePtr sprite, const Vector3& pos, const Vector3& vector, const Color& color, const float scale, bool gravity = false) :
 		m_sprite(sprite),
 		m_pos(pos), m_vector(vector), m_color(color), m_scale(scale), m_gravity(gravity)
 	{}
 	void update() override {
 		m_pos += m_vector;
-		m_vector *= 0.95f;
+		m_vector *= 0.90f;
+		m_scale *= 0.95f;
 		m_color.w *= 0.95f;
 		if (m_color.w < 0.05f)
 			kill();

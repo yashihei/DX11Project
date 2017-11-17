@@ -29,6 +29,8 @@ public:
 	{
 		m_model->draw(m_pos, m_rot);
 	}
+
+	Vector3 getPos() const { return m_pos; }
 private:
 	ModelPtr m_model;
 	Vector3 m_pos, m_rot;

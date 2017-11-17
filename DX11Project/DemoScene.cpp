@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "LightParam.h"
 #include "Random.h"
+#include "ShaderRV.h"
 #include "imgui/imgui.h"
 #include "DirectXTK/CommonStates.h"
 #include "DirectXTK/SpriteBatch.h"
@@ -46,25 +47,45 @@ DemoScene::DemoScene(
 	m_tiledModel = std::make_shared<Model>(m_device, m_deviceContext, m_states, m_camera, m_light);
 	m_tiledModel->createFromObj("assets/tiled/tiled.obj");
 
+	auto tex = CreateShaderResourceViewFromFile(m_device, L"assets/circle.png");
+	m_particleSprite = std::make_shared<Sprite>(m_device, m_deviceContext, tex, m_camera);
+
 	m_fontCanvas = std::make_shared<DirectX::SpriteBatch>(m_deviceContext.Get());
 	m_font = std::make_shared<DirectX::SpriteFont>(m_device.Get(), L"assets/orbitron.spritefont");
 
 	m_player = std::make_shared<Player>(m_inputManager, m_playerModel);
 	m_enemies = std::make_shared<ActorManager<Enemy>>();
+	m_particles = std::make_shared<ActorManager<Particle>>();
 }
 
 Scene* DemoScene::update()
 {
 	m_player->update();
 	m_enemies->update();
+	m_particles->update();
 
 	//spawn enemy
-	if (m_spawnTimer.elapsed() > 3.0f)
+	if (m_spawnTimer.elapsed() > 1.0f)
 	{
 		const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
 		auto enemy = std::make_shared<Enemy>(m_enemyModel, spawnPos);
 		m_enemies->add(enemy);
 		m_spawnTimer.restart();
+	}
+
+	//bomb
+	if (m_inputManager->isClicledButton1() || m_enemies->size() > 50)
+	{
+		for (auto& enemy : *m_enemies) {
+			for (int i = 0; i < 100; i++) {
+				Quaternion rotate = Quaternion::CreateFromYawPitchRoll(Random(DirectX::XM_2PI), Random(DirectX::XM_2PI), Random(DirectX::XM_2PI));
+				Vector3 vec(0.75f, 0, 0);
+				vec = Vector3::Transform(vec, rotate);
+				auto particle = std::make_shared<Particle>(m_particleSprite, enemy->getPos(), vec, Color(0.05f, 0.8f, 0.4f), 0.75f);
+				m_particles->add(particle);
+			}
+		}
+		m_enemies->clear();
 	}
 
 	const auto playerPos = m_player->getPos();
@@ -81,7 +102,13 @@ void DemoScene::draw()
 	m_player->draw();
 	m_enemies->draw();
 
-	//draw tile?
+	m_deviceContext->OMSetDepthStencilState(m_states->DepthNone(), 0);
+	m_deviceContext->OMSetBlendState(m_states->Additive(), 0, 0xFfFfFfFf);
+	m_particles->draw();
+	m_deviceContext->OMSetBlendState(m_states->AlphaBlend(), 0, 0xFfFfFfFf);
+	m_deviceContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
+
+	//draw tile
 	m_deviceContext->RSSetState(m_states->Wireframe());
 	m_tiledModel->draw(Vector3::Zero, Vector3::Zero, Vector3::One*2);
 	m_deviceContext->RSSetState(m_states->CullClockwise());
