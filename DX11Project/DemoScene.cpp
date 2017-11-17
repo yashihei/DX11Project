@@ -68,7 +68,7 @@ Scene* DemoScene::update()
 	if (m_spawnTimer.elapsed() > 1.0f)
 	{
 		const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
-		auto enemy = std::make_shared<Enemy>(m_enemyModel, spawnPos);
+		auto enemy = std::make_shared<Enemy>(m_enemyModel, spawnPos, m_player->getPos());
 		m_enemies->add(enemy);
 		m_spawnTimer.restart();
 	}
