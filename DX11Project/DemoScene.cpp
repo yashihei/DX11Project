@@ -56,6 +56,7 @@ DemoScene::DemoScene(
 	m_player = std::make_shared<Player>(m_inputManager, m_playerModel);
 	m_enemies = std::make_shared<ActorManager<Enemy>>();
 	m_particles = std::make_shared<ActorManager<Particle>>();
+	m_shots = std::make_shared<ActorManager<Shot>>();
 }
 
 Scene* DemoScene::update()
@@ -63,6 +64,7 @@ Scene* DemoScene::update()
 	m_player->update();
 	m_enemies->update();
 	m_particles->update();
+	m_shots->update();
 
 	//spawn enemy
 	if (m_spawnTimer.elapsed() > 1.0f)
@@ -102,9 +104,11 @@ void DemoScene::draw()
 	m_player->draw();
 	m_enemies->draw();
 
+	//draw sprites
 	m_deviceContext->OMSetDepthStencilState(m_states->DepthNone(), 0);
 	m_deviceContext->OMSetBlendState(m_states->Additive(), 0, 0xFfFfFfFf);
 	m_particles->draw();
+	m_shots->draw();
 	m_deviceContext->OMSetBlendState(m_states->AlphaBlend(), 0, 0xFfFfFfFf);
 	m_deviceContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
 

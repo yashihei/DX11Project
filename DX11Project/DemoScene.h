@@ -15,6 +15,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Particle.h"
+#include "Shot.h"
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX::SimpleMath;
@@ -43,4 +44,5 @@ private:
 	PlayerPtr m_player;
 	EnemyManagerPtr m_enemies;
 	ParticleManagerPtr m_particles;
+	ShotManagerPtr m_shots;
 };
