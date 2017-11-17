@@ -25,7 +25,7 @@ public:
 
 	void draw() override
 	{
-		m_sprite->draw(m_pos, 0.5f);
+		m_sprite->draw(m_pos, Color(1.0f, 0.7f, 0.0f), 0.5f);
 	}
 private:
 	SpritePtr m_sprite;

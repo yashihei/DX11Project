@@ -53,10 +53,10 @@ DemoScene::DemoScene(
 	m_fontCanvas = std::make_shared<DirectX::SpriteBatch>(m_deviceContext.Get());
 	m_font = std::make_shared<DirectX::SpriteFont>(m_device.Get(), L"assets/orbitron.spritefont");
 
-	m_player = std::make_shared<Player>(m_inputManager, m_playerModel);
+	m_shots = std::make_shared<ActorManager<Shot>>();
+	m_player = std::make_shared<Player>(m_inputManager, m_playerModel, m_shots, m_particleSprite);
 	m_enemies = std::make_shared<ActorManager<Enemy>>();
 	m_particles = std::make_shared<ActorManager<Particle>>();
-	m_shots = std::make_shared<ActorManager<Shot>>();
 }
 
 Scene* DemoScene::update()
