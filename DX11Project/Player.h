@@ -76,8 +76,14 @@ private:
 		if (fireDir == Vector2::Zero)
 			return;
 
-		fireDir.Normalize();
+		if (m_shotTimer.elapsed() > 0.05f)
+		{
+			m_shotTimer.restart();
+			return;
+		}
 
+		fireDir.Normalize();
+		
 		auto shot = std::make_shared<Shot>(m_sprite, m_pos, Vector3(fireDir.x, 0, fireDir.y));
 		m_shots->add(shot);
 	}
@@ -87,6 +93,7 @@ private:
 	SpritePtr m_sprite;
 	ShotManagerPtr m_shots;
 	Vector3 m_pos, m_rot, m_vec;
+	boost::timer m_shotTimer;
 };
 
 using PlayerPtr = std::shared_ptr<Player>;
