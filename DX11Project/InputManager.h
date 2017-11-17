@@ -44,7 +44,12 @@ public:
 	bool isRelesedLeft()    const { return m_keyTracker.released.Left  || m_padTracker.dpadLeft == ButtonState::RELEASED; }
 	bool isRelesedRight()   const { return m_keyTracker.released.Right || m_padTracker.dpadRight == ButtonState::RELEASED; }
 
+	bool isConnectedPad() const { return m_gamePad->GetState(m_padIndex).IsConnected(); }
 	void changePadIndex(const int index) { m_padIndex = index; }
+	float getLeftThumbX()  const { return m_gamePad->GetState(m_padIndex).thumbSticks.leftX; }
+	float getLeftThumbY()  const { return m_gamePad->GetState(m_padIndex).thumbSticks.leftY; }
+	float getRightThumbX() const { return m_gamePad->GetState(m_padIndex).thumbSticks.rightX; }
+	float getRightThumbY() const { return m_gamePad->GetState(m_padIndex).thumbSticks.rightY; }
 
 	void update() {
 		m_keyTracker.Update(m_keyboard->GetState());
