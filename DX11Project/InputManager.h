@@ -7,25 +7,24 @@
 #pragma once
 
 #include <memory>
-#include <DirectXMath.h>
 #include "DirectXTK/Keyboard.h"
 #include "DirectXTK/GamePad.h"
 
 class InputManager {
 public:
-	InputManager() {
+	InputManager() : m_padIndex(0) {
 		m_keyboard = std::make_unique<DirectX::Keyboard>();
 		m_gamePad = std::make_unique<DirectX::GamePad>();
 	}
 
-	bool isPressedButton1() const { return m_keyboard->GetState().Z     || m_gamePad->GetState(0).IsYPressed(); }
-	bool isPressedButton2() const { return m_keyboard->GetState().X     || m_gamePad->GetState(0).IsBPressed(); }
-	bool isPressedButton3() const { return m_keyboard->GetState().C     || m_gamePad->GetState(0).IsAPressed(); }
-	bool isPressedButton4() const { return m_keyboard->GetState().V     || m_gamePad->GetState(0).IsXPressed(); }
-	bool isPressedUp()      const { return m_keyboard->GetState().Up    || m_gamePad->GetState(0).dpad.up; }
-	bool isPressedDown()    const { return m_keyboard->GetState().Down  || m_gamePad->GetState(0).dpad.down; }
-	bool isPressedLeft()    const { return m_keyboard->GetState().Left  || m_gamePad->GetState(0).dpad.left; }
-	bool isPressedRight()   const { return m_keyboard->GetState().Right || m_gamePad->GetState(0).dpad.right; }
+	bool isPressedButton1() const { return m_keyboard->GetState().Z     || m_gamePad->GetState(m_padIndex).IsYPressed(); }
+	bool isPressedButton2() const { return m_keyboard->GetState().X     || m_gamePad->GetState(m_padIndex).IsBPressed(); }
+	bool isPressedButton3() const { return m_keyboard->GetState().C     || m_gamePad->GetState(m_padIndex).IsAPressed(); }
+	bool isPressedButton4() const { return m_keyboard->GetState().V     || m_gamePad->GetState(m_padIndex).IsXPressed(); }
+	bool isPressedUp()      const { return m_keyboard->GetState().Up    || m_gamePad->GetState(m_padIndex).dpad.up; }
+	bool isPressedDown()    const { return m_keyboard->GetState().Down  || m_gamePad->GetState(m_padIndex).dpad.down; }
+	bool isPressedLeft()    const { return m_keyboard->GetState().Left  || m_gamePad->GetState(m_padIndex).dpad.left; }
+	bool isPressedRight()   const { return m_keyboard->GetState().Right || m_gamePad->GetState(m_padIndex).dpad.right; }
 
 	bool isClicledButton1() const { return m_keyTracker.pressed.Z     || m_padTracker.y == ButtonState::PRESSED; }
 	bool isClicledButton2() const { return m_keyTracker.pressed.X     || m_padTracker.b == ButtonState::PRESSED; }
@@ -45,10 +44,12 @@ public:
 	bool isRelesedLeft()    const { return m_keyTracker.released.Left  || m_padTracker.dpadLeft == ButtonState::RELEASED; }
 	bool isRelesedRight()   const { return m_keyTracker.released.Right || m_padTracker.dpadRight == ButtonState::RELEASED; }
 
+	void changePadIndex(const int index) { m_padIndex = index; }
+
 	void update() {
 		m_keyTracker.Update(m_keyboard->GetState());
-		if (m_gamePad->GetState(0).IsConnected())
-			m_padTracker.Update(m_gamePad->GetState(0));
+		if (m_gamePad->GetState(m_padIndex).IsConnected())
+			m_padTracker.Update(m_gamePad->GetState(m_padIndex));
 	}
 private:
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
@@ -56,4 +57,5 @@ private:
 	DirectX::Keyboard::KeyboardStateTracker m_keyTracker;
 	DirectX::GamePad::ButtonStateTracker m_padTracker;
 	using ButtonState = DirectX::GamePad::ButtonStateTracker::ButtonState;
+	int m_padIndex;
 };
