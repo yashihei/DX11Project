@@ -99,6 +99,12 @@ Scene* DemoScene::update()
 		m_enemies->clear();
 	}
 
+	//camera
+	if (m_inputManager->isPressedButton2())
+		m_camera->pos = Vector3(0, 30, -40);
+	else
+		m_camera->pos = Vector3(0, 50, 0);
+	
 	//shot vs enemy
 	for (auto& shot : *m_shots)
 	{
@@ -113,8 +119,9 @@ Scene* DemoScene::update()
 
 	const auto playerPos = m_player->getPos();
 	ImGui::Begin("DebugPanel");
-	ImGui::Text("%f, %f, %f", playerPos.x, playerPos.y, playerPos.z);
+	ImGui::Text("PlayerPos : %f, %f, %f", playerPos.x, playerPos.y, playerPos.z);
 	ImGui::Text("EnemyNum : %d", m_enemies->size());
+	ImGui::Text("ParticleNum : %d", m_particles->size());
 	ImGui::End();
 
 	return this;
