@@ -22,6 +22,17 @@ inline bool IsCollied(const Vector3& pos1, const Vector3& pos2, float r1, float 
 	const Vector3 tmp = pos2 - pos1;
 	return tmp.x*tmp.x + tmp.y*tmp.y + tmp.z*tmp.z < (r1 + r2)*(r1 + r2);
 }
+
+inline void emitPatricle(ParticleManagerPtr particles, SpritePtr sprite, int num, const Vector3& pos, const Color& color) {
+	for (int i = 0; i < num; i++) {
+		Quaternion rotate = Quaternion::CreateFromYawPitchRoll(Random(DirectX::XM_2PI), Random(DirectX::XM_2PI), Random(DirectX::XM_2PI));
+		Vector3 vec(0.75f, 0, 0);
+		vec = Vector3::Transform(vec, rotate);
+		auto particle = std::make_shared<Particle>(sprite, pos, vec, color, 0.75f);
+		particles->add(particle);
+	}
+}
+
 DemoScene::DemoScene(
 	ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext,
 	InputManagerPtr inputManager, AudioManagerPtr audioManager, CommonStatesPtr states) :
@@ -80,16 +91,10 @@ Scene* DemoScene::update()
 	}
 
 	//bomb
-	if (m_inputManager->isClicledButton1() || m_enemies->size() > 50)
+	if (m_inputManager->isClicledButton1() || m_enemies->size() > 20)
 	{
 		for (auto& enemy : *m_enemies) {
-			for (int i = 0; i < 100; i++) {
-				Quaternion rotate = Quaternion::CreateFromYawPitchRoll(Random(DirectX::XM_2PI), Random(DirectX::XM_2PI), Random(DirectX::XM_2PI));
-				Vector3 vec(0.75f, 0, 0);
-				vec = Vector3::Transform(vec, rotate);
-				auto particle = std::make_shared<Particle>(m_particleSprite, enemy->getPos(), vec, Color(0.05f, 0.8f, 0.4f), 0.75f);
-				m_particles->add(particle);
-			}
+			emitPatricle(m_particles, m_particleSprite, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
 		}
 		m_enemies->clear();
 	}
