@@ -243,4 +243,5 @@ ModelManifest.xml
 
 # User
 !**/assets/**/*.obj
+imgui.ini
 
