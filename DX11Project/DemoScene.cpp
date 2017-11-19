@@ -18,6 +18,10 @@
 #include "DirectXTK/SpriteBatch.h"
 #include "DirectXTK/SpriteFont.h"
 
+inline bool IsCollied(const Vector3& pos1, const Vector3& pos2, float r1, float r2) {
+	const Vector3 tmp = pos2 - pos1;
+	return tmp.x*tmp.x + tmp.y*tmp.y + tmp.z*tmp.z < (r1 + r2)*(r1 + r2);
+}
 DemoScene::DemoScene(
 	ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext,
 	InputManagerPtr inputManager, AudioManagerPtr audioManager, CommonStatesPtr states) :
@@ -88,6 +92,18 @@ Scene* DemoScene::update()
 			}
 		}
 		m_enemies->clear();
+	}
+
+	//shot vs enemy
+	for (auto& shot : *m_shots)
+	{
+		for (auto& enemy : *m_enemies)
+		{
+			if (IsCollied(shot->getPos(), enemy->getPos(), 1.0f, 1.0f)) {
+				enemy->kill();
+				emitPatricle(m_particles, m_particleSprite, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
+			}
+		}
 	}
 
 	const auto playerPos = m_player->getPos();
