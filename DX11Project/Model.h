@@ -19,8 +19,7 @@ using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 using ModelVertex = DirectX::VertexPositionNormalTexture;
 
-struct Material
-{
+struct Material {
 	Color diffuse;
 	Color ambient;
 	Color specular;
@@ -28,8 +27,7 @@ struct Material
 	std::string textureName;
 };
 
-class Mesh
-{
+class Mesh {
 public:
 	Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std::vector<unsigned long>& indices, int materialID);
 	void draw(ComPtr<ID3D11DeviceContext> deviceContext);
@@ -40,8 +38,7 @@ private:
 	ComPtr<ID3D11Buffer> m_indexBuffer;
 };
 
-class Model
-{
+class Model {
 public:
 	Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states, CameraPtr camera, LightParamPtr light);
 	void createFromObj(const std::string& filePath);

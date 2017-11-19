@@ -53,10 +53,10 @@ void Sprite::draw(const Vector3& pos, float scale)
 void Sprite::draw(const Vector3& pos, const Color& color, float scale)
 {
 	std::vector<SpriteVertex> vertices {
-		{{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f}, color},
-		{{ 0.5f,  0.5f, 0.0f}, {1.0f, 0.0f}, color},
-		{{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f}, color},
-		{{ 0.5f, -0.5f, 0.0f}, {1.0f, 1.0f}, color},
+		{ { -0.5f, 0.5f, 0.0f }, { 0.0f, 0.0f }, color },
+		{ { 0.5f, 0.5f, 0.0f }, { 1.0f, 0.0f }, color },
+		{ { -0.5f, -0.5f, 0.0f }, { 0.0f, 1.0f }, color },
+		{ { 0.5f, -0.5f, 0.0f }, { 1.0f, 1.0f }, color },
 	};
 
 	D3D11_MAPPED_SUBRESOURCE resource;
@@ -79,10 +79,10 @@ void Sprite::createVertexBuffer()
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 	std::vector<SpriteVertex> vertices {
-		{{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f}, {1, 1, 1, 1}},
-		{{ 0.5f,  0.5f, 0.0f}, {1.0f, 0.0f}, {1, 1, 1, 1}},
-		{{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f}, {1, 1, 1, 1}},
-		{{ 0.5f, -0.5f, 0.0f}, {1.0f, 1.0f}, {1, 1, 1, 1}},
+		{ { -0.5f, 0.5f, 0.0f }, { 0.0f, 0.0f }, { 1, 1, 1, 1 } },
+		{ { 0.5f, 0.5f, 0.0f }, { 1.0f, 0.0f }, { 1, 1, 1, 1 } },
+		{ { -0.5f, -0.5f, 0.0f }, { 0.0f, 1.0f }, { 1, 1, 1, 1 } },
+		{ { 0.5f, -0.5f, 0.0f }, { 1.0f, 1.0f }, { 1, 1, 1, 1 } },
 	};
 
 	D3D11_SUBRESOURCE_DATA resource = {};

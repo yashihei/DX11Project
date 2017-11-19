@@ -17,41 +17,51 @@ public:
 	virtual ~Actor() = default;
 	virtual void update() = 0;
 	virtual void draw() = 0;
-
 	void kill() { m_enable = false; }
 	bool isEnabled() const { return m_enable; }
 private:
 	bool m_enable;
 };
 
-template<typename Type>
+template <typename Type>
 class ActorManager {
 public:
 	ActorManager() = default;
 	virtual ~ActorManager() = default;
 
-	void add(std::shared_ptr<Type> actor) {
+	void add(std::shared_ptr<Type> actor)
+	{
 		m_actors.push_back(actor);
 	}
-	void clear() {
+
+	void clear()
+	{
 		m_actors.clear();
 	}
-	int size() {
+
+	int size()
+	{
 		return m_actors.size();
 	}
-	void update() {
+
+	void update()
+	{
 		for (auto& actor : m_actors) {
 			actor->update();
 		}
 		m_actors.erase(std::remove_if(m_actors.begin(), m_actors.end(),
 			[](std::shared_ptr<Type> actor) { return !actor->isEnabled(); }), m_actors.end());
 	}
-	void draw() {
+
+	void draw()
+	{
 		for (const auto& actor : m_actors) {
 			actor->draw();
 		}
 	}
-	void sort(std::function< bool(std::shared_ptr<Type>, std::shared_ptr<Type>) > rule) {
+
+	void sort(std::function<bool(std::shared_ptr<Type>, std::shared_ptr<Type>)> rule)
+	{
 		m_actors.sort(rule);
 	}
 

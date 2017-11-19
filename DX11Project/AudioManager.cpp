@@ -8,7 +8,8 @@
 
 #include "UtilStr.h"
 
-AudioManager::AudioManager() {
+AudioManager::AudioManager()
+{
 	CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 	DirectX::AUDIO_ENGINE_FLAGS flags = DirectX::AudioEngine_Default;
 #ifdef _DEBUG

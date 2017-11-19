@@ -21,8 +21,7 @@ class Camera;
 class InputManager;
 class AudioManager;
 
-namespace DirectX
-{
+namespace DirectX {
 	class CommonStates;
 	class SpriteFont;
 	class SpriteBatch;

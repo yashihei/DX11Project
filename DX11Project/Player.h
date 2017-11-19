@@ -13,25 +13,18 @@
 #include "UtilFunc.h"
 #include "Shot.h"
 
-class Player : public Actor
-{
+class Player : public Actor {
 public:
 	Player(InputManagerPtr inputManager, ModelPtr model, ShotManagerPtr shots, SpritePtr sprite) :
-		m_inputManager(inputManager),
-		m_model(model),
-		m_sprite(sprite),
-		m_shots(shots),
-		m_pos(Vector3::Zero), m_rot(Vector3::Zero), m_vec(Vector3::Zero)
-	{
-	}
+		m_inputManager(inputManager), m_model(model), m_sprite(sprite), m_shots(shots),
+		m_pos(Vector3::Zero), m_rot(Vector3::Zero), m_vec(Vector3::Zero) {}
 
 	void update() override
 	{
 		auto moveDir = Vector2::Zero;
 		auto fireDir = Vector2::Zero;
 
-		if (m_inputManager->isConnectedPad())
-		{
+		if (m_inputManager->isConnectedPad()) {
 			moveDir.x = m_inputManager->getLeftThumbX();
 			moveDir.y = m_inputManager->getLeftThumbY();
 			fireDir.x = m_inputManager->getRightThumbX();
@@ -53,9 +46,9 @@ public:
 
 	Vector3 getPos() const { return m_pos; }
 private:
-	void moveControl(Vector2& moveDir) {
-		if (moveDir != Vector2::Zero)
-		{
+	void moveControl(Vector2& moveDir)
+	{
+		if (moveDir != Vector2::Zero) {
 			moveDir.Normalize();
 			moveDir *= 0.05f;
 			m_vec.x += moveDir.x;
@@ -72,7 +65,8 @@ private:
 		m_rot.z -= m_vec.x * 0.5f;
 	}
 
-	void fire(Vector2& fireDir) {
+	void fire(Vector2& fireDir)
+	{
 		if (fireDir == Vector2::Zero)
 			return;
 
@@ -83,7 +77,7 @@ private:
 		}
 
 		fireDir.Normalize();
-		
+
 		auto shot = std::make_shared<Shot>(m_sprite, m_pos, Vector3(fireDir.x, 0, fireDir.y));
 		m_shots->add(shot);
 	}

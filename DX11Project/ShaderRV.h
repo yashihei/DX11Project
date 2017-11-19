@@ -13,7 +13,8 @@
 #include "UtilStr.h"
 #include "Log.h"
 
-inline ComPtr<ID3D11ShaderResourceView> CreateShaderResourceViewFromFile(ComPtr<ID3D11Device> device, const WCHAR* filePath) {
+inline ComPtr<ID3D11ShaderResourceView> CreateShaderResourceViewFromFile(ComPtr<ID3D11Device> device, const WCHAR* filePath)
+{
 	using Microsoft::WRL::ComPtr;
 	using namespace DirectX;
 
@@ -26,8 +27,7 @@ inline ComPtr<ID3D11ShaderResourceView> CreateShaderResourceViewFromFile(ComPtr<
 		hr = LoadFromTGAFile(filePath, &info, image);
 		if (FAILED(hr))
 			throw std::runtime_error(ws2s(filePath) + " LoadFromTGAFile() Failed.");
-	}
-	else {
+	} else {
 		hr = LoadFromWICFile(filePath, 0, &info, image);
 		if (FAILED(hr))
 			throw std::runtime_error(ws2s(filePath) + " LoadFromWICFile() Failed.");

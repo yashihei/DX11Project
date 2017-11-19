@@ -75,7 +75,7 @@ void Model::createFromObj(const std::string& filePath)
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
-	
+
 	std::string err;
 	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filePath.c_str(), GetDirPath(filePath).c_str());
 	if (!err.empty()) {
@@ -142,8 +142,7 @@ void Model::createFromObj(const std::string& filePath)
 
 	//Calc bounds
 	std::vector<Vector3> points;
-	for (unsigned int i = 0; i < attrib.vertices.size()/3; i++)
-	{
+	for (unsigned int i = 0; i < attrib.vertices.size() / 3; i++) {
 		points.emplace_back(attrib.vertices[3 * i + 0], attrib.vertices[3 * i + 1], attrib.vertices[3 * i + 2]);
 	}
 	DirectX::BoundingSphere::CreateFromPoints(m_boundingSphere, points.size(), points.data(), sizeof(Vector3));
@@ -155,8 +154,7 @@ void Model::createFromObj(const std::string& filePath)
 	const auto rootDir = GetDirPath(filePath);
 	for (unsigned int i = 0; i < materials.size(); i++) {
 		const auto texName = materials[i].diffuse_texname;
-		if (!texName.empty())
-		{
+		if (!texName.empty()) {
 			const auto dir = rootDir + texName;
 			const auto tex = CreateShaderResourceViewFromFile(m_device, s2ws(dir).c_str());
 			m_textures[texName] = tex;
@@ -214,7 +212,7 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 			m_effect->setTexture(m_textures[mat.textureName]);
 		else
 			m_effect->setTexture(m_textures["nulltex"]);
-		
+
 		m_effect->setMaterialParams(mat.diffuse, mat.ambient, mat.specular, mat.power);
 		m_effect->apply();
 

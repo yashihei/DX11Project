@@ -6,7 +6,7 @@
 
 #pragma once
 
-template<class Type>
+template <class Type>
 class Singleton {
 public:
 	static Type* getInstance()
@@ -23,5 +23,5 @@ protected:
 	virtual ~Singleton() = default;
 private:
 	Singleton(const Singleton&) = delete;
-	Singleton& operator= (const Singleton&) = delete;
+	Singleton& operator=(const Singleton&) = delete;
 };

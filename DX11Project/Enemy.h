@@ -10,12 +10,10 @@
 #include "Model.h"
 #include "Random.h"
 
-class Enemy : public Actor
-{
+class Enemy : public Actor {
 public:
 	Enemy(ModelPtr model, Vector3 spawnPos, Vector3 target) :
-		m_model(model),
-		m_pos(spawnPos), m_rot(Vector3::Zero)
+		m_model(model), m_pos(spawnPos), m_rot(Vector3::Zero)
 	{
 		const float rad = std::atan2f(target.z - m_pos.z, target.x - m_pos.x);
 		m_vec = Vector3(std::cos(rad), 0, std::sin(rad)) * 0.1f;

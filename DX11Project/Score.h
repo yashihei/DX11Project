@@ -6,8 +6,7 @@
 
 #pragma once
 
-class Score
-{
+class Score {
 public:
-	
+
 };

@@ -16,13 +16,10 @@
 #include "imgui/imgui_impl_dx11.h"
 #include "DirectXTK/CommonStates.h"
 
-App::App() :
-	m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)),
-	m_appName("SP4RK! [DX11]"), m_ScreenWidth(1280), m_ScreenHeight(720)
-{
-}
+App::App() : m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)), m_appName("SP4RK! [DX11]"), m_ScreenWidth(1280), m_ScreenHeight(720) {}
 
-App::~App() {
+App::~App()
+{
 	ImGui_ImplDX11_Shutdown();
 }
 
@@ -68,8 +65,7 @@ void App::frame()
 
 	//Scene change check (State pattern)
 	const auto nextScene = m_currentScene->update();
-	if (m_currentScene.get() != nextScene)
-	{
+	if (m_currentScene.get() != nextScene) {
 		m_currentScene.reset(nextScene);
 	}
 
@@ -143,8 +139,7 @@ LRESULT CALLBACK App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	ImGui_ImplDX11_WndProcHandler(hWnd, msg, wParam, lParam);
 
-	switch (msg)
-	{
+	switch (msg) {
 	case WM_ACTIVATEAPP:
 		DirectX::Mouse::ProcessMessage(msg, wParam, lParam);
 		DirectX::Keyboard::ProcessMessage(msg, wParam, lParam);
@@ -157,18 +152,18 @@ LRESULT CALLBACK App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_SYSKEYUP:
 		DirectX::Keyboard::ProcessMessage(msg, wParam, lParam);
 		return 0;
-    case WM_INPUT:
-    case WM_MOUSEMOVE:
-    case WM_LBUTTONDOWN:
-    case WM_LBUTTONUP:
-    case WM_RBUTTONDOWN:
-    case WM_RBUTTONUP:
-    case WM_MBUTTONDOWN:
-    case WM_MBUTTONUP:
-    case WM_MOUSEWHEEL:
-    case WM_XBUTTONDOWN:
-    case WM_XBUTTONUP:
-    case WM_MOUSEHOVER:
+	case WM_INPUT:
+	case WM_MOUSEMOVE:
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_RBUTTONDOWN:
+	case WM_RBUTTONUP:
+	case WM_MBUTTONDOWN:
+	case WM_MBUTTONUP:
+	case WM_MOUSEWHEEL:
+	case WM_XBUTTONDOWN:
+	case WM_XBUTTONUP:
+	case WM_MOUSEHOVER:
 		DirectX::Mouse::ProcessMessage(msg, wParam, lParam);
 		return 0;
 	case WM_DESTROY:
