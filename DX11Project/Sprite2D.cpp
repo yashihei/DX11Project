@@ -10,8 +10,10 @@
 #include <stdexcept>
 #include "SpriteEffect.h"
 
-namespace {
-	struct SpriteVertex {
+namespace
+{
+	struct SpriteVertex
+	{
 		Vector3 pos;
 		Vector2 uv;
 		Vector4 color;
@@ -36,7 +38,8 @@ Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> devi
 	UINT vpCount = 1;
 	D3D11_VIEWPORT vp = {};
 	m_deviceContext->RSGetViewports(&vpCount, &vp);
-	m_offset.x = vp.Width / 2.0f; m_offset.y = vp.Height / 2.0f;
+	m_offset.x = vp.Width / 2.0f;
+	m_offset.y = vp.Height / 2.0f;
 
 	const Matrix orthoMat = DirectX::XMMatrixOrthographicLH(vp.Width, vp.Height, 0, 1000.0f);
 	m_spriteEffect = std::make_shared<SpriteEffect>(m_device, m_deviceContext);
@@ -50,14 +53,15 @@ Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> devi
 void Sprite2D::draw(const Vector2& pos, float radian, float scale, const Color& color)
 {
 	std::vector<SpriteVertex> vertices {
-		{{-m_size.x / 2.0f, m_size.y / 2.0f,  0.0f}, {0.0f, 0.0f}, color},
-		{{m_size.x / 2.0f,  m_size.y / 2.0f,  0.0f}, {1.0f, 0.0f}, color},
-		{{-m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f}, {0.0f, 1.0f}, color},
-		{{m_size.x / 2.0f,  -m_size.y / 2.0f, 0.0f}, {1.0f, 1.0f}, color},
+		{ { -m_size.x / 2.0f, m_size.y / 2.0f, 0.0f }, { 0.0f, 0.0f }, color },
+		{ { m_size.x / 2.0f, m_size.y / 2.0f, 0.0f }, { 1.0f, 0.0f }, color },
+		{ { -m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f }, { 0.0f, 1.0f }, color },
+		{ { m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f }, { 1.0f, 1.0f }, color },
 	};
 
 	auto newPos = Vector2(pos.x - m_offset.x, -pos.y + m_offset.y);
-	for (auto& vertex : vertices) {
+	for (auto& vertex : vertices)
+	{
 		//scale * rot * trans
 		const Matrix trans = Matrix::CreateScale(scale) * Matrix::CreateRotationZ(radian) * Matrix::CreateTranslation(newPos.x, newPos.y, 0.0f);
 		Vector3::Transform(vertex.pos, trans, vertex.pos);
@@ -66,7 +70,8 @@ void Sprite2D::draw(const Vector2& pos, float radian, float scale, const Color& 
 	//update buffer
 	D3D11_MAPPED_SUBRESOURCE resource;
 	HRESULT hr = m_deviceContext->Map(m_vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-	if (SUCCEEDED(hr)) {
+	if (SUCCEEDED(hr))
+	{
 		SpriteVertex* data = reinterpret_cast<SpriteVertex*>(resource.pData);
 		memcpy(data, reinterpret_cast<void*>(vertices.data()), sizeof(SpriteVertex) * 4);
 		m_deviceContext->Unmap(m_vertexBuffer.Get(), 0);

@@ -14,7 +14,8 @@
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
-class Sprite {
+class Sprite
+{
 public:
 	Sprite(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, ComPtr<ID3D11ShaderResourceView> texture, CameraPtr camera);
 	void draw(const Vector3& pos, float scale);

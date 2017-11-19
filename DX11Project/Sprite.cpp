@@ -11,8 +11,10 @@
 #include <vector>
 #include <stdexcept>
 
-namespace {
-	struct SpriteVertex {
+namespace
+{
+	struct SpriteVertex
+	{
 		Vector3 pos;
 		Vector2 uv;
 		Vector4 color;
@@ -53,15 +55,16 @@ void Sprite::draw(const Vector3& pos, float scale)
 void Sprite::draw(const Vector3& pos, const Color& color, float scale)
 {
 	std::vector<SpriteVertex> vertices {
-		{{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f}, color},
-		{{ 0.5f,  0.5f, 0.0f}, {1.0f, 0.0f}, color},
-		{{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f}, color},
-		{{ 0.5f, -0.5f, 0.0f}, {1.0f, 1.0f}, color},
+		{ { -0.5f, 0.5f, 0.0f }, { 0.0f, 0.0f }, color },
+		{ { 0.5f, 0.5f, 0.0f }, { 1.0f, 0.0f }, color },
+		{ { -0.5f, -0.5f, 0.0f }, { 0.0f, 1.0f }, color },
+		{ { 0.5f, -0.5f, 0.0f }, { 1.0f, 1.0f }, color },
 	};
 
 	D3D11_MAPPED_SUBRESOURCE resource;
 	HRESULT hr = m_deviceContext->Map(m_vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-	if (SUCCEEDED(hr)) {
+	if (SUCCEEDED(hr))
+	{
 		SpriteVertex* data = reinterpret_cast<SpriteVertex*>(resource.pData);
 		memcpy(data, reinterpret_cast<void*>(vertices.data()), sizeof(SpriteVertex) * 4);
 		m_deviceContext->Unmap(m_vertexBuffer.Get(), 0);
@@ -79,10 +82,10 @@ void Sprite::createVertexBuffer()
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 	std::vector<SpriteVertex> vertices {
-		{{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f}, {1, 1, 1, 1}},
-		{{ 0.5f,  0.5f, 0.0f}, {1.0f, 0.0f}, {1, 1, 1, 1}},
-		{{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f}, {1, 1, 1, 1}},
-		{{ 0.5f, -0.5f, 0.0f}, {1.0f, 1.0f}, {1, 1, 1, 1}},
+		{ { -0.5f, 0.5f, 0.0f }, { 0.0f, 0.0f }, { 1, 1, 1, 1 } },
+		{ { 0.5f, 0.5f, 0.0f }, { 1.0f, 0.0f }, { 1, 1, 1, 1 } },
+		{ { -0.5f, -0.5f, 0.0f }, { 0.0f, 1.0f }, { 1, 1, 1, 1 } },
+		{ { 0.5f, -0.5f, 0.0f }, { 1.0f, 1.0f }, { 1, 1, 1, 1 } },
 	};
 
 	D3D11_SUBRESOURCE_DATA resource = {};

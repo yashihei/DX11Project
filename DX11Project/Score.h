@@ -9,5 +9,4 @@
 class Score
 {
 public:
-	
 };

@@ -34,7 +34,7 @@ Graphics::Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen
 
 void Graphics::beginScene()
 {
-	float color[] = {0.1f, 0.1f, 0.1f, 1};
+	float color[] = { 0.1f, 0.1f, 0.1f, 1 };
 	m_deviceContext->ClearRenderTargetView(m_renderTargetView.Get(), color);
 	m_deviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }

@@ -10,7 +10,8 @@
 #include <unordered_map>
 #include "DirectXTK/Audio.h"
 
-class AudioManager {
+class AudioManager
+{
 public:
 	AudioManager();
 	void update();

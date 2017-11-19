@@ -17,8 +17,10 @@ struct LightParam
 
 	LightParam(const Color& diffuse, const Color& ambient, const Vector3& direction)
 		: diffuse(diffuse),
-		  ambient(ambient),
-		  direction(direction) {}
+		ambient(ambient),
+		direction(direction)
+	{
+	}
 
 	Color diffuse;
 	Color ambient;

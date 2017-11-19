@@ -36,7 +36,9 @@ public:
 			moveDir.y = m_inputManager->getLeftThumbY();
 			fireDir.x = m_inputManager->getRightThumbX();
 			fireDir.y = m_inputManager->getRightThumbY();
-		} else {
+		}
+		else
+		{
 			moveDir.x = static_cast<float>(m_inputManager->isPressedRight() - m_inputManager->isPressedLeft());
 			moveDir.y = static_cast<float>(m_inputManager->isPressedUp() - m_inputManager->isPressedDown());
 			//TODO: FireDir from mousePos
@@ -53,7 +55,8 @@ public:
 
 	Vector3 getPos() const { return m_pos; }
 private:
-	void moveControl(Vector2& moveDir) {
+	void moveControl(Vector2& moveDir)
+	{
 		if (moveDir != Vector2::Zero)
 		{
 			moveDir.Normalize();
@@ -72,18 +75,22 @@ private:
 		m_rot.z -= m_vec.x * 0.5f;
 	}
 
-	void fire(Vector2& fireDir) {
+	void fire(Vector2& fireDir)
+	{
 		if (fireDir == Vector2::Zero)
 			return;
 
-		if (m_shotTimer.elapsed() < 0.05f) {
+		if (m_shotTimer.elapsed() < 0.05f)
+		{
 			return;
-		} else {
+		}
+		else
+		{
 			m_shotTimer.restart();
 		}
 
 		fireDir.Normalize();
-		
+
 		auto shot = std::make_shared<Shot>(m_sprite, m_pos, Vector3(fireDir.x, 0, fireDir.y));
 		m_shots->add(shot);
 	}

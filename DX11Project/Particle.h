@@ -10,13 +10,17 @@
 #include "Sprite.h"
 #include "Actor.h"
 
-class Particle : public Actor {
+class Particle : public Actor
+{
 public:
 	Particle(SpritePtr sprite, const Vector3& pos, const Vector3& vector, const Color& color, const float scale, bool gravity = false) :
 		m_sprite(sprite),
 		m_pos(pos), m_vector(vector), m_color(color), m_scale(scale), m_gravity(gravity)
-	{}
-	void update() override {
+	{
+	}
+
+	void update() override
+	{
 		m_pos += m_vector;
 		m_vector *= 0.90f;
 		m_scale *= 0.95f;
@@ -27,9 +31,12 @@ public:
 		if (m_gravity)
 			m_vector += Vector3(0, -0.1f, 0);
 	}
-	void draw() override {
+
+	void draw() override
+	{
 		m_sprite->draw(m_pos, m_color, m_scale);
 	}
+
 private:
 	SpritePtr m_sprite;
 	Vector3 m_pos, m_vector;

@@ -22,7 +22,8 @@ App::App() :
 {
 }
 
-App::~App() {
+App::~App()
+{
 	ImGui_ImplDX11_Shutdown();
 }
 
@@ -38,7 +39,8 @@ void App::run()
 
 	MSG msg = {};
 
-	try {
+	try
+	{
 		m_graphics = std::make_shared<Graphics>(m_ScreenWidth, m_ScreenHeight, m_hWnd, fullScreen);
 		m_inputManager = std::make_shared<InputManager>();
 		m_audioManager = std::make_shared<AudioManager>();
@@ -47,17 +49,24 @@ void App::run()
 
 		ImGui_ImplDX11_Init(m_hWnd, m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
 
-		while (msg.message != WM_QUIT) {
-			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+		while (msg.message != WM_QUIT)
+		{
+			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+			{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
-			} else {
+			}
+			else
+			{
 				frame();
 			}
 		}
-	} catch (const std::exception& error) {
+	}
+	catch (const std::exception& error)
+	{
 		MessageBox(NULL, error.what(), "Exception", MB_OK | MB_ICONERROR);
-	} catch (...) {
+	} catch (...)
+	{
 		MessageBox(NULL, "Unknown error", "Error", MB_OK | MB_ICONERROR);
 	}
 }
@@ -109,9 +118,12 @@ bool App::initWindow(bool fullScreen)
 	DWORD style;
 	RECT rc = { 0, 0, m_ScreenWidth, m_ScreenHeight };
 
-	if (fullScreen) {
+	if (fullScreen)
+	{
 		style = WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP;
-	} else {
+	}
+	else
+	{
 		style = WS_OVERLAPPEDWINDOW & ~(WS_MAXIMIZEBOX | WS_THICKFRAME);
 		AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 	}
@@ -157,18 +169,18 @@ LRESULT CALLBACK App::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_SYSKEYUP:
 		DirectX::Keyboard::ProcessMessage(msg, wParam, lParam);
 		return 0;
-    case WM_INPUT:
-    case WM_MOUSEMOVE:
-    case WM_LBUTTONDOWN:
-    case WM_LBUTTONUP:
-    case WM_RBUTTONDOWN:
-    case WM_RBUTTONUP:
-    case WM_MBUTTONDOWN:
-    case WM_MBUTTONUP:
-    case WM_MOUSEWHEEL:
-    case WM_XBUTTONDOWN:
-    case WM_XBUTTONUP:
-    case WM_MOUSEHOVER:
+	case WM_INPUT:
+	case WM_MOUSEMOVE:
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_RBUTTONDOWN:
+	case WM_RBUTTONUP:
+	case WM_MBUTTONDOWN:
+	case WM_MBUTTONUP:
+	case WM_MOUSEWHEEL:
+	case WM_XBUTTONDOWN:
+	case WM_XBUTTONUP:
+	case WM_MOUSEHOVER:
 		DirectX::Mouse::ProcessMessage(msg, wParam, lParam);
 		return 0;
 	case WM_DESTROY:

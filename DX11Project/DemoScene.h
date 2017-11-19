@@ -20,7 +20,8 @@
 using Microsoft::WRL::ComPtr;
 using namespace DirectX::SimpleMath;
 
-class DemoScene : public Scene {
+class DemoScene : public Scene
+{
 public:
 	DemoScene(
 		ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext,

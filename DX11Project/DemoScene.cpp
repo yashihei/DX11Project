@@ -18,13 +18,16 @@
 #include "DirectXTK/SpriteBatch.h"
 #include "DirectXTK/SpriteFont.h"
 
-inline bool IsCollied(const Vector3& pos1, const Vector3& pos2, float r1, float r2) {
+inline bool IsCollied(const Vector3& pos1, const Vector3& pos2, float r1, float r2)
+{
 	const Vector3 tmp = pos2 - pos1;
-	return tmp.x*tmp.x + tmp.y*tmp.y + tmp.z*tmp.z < (r1 + r2)*(r1 + r2);
+	return tmp.x * tmp.x + tmp.y * tmp.y + tmp.z * tmp.z < (r1 + r2) * (r1 + r2);
 }
 
-inline void emitPatricle(ParticleManagerPtr particles, SpritePtr sprite, int num, const Vector3& pos, const Color& color) {
-	for (int i = 0; i < num; i++) {
+inline void emitPatricle(ParticleManagerPtr particles, SpritePtr sprite, int num, const Vector3& pos, const Color& color)
+{
+	for (int i = 0; i < num; i++)
+	{
 		Quaternion rotate = Quaternion::CreateFromYawPitchRoll(Random(DirectX::XM_2PI), Random(DirectX::XM_2PI), Random(DirectX::XM_2PI));
 		Vector3 vec(0.75f, 0, 0);
 		vec = Vector3::Transform(vec, rotate);
@@ -93,7 +96,8 @@ Scene* DemoScene::update()
 	//bomb
 	if (m_inputManager->isClicledButton1() || m_enemies->size() > 20)
 	{
-		for (auto& enemy : *m_enemies) {
+		for (auto& enemy : *m_enemies)
+		{
 			emitPatricle(m_particles, m_particleSprite, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
 		}
 		m_enemies->clear();
@@ -104,13 +108,14 @@ Scene* DemoScene::update()
 		m_camera->pos = Vector3(0, 30, -40);
 	else
 		m_camera->pos = Vector3(0, 50, 0);
-	
+
 	//shot vs enemy
 	for (auto& shot : *m_shots)
 	{
 		for (auto& enemy : *m_enemies)
 		{
-			if (IsCollied(shot->getPos(), enemy->getPos(), 1.0f, 1.0f)) {
+			if (IsCollied(shot->getPos(), enemy->getPos(), 1.0f, 1.0f))
+			{
 				enemy->kill();
 				emitPatricle(m_particles, m_particleSprite, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
 			}
@@ -142,7 +147,7 @@ void DemoScene::draw()
 
 	//draw tile
 	m_deviceContext->RSSetState(m_states->Wireframe());
-	m_tiledModel->draw(Vector3::Zero, Vector3::Zero, Vector3::One*2);
+	m_tiledModel->draw(Vector3::Zero, Vector3::Zero, Vector3::One * 2);
 	m_deviceContext->RSSetState(m_states->CullClockwise());
 
 	//draw text
