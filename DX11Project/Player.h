@@ -76,10 +76,10 @@ private:
 		if (fireDir == Vector2::Zero)
 			return;
 
-		if (m_shotTimer.elapsed() > 0.05f)
-		{
-			m_shotTimer.restart();
+		if (m_shotTimer.elapsed() < 0.05f) {
 			return;
+		} else {
+			m_shotTimer.restart();
 		}
 
 		fireDir.Normalize();
