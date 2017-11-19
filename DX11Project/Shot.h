@@ -27,6 +27,8 @@ public:
 	{
 		m_sprite->draw(m_pos, Color(1.0f, 0.7f, 0.0f), 0.5f);
 	}
+
+	Vector3 getPos() const { return m_pos; }
 private:
 	SpritePtr m_sprite;
 	Vector3 m_pos, m_vec;
