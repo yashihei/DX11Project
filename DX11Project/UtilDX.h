@@ -24,26 +24,25 @@ inline Color GetColorFromHSV(float h_, float s_, float v_, float alpha = 1.0f)
 	const int hueI = static_cast<int>(hueF);
 	const float fr = hueF - hueI;
 	const float m = v_ * (1.0f - s_);
-	const float n = v_ * (1.0f - s_ * fr);
-	const float p = v_ * (1.0f - s_ * (1.0f - fr));
+	const float n = v_ * (1.0f - s_*fr);
+	const float p = v_ * (1.0f - s_*(1.0f - fr));
 
 	Color color;
 	color.w = alpha;
 
-	switch (hueI)
-	{
-		case 0: color.x = v; color.y = p; color.z = m; break;
-		case 1: color.x = n; color.y = v; color.z = m; break;
-		case 2: color.x = m; color.y = v; color.z = p; break;
-		case 3: color.x = m; color.y = n; color.z = v; break;
-		case 4: color.x = p; color.y = m; color.z = v; break;
+	switch (hueI) {
+		case 0:  color.x = v; color.y = p; color.z = m; break;
+		case 1:  color.x = n; color.y = v; color.z = m; break;
+		case 2:  color.x = m; color.y = v; color.z = p; break;
+		case 3:  color.x = m; color.y = n; color.z = v; break;
+		case 4:  color.x = p; color.y = m; color.z = v; break;
 		default: color.x = v; color.y = m; color.z = n; break;
 	}
 
 	return color;
 }
 
-inline void CompileFromFile(WCHAR* filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob** blobOut)
+inline void CompileFromFile(WCHAR * filePath, LPCSTR entryPoint, LPCSTR shaderModel, ID3DBlob ** blobOut)
 {
 	DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS;
 	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob;
@@ -59,7 +58,7 @@ inline void CompileFromFile(WCHAR* filePath, LPCSTR entryPoint, LPCSTR shaderMod
 		throw std::runtime_error((char*)errorBlob->GetBufferPointer());
 }
 
-inline void CreateConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteSize, ID3D11Buffer** constantBuffer)
+inline void CreateConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteSize, ID3D11Buffer ** constantBuffer)
 {
 	D3D11_BUFFER_DESC constantBufferDesc = {};
 	constantBufferDesc.ByteWidth = byteSize;

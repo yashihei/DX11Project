@@ -12,8 +12,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class Graphics
-{
+class Graphics {
 public:
 	Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen);
 	void beginScene();

@@ -10,10 +10,8 @@
 #include <stdexcept>
 #include "UtilDX.h"
 
-namespace
-{
-	struct ConstantBuffer
-	{
+namespace {
+	struct ConstantBuffer {
 		Matrix world;
 		Matrix view;
 		Matrix proj;
@@ -31,7 +29,7 @@ SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceConte
 	HRESULT hr = m_device->CreateVertexShader(VSbuffer->GetBufferPointer(), VSbuffer->GetBufferSize(), NULL, &m_vertexShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreateVertexShader() Failed.");
-
+	
 	//create ps
 	ComPtr<ID3DBlob> PSBuffer;
 	CompileFromFile(filePath, "PS", "ps_5_0", &PSBuffer);
@@ -41,9 +39,9 @@ SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceConte
 
 	//create input layout
 	const D3D11_INPUT_ELEMENT_DESC layout[] = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
 	const UINT numElement = _countof(layout);
 
@@ -78,14 +76,13 @@ SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceConte
 		throw std::runtime_error("CreateSamplerState() Failed.");
 }
 
-void SpriteEffect::setParam(const Matrix& world, const Matrix& view, const Matrix& proj)
+void SpriteEffect::setParam(const Matrix & world, const Matrix & view, const Matrix & proj)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	//コンスタントバッファ書き換え
 	HRESULT hr = m_deviceContext->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-	if (SUCCEEDED(hr))
-	{
+	if (SUCCEEDED(hr)) {
 		ConstantBuffer* data = reinterpret_cast<ConstantBuffer*>(resource.pData);
 		data->world = world;
 		data->view = view;

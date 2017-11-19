@@ -13,8 +13,7 @@
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
-class BasicEffect
-{
+class BasicEffect {
 public:
 	BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
 	void setObjectParams(const Matrix& world, const Matrix& view, const Matrix& proj);

@@ -13,8 +13,7 @@
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
-class SpriteEffect
-{
+class SpriteEffect {
 public:
 	SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
 	void setParam(const Matrix& world, const Matrix& view, const Matrix& proj);

@@ -75,28 +75,24 @@ void Model::createFromObj(const std::string& filePath)
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
-
+	
 	std::string err;
 	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filePath.c_str(), GetDirPath(filePath).c_str());
-	if (!err.empty())
-	{
+	if (!err.empty()) {
 		throw std::runtime_error(filePath + " Load Failed.");
 	}
 
 	//Loop over shapes (g or o)
-	for (unsigned int s = 0; s < shapes.size(); s++)
-	{
+	for (unsigned int s = 0; s < shapes.size(); s++) {
 		std::vector<ModelVertex> vertices;
 		std::vector<unsigned long> indices;
 		int materialID = shapes[s].mesh.material_ids[0];
 		int indexOffset = 0, indexCount = 0;
 
 		//Loop over faces
-		for (unsigned int f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++)
-		{
+		for (unsigned int f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
 			//ƒ}ƒeƒŠƒAƒ‹‚ªˆÙ‚È‚éê‡mesh‚ð•ªŠ„‚·‚é
-			if (materialID != shapes[s].mesh.material_ids[f])
-			{
+			if (materialID != shapes[s].mesh.material_ids[f]) {
 				auto mesh = std::make_shared<Mesh>(m_device, vertices, indices, materialID);
 				m_meshes.push_back(mesh);
 				//reset
@@ -107,8 +103,7 @@ void Model::createFromObj(const std::string& filePath)
 
 			//Loop over vertices in the
 			const int fv = shapes[s].mesh.num_face_vertices[f];
-			for (int v = 0; v < fv; v++)
-			{
+			for (int v = 0; v < fv; v++) {
 				const auto idx = shapes[s].mesh.indices[indexOffset + v];
 
 				Vector3 pos = {};
@@ -117,20 +112,16 @@ void Model::createFromObj(const std::string& filePath)
 				pos.z = attrib.vertices[3 * idx.vertex_index + 2];
 
 				Vector3 normal = {};
-				if (attrib.normals.size() > 0)
-				{
+				if (attrib.normals.size() > 0) {
 					normal.x = attrib.normals[3 * idx.normal_index + 0];
 					normal.y = attrib.normals[3 * idx.normal_index + 1];
 					normal.z = attrib.normals[3 * idx.normal_index + 2];
-				}
-				else
-				{
+				} else {
 					//TODO: calc normal
 				}
 
 				Vector2 texCoord = {};
-				if (attrib.texcoords.size() > 0)
-				{
+				if (attrib.texcoords.size() > 0) {
 					texCoord.x = attrib.texcoords[2 * idx.texcoord_index + 0];
 					texCoord.y = attrib.texcoords[2 * idx.texcoord_index + 1];
 				}
@@ -151,7 +142,7 @@ void Model::createFromObj(const std::string& filePath)
 
 	//Calc bounds
 	std::vector<Vector3> points;
-	for (unsigned int i = 0; i < attrib.vertices.size() / 3; i++)
+	for (unsigned int i = 0; i < attrib.vertices.size()/3; i++)
 	{
 		points.emplace_back(attrib.vertices[3 * i + 0], attrib.vertices[3 * i + 1], attrib.vertices[3 * i + 2]);
 	}
@@ -162,8 +153,7 @@ void Model::createFromObj(const std::string& filePath)
 	m_textures["nulltex"] = nulltex;
 
 	const auto rootDir = GetDirPath(filePath);
-	for (unsigned int i = 0; i < materials.size(); i++)
-	{
+	for (unsigned int i = 0; i < materials.size(); i++) {
 		const auto texName = materials[i].diffuse_texname;
 		if (!texName.empty())
 		{
@@ -174,8 +164,7 @@ void Model::createFromObj(const std::string& filePath)
 	}
 
 	//Load material
-	for (unsigned int i = 0; i < materials.size(); i++)
-	{
+	for (unsigned int i = 0; i < materials.size(); i++) {
 		const Material mat {
 			{
 				materials[i].diffuse[0],
@@ -218,15 +207,14 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 	m_effect->setLightParams(m_light->diffuse, m_light->ambient, m_light->direction);
 	m_effect->setObjectParams(world.Transpose(), view.Transpose(), proj.Transpose());
 
-	for (auto& mesh : m_meshes)
-	{
+	for (auto& mesh : m_meshes) {
 		auto mat = m_materials[mesh->getMatID()];
 
 		if (!mat.textureName.empty())
 			m_effect->setTexture(m_textures[mat.textureName]);
 		else
 			m_effect->setTexture(m_textures["nulltex"]);
-
+		
 		m_effect->setMaterialParams(mat.diffuse, mat.ambient, mat.specular, mat.power);
 		m_effect->apply();
 

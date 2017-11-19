@@ -6,8 +6,7 @@
 
 #pragma once
 
-class Scene
-{
+class Scene {
 public:
 	Scene() = default;
 	virtual ~Scene() = default;

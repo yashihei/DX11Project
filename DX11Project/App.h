@@ -11,8 +11,7 @@
 #include <memory>
 #include "Fwd.h"
 
-class App
-{
+class App {
 public:
 	App();
 	~App();

@@ -12,25 +12,21 @@
 #include "UtilDX.h"
 
 #pragma pack(push, 1)
-namespace
-{
-	struct ObjectConstants
-	{
+namespace {
+	struct ObjectConstants {
 		Matrix world;
 		Matrix view;
 		Matrix proj;
 	};
 
-	struct LightConstants
-	{
+	struct LightConstants {
 		Vector4 diffuseLight;
 		Vector4 ambientLight;
 		Vector3 lightDirection;
 		float padding;
 	};
 
-	struct MaterialConstants
-	{
+	struct MaterialConstants {
 		Vector4 diffuseMaterial;
 		Vector4 ambientMaterial;
 		Vector4 specularMaterial;
@@ -50,7 +46,7 @@ ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 	HRESULT hr = m_device->CreateVertexShader(VSbuffer->GetBufferPointer(), VSbuffer->GetBufferSize(), NULL, &m_vertexShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreateVertexShader() Failed.");
-
+	
 	//create ps
 	ComPtr<ID3DBlob> PSBuffer;
 	CompileFromFile(filePath, "PS", "ps_5_0", &PSBuffer);
@@ -65,9 +61,9 @@ ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 
 	//create input layout
 	const D3D11_INPUT_ELEMENT_DESC layout[] = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
 	const UINT numElement = _countof(layout);
 
@@ -85,8 +81,7 @@ void ToonEffect::setObjectParams(const Matrix& world, const Matrix& view, const 
 	//コンスタントバッファ書き換え
 	//TODO: apply時にコンスタントバッファ書き換えるように
 	HRESULT hr = m_deviceContext->Map(m_constantBufferObject.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-	if (SUCCEEDED(hr))
-	{
+	if (SUCCEEDED(hr)) {
 		ObjectConstants* data = reinterpret_cast<ObjectConstants*>(resource.pData);
 		data->world = world;
 		data->view = view;
@@ -100,8 +95,7 @@ void ToonEffect::setLightParams(const Vector4& diffuse, const Vector4& ambient, 
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	HRESULT hr = m_deviceContext->Map(m_constantBufferLight.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-	if (SUCCEEDED(hr))
-	{
+	if (SUCCEEDED(hr)) {
 		LightConstants* data = reinterpret_cast<LightConstants*>(resource.pData);
 		data->diffuseLight = diffuse;
 		data->ambientLight = ambient;
@@ -116,8 +110,7 @@ void ToonEffect::setMaterialParams(const Vector4& diffuse, const Vector4& ambien
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	HRESULT hr = m_deviceContext->Map(m_constantBufferMaterial.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-	if (SUCCEEDED(hr))
-	{
+	if (SUCCEEDED(hr)) {
 		MaterialConstants* data = reinterpret_cast<MaterialConstants*>(resource.pData);
 		data->diffuseMaterial = diffuse;
 		data->ambientMaterial = ambient;

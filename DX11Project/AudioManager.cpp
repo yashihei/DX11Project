@@ -8,8 +8,7 @@
 
 #include "UtilStr.h"
 
-AudioManager::AudioManager()
-{
+AudioManager::AudioManager() {
 	CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 	DirectX::AUDIO_ENGINE_FLAGS flags = DirectX::AudioEngine_Default;
 #ifdef _DEBUG
@@ -20,10 +19,8 @@ AudioManager::AudioManager()
 
 void AudioManager::update()
 {
-	if (!m_audioEngine->Update())
-	{
-		if (m_audioEngine->IsCriticalError())
-		{
+	if (!m_audioEngine->Update()) {
+		if (m_audioEngine->IsCriticalError()) {
 			//throw
 		}
 	}
@@ -46,8 +43,7 @@ void AudioManager::play(const std::string& alias, bool loop, float volume, float
 	assert(m_soundEffects.count(alias) != 0);
 
 	//ポーズ中なら再開する
-	if (m_soundEffectsInstance[alias]->GetState() == DirectX::SoundState::PAUSED)
-	{
+	if (m_soundEffectsInstance[alias]->GetState() == DirectX::SoundState::PAUSED) {
 		m_soundEffectsInstance[alias]->Resume();
 		return;
 	}
@@ -60,8 +56,7 @@ void AudioManager::play(const std::string& alias, bool loop, float volume, float
 void AudioManager::pause(const std::string& alias)
 {
 	assert(m_soundEffects.count(alias) != 0);
-	if (m_soundEffectsInstance[alias]->GetState() == DirectX::SoundState::PLAYING)
-	{
+	if (m_soundEffectsInstance[alias]->GetState() == DirectX::SoundState::PLAYING) {
 		m_soundEffectsInstance[alias]->Pause();
 	}
 }
@@ -69,8 +64,7 @@ void AudioManager::pause(const std::string& alias)
 void AudioManager::stop(const std::string& alias)
 {
 	assert(m_soundEffects.count(alias) != 0);
-	if (m_soundEffectsInstance[alias]->GetState() == DirectX::SoundState::PLAYING)
-	{
+	if (m_soundEffectsInstance[alias]->GetState() == DirectX::SoundState::PLAYING) {
 		m_soundEffectsInstance[alias]->Stop();
 	}
 }
@@ -78,8 +72,7 @@ void AudioManager::stop(const std::string& alias)
 void AudioManager::setVolume(const std::string& alias, float volume)
 {
 	assert(m_soundEffects.count(alias) != 0);
-	if (m_soundEffectsInstance[alias]->GetState() == DirectX::SoundState::PLAYING)
-	{
+	if (m_soundEffectsInstance[alias]->GetState() == DirectX::SoundState::PLAYING) {
 		m_soundEffectsInstance[alias]->SetVolume(volume);
 	}
 }
