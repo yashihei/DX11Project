@@ -66,12 +66,13 @@ DemoScene::DemoScene(
 
 	auto tex = CreateShaderResourceViewFromFile(m_device, L"assets/circle.png");
 	m_particleSprite = std::make_shared<Sprite>(m_device, m_deviceContext, tex, m_camera);
+	m_shotSprite = std::make_shared<Sprite>(m_device, m_deviceContext, tex, m_camera);
 
 	m_fontCanvas = std::make_shared<DirectX::SpriteBatch>(m_deviceContext.Get());
 	m_font = std::make_shared<DirectX::SpriteFont>(m_device.Get(), L"assets/orbitron.spritefont");
 
 	m_shots = std::make_shared<ActorManager<Shot>>();
-	m_player = std::make_shared<Player>(m_inputManager, m_playerModel, m_shots, m_particleSprite);
+	m_player = std::make_shared<Player>(m_inputManager, m_playerModel, m_shots, m_shotSprite);
 	m_enemies = std::make_shared<ActorManager<Enemy>>();
 	m_particles = std::make_shared<ActorManager<Particle>>();
 }

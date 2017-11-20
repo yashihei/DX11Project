@@ -36,7 +36,7 @@ private:
 	CameraPtr m_camera;
 	LightParamPtr m_light;
 	ModelPtr m_playerModel, m_enemyModel, m_tiledModel;
-	SpritePtr m_particleSprite;
+	SpritePtr m_particleSprite, m_shotSprite;
 	SpriteBatchPtr m_fontCanvas;
 	SpriteFontPtr m_font;
 	boost::timer m_spawnTimer;

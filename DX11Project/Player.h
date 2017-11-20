@@ -15,8 +15,8 @@
 
 class Player : public Actor {
 public:
-	Player(InputManagerPtr inputManager, ModelPtr model, ShotManagerPtr shots, SpritePtr sprite) :
-		m_inputManager(inputManager), m_model(model), m_sprite(sprite), m_shots(shots),
+	Player(InputManagerPtr inputManager, ModelPtr model, ShotManagerPtr shots, SpritePtr shotSprite) :
+		m_inputManager(inputManager), m_model(model), m_shotSprite(shotSprite), m_shots(shots),
 		m_pos(Vector3::Zero), m_rot(Vector3::Zero), m_vec(Vector3::Zero) {}
 
 	void update() override
@@ -78,13 +78,13 @@ private:
 
 		fireDir.Normalize();
 
-		auto shot = std::make_shared<Shot>(m_sprite, m_pos, Vector3(fireDir.x, 0, fireDir.y));
+		auto shot = std::make_shared<Shot>(m_shotSprite, m_pos, Vector3(fireDir.x, 0, fireDir.y));
 		m_shots->add(shot);
 	}
 
 	InputManagerPtr m_inputManager;
 	ModelPtr m_model;
-	SpritePtr m_sprite;
+	SpritePtr m_shotSprite;
 	ShotManagerPtr m_shots;
 	Vector3 m_pos, m_rot, m_vec;
 	boost::timer m_shotTimer;
