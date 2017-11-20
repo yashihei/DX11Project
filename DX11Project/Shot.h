@@ -8,6 +8,7 @@
 
 #include "Actor.h"
 #include "Sprite.h"
+#include <boost/timer.hpp>
 
 class Shot : public Actor {
 public:
@@ -17,6 +18,10 @@ public:
 	void update() override
 	{
 		m_pos += m_vec;
+
+		if (m_lifeTimer.elapsed() > 5.0f) {
+			kill();
+		}
 	}
 
 	void draw() override
@@ -28,6 +33,7 @@ public:
 private:
 	SpritePtr m_sprite;
 	Vector3 m_pos, m_vec;
+	boost::timer m_lifeTimer;
 };
 
 using ShotManagerPtr = std::shared_ptr<ActorManager<Shot>>;
