@@ -119,6 +119,7 @@ Scene* DemoScene::update()
 	const auto playerPos = m_player->getPos();
 	ImGui::Begin("DebugPanel");
 	ImGui::Text("PlayerPos : %f, %f, %f", playerPos.x, playerPos.y, playerPos.z);
+	ImGui::Text("ShotNum : %d", m_shots->size());
 	ImGui::Text("EnemyNum : %d", m_enemies->size());
 	ImGui::Text("ParticleNum : %d", m_particles->size());
 	ImGui::End();
