@@ -10,6 +10,7 @@
 #include "Graphics.h"
 #include "InputManager.h"
 #include "AudioManager.h"
+#include "FPSManager.h"
 #include <DirectXTK/Keyboard.h>
 #include <DirectXTK/Mouse.h>
 #include <imgui/imgui.h>
@@ -41,6 +42,7 @@ void App::run()
 		m_audioManager = std::make_shared<AudioManager>();
 		m_states = std::make_shared<DirectX::CommonStates>(m_graphics->getDevice().Get());
 		m_currentScene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext(), m_inputManager, m_audioManager, m_states);
+		m_fpsManager = std::make_shared<FPSManager>();
 
 		ImGui_ImplDX11_Init(m_hWnd, m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
 
@@ -76,6 +78,8 @@ void App::frame()
 	m_currentScene->draw();
 	ImGui::Render();
 	m_graphics->endScene();
+
+	//m_fpsManager->sync(60);
 }
 
 bool App::registerWndClass()

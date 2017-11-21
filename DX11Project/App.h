@@ -32,4 +32,5 @@ private:
 	AudioManagerPtr m_audioManager;
 	CommonStatesPtr m_states;
 	ScenePtr m_currentScene;
+	FPSManagerPtr m_fpsManager;
 };

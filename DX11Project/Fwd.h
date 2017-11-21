@@ -9,6 +9,7 @@
 class BasicEffect;
 class SpriteEffect;
 class ToonEffect;
+
 class Model;
 class Sprite;
 class Sprite2D;
@@ -18,6 +19,7 @@ struct LightParam;
 class Camera;
 class InputManager;
 class AudioManager;
+class FPSManager;
 
 namespace DirectX {
 	class CommonStates;
