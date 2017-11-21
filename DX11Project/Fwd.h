@@ -27,6 +27,7 @@ namespace DirectX {
 	class SpriteBatch;
 }
 
+//TODO:alias.h
 using BasicEffectPtr = std::shared_ptr<BasicEffect>;
 using SpriteEffectPtr = std::shared_ptr<SpriteEffect>;
 using ToonEffectPtr = std::shared_ptr<ToonEffect>;

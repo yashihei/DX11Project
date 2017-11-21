@@ -16,7 +16,7 @@
 #include "imgui/imgui_impl_dx11.h"
 #include "DirectXTK/CommonStates.h"
 
-App::App() : m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)), m_appName("SP4RK! [DX11]"), m_ScreenWidth(1280), m_ScreenHeight(720) {}
+App::App() : m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)), m_ScreenWidth(1280), m_ScreenHeight(720), m_appName("SP4RK! [DX11]") {}
 
 App::~App()
 {

@@ -13,7 +13,7 @@ using RNG = std::mt19937;
 //®”Œ^ -> int_distirbutionA•‚“®¬”“_Œ^ -> real_distribution
 template <class Type>
 using distribution_type =
-std::conditional_t<std::is_floating_point<Type>::value,
+	std::conditional_t<std::is_floating_point<Type>::value,
 	std::uniform_real_distribution<Type>,
 	std::uniform_int_distribution<Type>>;
 

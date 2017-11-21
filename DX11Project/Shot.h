@@ -19,7 +19,7 @@ public:
 	{
 		m_pos += m_vec;
 
-		if (m_lifeTimer.elapsed() > 5.0f) {
+		if (m_lifeTimer.elapsed() > 2.5f) {
 			kill();
 		}
 	}
