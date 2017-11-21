@@ -8,8 +8,7 @@
 
 #include <d3d11.h>
 #include <DirectXTK/SimpleMath.h>
-
-using namespace DirectX::SimpleMath;
+#include "MathAlias.h"
 
 class Camera {
 public:

@@ -24,6 +24,9 @@
     <Filter Include="App\Scene">
       <UniqueIdentifier>{652056c6-9094-409b-810d-c4f12c4fc977}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HKSEngine\Alias">
+      <UniqueIdentifier>{ced0d857-112a-4598-a517-7ba889d94aa7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -65,9 +68,6 @@
       <Filter>HKSEngine</Filter>
     </ClInclude>
     <ClInclude Include="Actor.h">
-      <Filter>HKSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="AliasMath.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
     <ClInclude Include="AudioManager.h">
@@ -115,9 +115,6 @@
     <ClInclude Include="Sprite2D.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Types.h">
-      <Filter>HKSEngine</Filter>
-    </ClInclude>
     <ClInclude Include="UtilDX.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
@@ -153,6 +150,15 @@
     </ClInclude>
     <ClInclude Include="DemoScene.h">
       <Filter>App\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MathAlias.h">
+      <Filter>HKSEngine\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>HKSEngine\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="PtrAlias.h">
+      <Filter>HKSEngine\Alias</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

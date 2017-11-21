@@ -9,16 +9,15 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 #include <boost/timer.hpp>
-#include <DirectXTK/SimpleMath.h>
-#include "Scene.h"
 #include "Fwd.h"
+#include "PtrAlias.h"
+#include "Scene.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Particle.h"
 #include "Shot.h"
 
 using Microsoft::WRL::ComPtr;
-using namespace DirectX::SimpleMath;
 
 class DemoScene : public Scene {
 public:

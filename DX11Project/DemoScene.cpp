@@ -14,6 +14,8 @@
 #include "Random.h"
 #include "ShaderRV.h"
 #include "imgui/imgui.h"
+#include "MathAlias.h"
+#include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/CommonStates.h>
 #include <DirectXTK/SpriteBatch.h>
 #include <DirectXTK/SpriteFont.h>

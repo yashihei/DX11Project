@@ -10,8 +10,9 @@
 #include <wrl/client.h>
 #include <DirectXTK/SimpleMath.h>
 #include "Fwd.h"
+#include "PtrAlias.h"
+#include "MathAlias.h"
 
-using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
 class Sprite2D {

@@ -10,6 +10,7 @@
 #include <string>
 #include <memory>
 #include "Fwd.h"
+#include "PtrAlias.h"
 
 class App {
 public:

@@ -9,8 +9,8 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 #include <DirectXTK/SimpleMath.h>
+#include "MathAlias.h"
 
-using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
 class BasicEffect {

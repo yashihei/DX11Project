@@ -11,8 +11,8 @@
 #include <wrl/client.h>
 #include <stdexcept>
 #include <DirectXTK/SimpleMath.h>
+#include "MathAlias.h"
 
-using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
 inline Color GetColorFromHSV(float h_, float s_, float v_, float alpha = 1.0f)
