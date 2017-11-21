@@ -64,9 +64,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UtilStr.h">
-      <Filter>HKSEngine</Filter>
-    </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
@@ -115,12 +112,6 @@
     <ClInclude Include="Sprite2D.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="UtilDX.h">
-      <Filter>HKSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="UtilFunc.h">
-      <Filter>HKSEngine</Filter>
-    </ClInclude>
     <ClInclude Include="BasicEffect.h">
       <Filter>HKSEngine\Effects</Filter>
     </ClInclude>
@@ -159,6 +150,18 @@
     </ClInclude>
     <ClInclude Include="PtrAlias.h">
       <Filter>HKSEngine\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilDX.h">
+      <Filter>HKSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilFunc.h">
+      <Filter>HKSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilStr.h">
+      <Filter>HKSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Locator.h">
+      <Filter>HKSEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
