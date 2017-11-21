@@ -9,7 +9,7 @@
 #include <wrl/client.h>
 #include <stdexcept>
 #include <Shlwapi.h>
-#include "DirectXTex/DirectXTex.h"
+#include <DirectXTex/DirectXTex.h>
 #include "UtilStr.h"
 #include "Log.h"
 

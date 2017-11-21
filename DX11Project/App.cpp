@@ -10,11 +10,11 @@
 #include "Graphics.h"
 #include "InputManager.h"
 #include "AudioManager.h"
-#include "DirectXTK/Keyboard.h"
-#include "DirectXTK/Mouse.h"
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_dx11.h"
-#include "DirectXTK/CommonStates.h"
+#include <DirectXTK/Keyboard.h>
+#include <DirectXTK/Mouse.h>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_dx11.h>
+#include <DirectXTK/CommonStates.h>
 
 App::App() : m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)), m_ScreenWidth(1280), m_ScreenHeight(720), m_appName("SP4RK! [DX11]") {}
 

@@ -70,11 +70,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\boost\boost_1_65_1;$(IncludePath)</IncludePath>
+    <IncludePath>C:\boost\boost_1_65_1;.\Include;$(IncludePath)</IncludePath>
     <LibraryPath>.\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\boost\boost_1_65_1;$(IncludePath)</IncludePath>
+    <IncludePath>C:\boost\boost_1_65_1;.\Include;$(IncludePath)</IncludePath>
     <LibraryPath>.\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

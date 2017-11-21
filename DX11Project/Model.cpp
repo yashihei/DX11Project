@@ -11,9 +11,9 @@
 #include "Camera.h"
 #include "LightParam.h"
 #include "UtilStr.h"
-#include "DirectXTK/CommonStates.h"
+#include <DirectXTK/CommonStates.h>
 #define TINYOBJLOADER_IMPLEMENTATION
-#include "ObjLoader/tiny_obj_loader.h"
+#include <ObjLoader/tiny_obj_loader.h>
 
 Mesh::Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std::vector<unsigned long>& indices, int materialID) :
 	m_indexCount(indices.size()), m_materialID(materialID)

@@ -8,7 +8,7 @@
 
 #include <d3d11.h>
 #include <wrl/client.h>
-#include "DirectXTK/SimpleMath.h"
+#include <DirectXTK/SimpleMath.h>
 #include "Fwd.h"
 
 using namespace DirectX::SimpleMath;

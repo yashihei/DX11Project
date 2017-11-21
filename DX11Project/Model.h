@@ -11,8 +11,8 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
-#include "DirectXTK/SimpleMath.h"
-#include "DirectXTK/VertexTypes.h"
+#include <DirectXTK/SimpleMath.h>
+#include <DirectXTK/VertexTypes.h>
 #include "Fwd.h"
 
 using namespace DirectX::SimpleMath;

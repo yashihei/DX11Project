@@ -7,8 +7,8 @@
 #pragma once
 
 #include <memory>
-#include "DirectXTK/Keyboard.h"
-#include "DirectXTK/GamePad.h"
+#include <DirectXTK/Keyboard.h>
+#include <DirectXTK/GamePad.h>
 
 class InputManager {
 public:

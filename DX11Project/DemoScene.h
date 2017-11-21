@@ -9,7 +9,7 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 #include <boost/timer.hpp>
-#include "DirectXTK/SimpleMath.h"
+#include <DirectXTK/SimpleMath.h>
 #include "Scene.h"
 #include "Fwd.h"
 #include "Player.h"

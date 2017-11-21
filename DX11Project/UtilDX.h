@@ -10,7 +10,7 @@
 #include <d3dcompiler.h>
 #include <wrl/client.h>
 #include <stdexcept>
-#include "DirectXTK/SimpleMath.h"
+#include <DirectXTK/SimpleMath.h>
 
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;

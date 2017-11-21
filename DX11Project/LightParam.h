@@ -7,7 +7,7 @@
 #pragma once
 
 #include <d3d11.h>
-#include "DirectXTK/SimpleMath.h"
+#include <DirectXTK/SimpleMath.h>
 
 using namespace DirectX::SimpleMath;
 

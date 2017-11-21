@@ -14,9 +14,9 @@
 #include "Random.h"
 #include "ShaderRV.h"
 #include "imgui/imgui.h"
-#include "DirectXTK/CommonStates.h"
-#include "DirectXTK/SpriteBatch.h"
-#include "DirectXTK/SpriteFont.h"
+#include <DirectXTK/CommonStates.h>
+#include <DirectXTK/SpriteBatch.h>
+#include <DirectXTK/SpriteFont.h>
 
 inline bool IsCollied(const Vector3& pos1, const Vector3& pos2, float r1, float r2)
 {
