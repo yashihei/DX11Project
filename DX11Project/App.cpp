@@ -41,8 +41,8 @@ void App::run()
 		m_inputManager = std::make_shared<InputManager>();
 		m_audioManager = std::make_shared<AudioManager>();
 		m_states = std::make_shared<DirectX::CommonStates>(m_graphics->getDevice().Get());
-		m_currentScene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext(), m_inputManager, m_audioManager, m_states);
 		m_fpsManager = std::make_shared<FPSManager>();
+		m_currentScene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext(), m_inputManager, m_audioManager, m_states);
 
 		ImGui_ImplDX11_Init(m_hWnd, m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
 
@@ -74,12 +74,16 @@ void App::frame()
 	m_inputManager->update();
 	m_audioManager->update();
 
+	ImGui::Begin("DebugPanel");
+	ImGui::Text("FPS : %2.1f", m_fpsManager->getFps());
+	ImGui::End();
+
 	m_graphics->beginScene();
 	m_currentScene->draw();
 	ImGui::Render();
 	m_graphics->endScene();
 
-	//m_fpsManager->sync(60);
+	m_fpsManager->sync(60);
 }
 
 bool App::registerWndClass()

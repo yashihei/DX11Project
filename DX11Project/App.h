@@ -31,6 +31,6 @@ private:
 	InputManagerPtr m_inputManager;
 	AudioManagerPtr m_audioManager;
 	CommonStatesPtr m_states;
-	ScenePtr m_currentScene;
 	FPSManagerPtr m_fpsManager;
+	ScenePtr m_currentScene;
 };
