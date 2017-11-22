@@ -164,7 +164,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="ShaderRV.h" />
-    <ClInclude Include="Shot.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprite2D.h" />

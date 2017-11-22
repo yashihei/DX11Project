@@ -136,9 +136,6 @@
     <ClInclude Include="Score.h">
       <Filter>App\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Shot.h">
-      <Filter>App\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>App\Actor</Filter>
     </ClInclude>
@@ -171,6 +168,9 @@
     </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>HKSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>App\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

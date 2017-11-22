@@ -68,13 +68,13 @@ DemoScene::DemoScene(
 
 	auto tex = CreateShaderResourceViewFromFile(m_device, L"assets/circle.png");
 	m_particleSprite = std::make_shared<Sprite>(m_device, m_deviceContext, tex, m_camera);
-	m_shotSprite = std::make_shared<Sprite>(m_device, m_deviceContext, tex, m_camera);
+	m_bulletSprite = std::make_shared<Sprite>(m_device, m_deviceContext, tex, m_camera);
 
 	m_fontCanvas = std::make_shared<DirectX::SpriteBatch>(m_deviceContext.Get());
 	m_font = std::make_shared<DirectX::SpriteFont>(m_device.Get(), L"assets/orbitron.spritefont");
 
-	m_shots = std::make_shared<ActorManager<Shot>>();
-	m_player = std::make_shared<Player>(m_inputManager, m_playerModel, m_shots, m_shotSprite);
+	m_bullets = std::make_shared<ActorManager<Bullet>>();
+	m_player = std::make_shared<Player>(m_inputManager, m_playerModel, m_bullets, m_bulletSprite);
 	m_enemies = std::make_shared<ActorManager<Enemy>>();
 	m_particles = std::make_shared<ActorManager<Particle>>();
 }
@@ -84,7 +84,7 @@ Scene* DemoScene::update()
 	m_player->update();
 	m_enemies->update();
 	m_particles->update();
-	m_shots->update();
+	m_bullets->update();
 
 	//spawn enemy
 	if (m_spawnTimer.elapsed() > 1.0f) {
@@ -108,10 +108,10 @@ Scene* DemoScene::update()
 	else
 		m_camera->pos = Vector3(0, 50, 0);
 
-	//shot vs enemy
-	for (auto& shot : *m_shots) {
+	//bullet vs enemy
+	for (auto& bullet : *m_bullets) {
 		for (auto& enemy : *m_enemies) {
-			if (IsCollied(shot->getPos(), enemy->getPos(), 1.0f, 1.0f)) {
+			if (IsCollied(bullet->getPos(), enemy->getPos(), 1.0f, 1.0f)) {
 				enemy->kill();
 				emitPatricle(m_particles, m_particleSprite, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
 			}
@@ -121,7 +121,7 @@ Scene* DemoScene::update()
 	const auto playerPos = m_player->getPos();
 	ImGui::Begin("DebugPanel");
 	ImGui::Text("PlayerPos : %f, %f, %f", playerPos.x, playerPos.y, playerPos.z);
-	ImGui::Text("ShotNum : %d", m_shots->size());
+	ImGui::Text("BulletNum : %d", m_bullets->size());
 	ImGui::Text("EnemyNum : %d", m_enemies->size());
 	ImGui::Text("ParticleNum : %d", m_particles->size());
 	ImGui::End();
@@ -138,7 +138,7 @@ void DemoScene::draw()
 	m_deviceContext->OMSetDepthStencilState(m_states->DepthNone(), 0);
 	m_deviceContext->OMSetBlendState(m_states->Additive(), 0, 0xFfFfFfFf);
 	m_particles->draw();
-	m_shots->draw();
+	m_bullets->draw();
 	m_deviceContext->OMSetBlendState(m_states->AlphaBlend(), 0, 0xFfFfFfFf);
 	m_deviceContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
 

@@ -15,7 +15,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Particle.h"
-#include "Shot.h"
+#include "Bullet.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -35,7 +35,7 @@ private:
 	CameraPtr m_camera;
 	LightParamPtr m_light;
 	ModelPtr m_playerModel, m_enemyModel, m_tiledModel;
-	SpritePtr m_particleSprite, m_shotSprite;
+	SpritePtr m_particleSprite, m_bulletSprite;
 	SpriteBatchPtr m_fontCanvas;
 	SpriteFontPtr m_font;
 	boost::timer m_spawnTimer;
@@ -43,5 +43,5 @@ private:
 	PlayerPtr m_player;
 	EnemyManagerPtr m_enemies;
 	ParticleManagerPtr m_particles;
-	ShotManagerPtr m_shots;
+	BulletManagerPtr m_bullets;
 };

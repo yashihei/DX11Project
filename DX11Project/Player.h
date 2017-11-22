@@ -11,12 +11,12 @@
 #include "Model.h"
 #include "InputManager.h"
 #include "UtilFunc.h"
-#include "Shot.h"
+#include "Bullet.h"
 
 class Player : public Actor {
 public:
-	Player(InputManagerPtr inputManager, ModelPtr model, ShotManagerPtr shots, SpritePtr shotSprite) :
-		m_inputManager(inputManager), m_model(model), m_shotSprite(shotSprite), m_shots(shots),
+	Player(InputManagerPtr inputManager, ModelPtr model, BulletManagerPtr bullets, SpritePtr bulletSprite) :
+		m_inputManager(inputManager), m_model(model), m_bulletSprite(bulletSprite), m_bullets(bullets),
 		m_pos(Vector3::Zero), m_rot(Vector3::Zero), m_vec(Vector3::Zero) {}
 
 	void update() override
@@ -70,24 +70,24 @@ private:
 		if (fireDir == Vector2::Zero)
 			return;
 
-		if (m_shotTimer.elapsed() < 0.05f) {
+		if (m_bulletTimer.elapsed() < 0.05f) {
 			return;
 		} else {
-			m_shotTimer.restart();
+			m_bulletTimer.restart();
 		}
 
 		fireDir.Normalize();
 
-		auto shot = std::make_shared<Shot>(m_shotSprite, m_pos, Vector3(fireDir.x, 0, fireDir.y));
-		m_shots->add(shot);
+		auto bullet = std::make_shared<Bullet>(m_bulletSprite, m_pos, Vector3(fireDir.x, 0, fireDir.y));
+		m_bullets->add(bullet);
 	}
 
 	InputManagerPtr m_inputManager;
 	ModelPtr m_model;
-	SpritePtr m_shotSprite;
-	ShotManagerPtr m_shots;
+	SpritePtr m_bulletSprite;
+	BulletManagerPtr m_bullets;
 	Vector3 m_pos, m_rot, m_vec;
-	boost::timer m_shotTimer;
+	boost::timer m_bulletTimer;
 };
 
 using PlayerPtr = std::shared_ptr<Player>;

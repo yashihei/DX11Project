@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------
-// File : Shot.h
+// File : Bullet.h
 // Copyright (c) 2017 yashihei
 // Licensed under the MIT license
 // -----------------------------------------------
@@ -10,9 +10,9 @@
 #include "Sprite.h"
 #include <boost/timer.hpp>
 
-class Shot : public Actor {
+class Bullet : public Actor {
 public:
-	Shot(SpritePtr sprite, const Vector3& spawnPos, const Vector3 vec) :
+	Bullet(SpritePtr sprite, const Vector3& spawnPos, const Vector3 vec) :
 		m_sprite(sprite), m_pos(spawnPos), m_vec(vec) {}
 
 	void update() override
@@ -36,4 +36,4 @@ private:
 	boost::timer m_lifeTimer;
 };
 
-using ShotManagerPtr = std::shared_ptr<ActorManager<Shot>>;
+using BulletManagerPtr = std::shared_ptr<ActorManager<Bullet>>;
