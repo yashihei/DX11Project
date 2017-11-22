@@ -11,9 +11,7 @@
 
 inline void Log(boost::format& bfmt)
 {
-#if defined(DEBUG) || defined(_DEBUG)
 	OutputDebugString(bfmt.str().c_str());
-#endif
 }
 
 template <class First, class... Rest>
