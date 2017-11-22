@@ -137,6 +137,7 @@
     <ClCompile Include="Sprite2D.cpp" />
     <ClCompile Include="SpriteEffect.cpp" />
     <ClCompile Include="ToonEffect.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="UtilDX.h" />
     <ClInclude Include="UtilFunc.h" />
     <ClInclude Include="UtilStr.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\basic.fx">
