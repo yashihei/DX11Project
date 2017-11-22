@@ -1,0 +1,88 @@
+@startuml
+
+hide empty members
+
+class App {
+    + void run()
+}
+
+class Window {
+}
+class Graphics {
+}
+class InputManager
+class AudioManager
+class FPSManager
+class SceneManager
+class AssetsManager
+class Camera
+class LightParam
+
+Interface Scene
+class ParentScene
+class TitleScene
+class StageScene
+
+App o-- AssetsManager
+App o-- Graphics
+App o-- Window
+App o-- InputManager
+App o-- AudioManager
+App o-- FPSManager
+App o-- SceneManager
+SceneManager --> Scene
+
+Scene <|.. ParentScene
+ParentScene <|-- TitleScene
+ParentScene <|-- StageScene
+
+Graphics o-- LightParam
+Graphics o-- Camera
+
+class Model
+class Sprite
+class Sprite2D
+
+AssetsManager --> Model
+AssetsManager --> Sprite
+AssetsManager --> Sprite2D
+
+class Effect
+class Mesh
+class Material
+
+Model o-- Effect
+Model o-- Mesh
+Model o-- Material
+
+class Log
+class Random
+class Easing
+
+class ActorManager<Actor> {
+    - list<shared_ptr<Actor>> m_actors
+    + void add()
+    + void updateAll()
+    + void drawAll()
+}
+Interface Actor {
+    + void update()
+    + void draw()
+    + bool isEnabled()
+}
+class Enemy
+class Player
+class Score
+class Bullet
+class Particle
+
+Actor -d-* ActorManager
+Actor <|.. Enemy
+Actor <|.. Player
+Actor <|.. Score
+Actor <|.. Bullet
+Actor <|.. Particle
+
+ActorManager <-d- StageScene
+
+@enduml
