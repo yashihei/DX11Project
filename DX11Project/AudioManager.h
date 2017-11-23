@@ -20,6 +20,11 @@ public:
 	void pause(const std::string& alias);
 	void stop(const std::string& alias);
 	void setVolume(const std::string& alias, float volume);
+	void clear()
+	{
+		m_soundEffects.clear();
+		m_soundEffectsInstance.clear();
+	}
 private:
 	std::unique_ptr<DirectX::AudioEngine> m_audioEngine;
 	std::unordered_map<std::string, std::unique_ptr<DirectX::SoundEffect>> m_soundEffects;
