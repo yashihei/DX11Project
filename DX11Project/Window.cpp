@@ -87,9 +87,8 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		DirectX::Keyboard::ProcessMessage(msg, wParam, lParam);
 		break;
 	case WM_KEYDOWN:
-		if (wParam == VK_ESCAPE)
-			PostQuitMessage(0);
-		break;
+		if (wParam == VK_ESCAPE) PostQuitMessage(0);
+		// fall through
 	case WM_SYSKEYDOWN:
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
