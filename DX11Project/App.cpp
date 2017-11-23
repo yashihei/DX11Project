@@ -6,6 +6,7 @@
 
 #include "App.h"
 
+#define NOMINMAX
 #include "DemoScene.h"
 #include "Window.h"
 #include "Graphics.h"
@@ -15,6 +16,7 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_dx11.h>
 #include <DirectXTK/CommonStates.h>
+#include <cpptoml/cpptoml.h>
 
 App::~App()
 {
@@ -23,15 +25,18 @@ App::~App()
 
 void App::run()
 {
-	const std::string titleText = "SP4RK! [DX11]";
-	const int answer = MessageBox(NULL, "フルスクリーンで起動しますか？", titleText.c_str(), MB_YESNO | MB_ICONQUESTION);
-	const bool fullScreen = (answer == IDYES) ? true : false;
+	auto config = cpptoml::parse_file("config.toml");
+
+	const auto titleText = config->get_as<std::string>("title_text").value_or("");
+	const auto width = config->get_as<int>("screen_width").value_or(1280);
+	const auto height = config->get_as<int>("screen_height").value_or(720);
+	const auto fullScreen = config->get_as<bool>("fullscreen").value_or(false);
 
 	MSG msg = {};
 
 	try {
-		m_window = std::make_shared<Window>(titleText, 1280, 720, fullScreen);
-		m_graphics = std::make_shared<Graphics>(m_window->getWidth(), m_window->getHeight(), m_window->getHandle(), fullScreen);
+		m_window = std::make_shared<Window>(titleText, width, height, fullScreen);
+		m_graphics = std::make_shared<Graphics>(width, height, m_window->getHandle(), fullScreen);
 		m_inputManager = std::make_shared<InputManager>();
 		m_audioManager = std::make_shared<AudioManager>();
 		m_states = std::make_shared<DirectX::CommonStates>(m_graphics->getDevice().Get());
