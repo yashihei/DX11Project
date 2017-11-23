@@ -1,63 +1,84 @@
 @startuml
 
 hide empty members
+note "オレンジは未実装" as orange #FFA726
 
 class App {
     + void run()
+    + Graphics getGraphics()
+    + InputManager getInputManager()
+    + AudioManager getAudioManager()
+    + AseetsManager getAssetManager()
 }
 
 class Window {
-}
-class Graphics {
-}
+    - HWND m_hWnd
+    - HINSTANCE m_hInstance
+    - Point m_screenSize
+} 
+class Graphics
 class InputManager
 class AudioManager
 class FPSManager
-class SceneManager
-class AssetsManager
-class Camera
+class SceneManager #FFA726
+class AssetsManager #FFA726
+class Camera {
+    + getViewMat()
+    + getProjMat()
+}
 class LightParam
 
-Interface Scene
-class ParentScene
+Interface Scene {
+    + Scene* update()
+    + void draw()
+}
 class TitleScene
-class StageScene
+class StageScene {
+    - App*
+    - ActorManager<Bullet>
+    - ActorManager<Enemy>
+    - ActorManager<Particle>
+    - Player*
+}
 
-App o-- AssetsManager
+App o-- AssetsManager 
 App o-- Graphics
 App o-- Window
 App o-- InputManager
 App o-- AudioManager
 App o-- FPSManager
 App o-- SceneManager
-SceneManager --> Scene
+SceneManager *-- Scene
 
-Scene <|.. ParentScene
-ParentScene <|-- TitleScene
-ParentScene <|-- StageScene
+Scene <|.. TitleScene
+Scene <|.. StageScene
 
-Graphics o-- LightParam
-Graphics o-- Camera
+Graphics o-- LightParam #FFA726
+Graphics o-- Camera #FFA726
 
-class Model
+class Model {
+    + void createFromObj()
+}
 class Sprite
 class Sprite2D
 
-AssetsManager --> Model
-AssetsManager --> Sprite
-AssetsManager --> Sprite2D
+AssetsManager o-- Model
+AssetsManager o-- Sprite
+AssetsManager o-- Sprite2D
 
-class Effect
+class BasicEffect
 class Mesh
 class Material
 
-Model o-- Effect
+Model o-- BasicEffect
 Model o-- Mesh
 Model o-- Material
 
-class Log
-class Random
-class Easing
+package Global {
+    class Log
+    class Random
+    class Easing
+}
 
 class ActorManager<Actor> {
     - list<shared_ptr<Actor>> m_actors
@@ -76,13 +97,13 @@ class Score
 class Bullet
 class Particle
 
-Actor -d-* ActorManager
+Actor -r-* ActorManager
 Actor <|.. Enemy
 Actor <|.. Player
 Actor <|.. Score
 Actor <|.. Bullet
 Actor <|.. Particle
 
-ActorManager <-d- StageScene
+ActorManager -d-o StageScene
 
 @enduml
