@@ -3,6 +3,7 @@
 hide empty members
 note "オレンジは未実装" as orange #FFA726
 
+' MainModules
 class App {
     + void run()
     + Graphics getGraphics()
@@ -16,6 +17,7 @@ class Window {
     - HINSTANCE m_hInstance
     - Point m_screenSize
 } 
+
 class Graphics
 class InputManager
 class AudioManager
@@ -28,6 +30,7 @@ class Camera {
 }
 class LightParam
 
+' Scenes
 Interface Scene {
     + Scene* update()
     + void draw()
@@ -39,6 +42,41 @@ class StageScene {
     - ActorManager<Enemy>
     - ActorManager<Particle>
     - Player*
+}
+
+' Assets
+class Model {
+    + void createFromObj()
+}
+class BasicEffect
+class Mesh
+class Material
+class Sprite
+class Sprite2D
+
+' Actors
+class ActorManager<Actor> {
+    - list<shared_ptr<Actor>> m_actors
+    + void add()
+    + void updateAll()
+    + void drawAll()
+}
+Interface Actor {
+    + void update()
+    + void draw()
+    + bool isEnabled()
+}
+class Enemy
+class Player
+class Score
+class Bullet
+class Particle
+
+' GlobalFunctions
+package Global {
+    class Log
+    class Random
+    class Easing
 }
 
 App o-- AssetsManager 
@@ -56,46 +94,13 @@ Scene <|.. StageScene
 Graphics o-- LightParam #FFA726
 Graphics o-- Camera #FFA726
 
-class Model {
-    + void createFromObj()
-}
-class Sprite
-class Sprite2D
-
 AssetsManager o-- Model
 AssetsManager o-- Sprite
 AssetsManager o-- Sprite2D
 
-class BasicEffect
-class Mesh
-class Material
-
 Model o-- BasicEffect
 Model o-- Mesh
 Model o-- Material
-
-package Global {
-    class Log
-    class Random
-    class Easing
-}
-
-class ActorManager<Actor> {
-    - list<shared_ptr<Actor>> m_actors
-    + void add()
-    + void updateAll()
-    + void drawAll()
-}
-Interface Actor {
-    + void update()
-    + void draw()
-    + bool isEnabled()
-}
-class Enemy
-class Player
-class Score
-class Bullet
-class Particle
 
 Actor -r-* ActorManager
 Actor <|.. Enemy
