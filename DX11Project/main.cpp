@@ -12,6 +12,12 @@
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	auto app = std::make_unique<App>();
-	app->run();
+
+	try {
+		app->run();
+	} catch (const std::exception& error) {
+		MessageBox(NULL, error.what(), "Exception", MB_OK | MB_ICONERROR);
+	}
+
 	return 0;
 }

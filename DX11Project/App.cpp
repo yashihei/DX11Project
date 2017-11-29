@@ -34,29 +34,23 @@ void App::run()
 
 	MSG msg = {};
 
-	try {
-		m_window = std::make_shared<Window>(titleText, width, height, fullScreen);
-		m_graphics = std::make_shared<Graphics>(width, height, m_window->getHandle(), fullScreen);
-		m_inputManager = std::make_shared<InputManager>();
-		m_audioManager = std::make_shared<AudioManager>();
-		m_states = std::make_shared<DirectX::CommonStates>(m_graphics->getDevice().Get());
-		m_fpsManager = std::make_shared<FPSManager>();
-		m_currentScene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext(), m_inputManager, m_audioManager, m_states);
+	m_window = std::make_shared<Window>(titleText, width, height, fullScreen);
+	m_graphics = std::make_shared<Graphics>(width, height, m_window->getHandle(), fullScreen);
+	m_inputManager = std::make_shared<InputManager>();
+	m_audioManager = std::make_shared<AudioManager>();
+	m_states = std::make_shared<DirectX::CommonStates>(m_graphics->getDevice().Get());
+	m_fpsManager = std::make_shared<FPSManager>();
+	m_currentScene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext(), m_inputManager, m_audioManager, m_states);
 
-		ImGui_ImplDX11_Init(m_window->getHandle(), m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
+	ImGui_ImplDX11_Init(m_window->getHandle(), m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
 
-		while (msg.message != WM_QUIT) {
-			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-				TranslateMessage(&msg);
-				DispatchMessage(&msg);
-			} else {
-				frame();
-			}
+	while (msg.message != WM_QUIT) {
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		} else {
+			frame();
 		}
-	} catch (const std::exception& error) {
-		MessageBox(NULL, error.what(), "Exception", MB_OK | MB_ICONERROR);
-	} catch (...) {
-		MessageBox(NULL, "Unknown error", "Error", MB_OK | MB_ICONERROR);
 	}
 }
 
