@@ -3,22 +3,18 @@
 hide empty members
 note "オレンジは未実装" as orange #FFA726
 
-' MainModules
-class App {
-    + void run()
-    + Graphics getGraphics()
-    + InputManager getInputManager()
-    + AudioManager getAudioManager()
-    + AseetsManager getAssetManager()
+class Game {
+    + update()
+    + draw()
 }
 
+' MainModules
 class Window {
     - HWND m_hWnd
     - HINSTANCE m_hInstance
     - Point m_screenSize
 } 
 
-class Graphics
 class InputManager
 class AudioManager
 class FPSManager
@@ -30,6 +26,11 @@ class Camera {
 }
 class LightParam
 
+class GraphicsDevice #FFA726 {
+    - ID3D11Device device
+    - ID3D11DeviceContext deviceContext
+}
+
 ' Scenes
 Interface Scene {
     + Scene* update()
@@ -37,7 +38,6 @@ Interface Scene {
 }
 class TitleScene
 class StageScene {
-    - App*
     - ActorManager<Bullet>
     - ActorManager<Enemy>
     - ActorManager<Particle>
@@ -79,20 +79,20 @@ package Global {
     class Easing
 }
 
-App o-- AssetsManager 
-App o-- Graphics
-App o-- Window
-App o-- InputManager
-App o-- AudioManager
-App o-- FPSManager
-App o-- SceneManager
+Game o-- AssetsManager 
+Game o-- Window
+Game o-- GraphicsDevice
+Game o-- InputManager
+Game o-- AudioManager
+Game o-- LightParam
+Game o-- Camera
+Game o-- FPSManager
+Game o-- SceneManager
+
 SceneManager *-- Scene
 
 Scene <|.. TitleScene
 Scene <|.. StageScene
-
-Graphics o-- LightParam #FFA726
-Graphics o-- Camera #FFA726
 
 AssetsManager o-- Model
 AssetsManager o-- Sprite
@@ -102,7 +102,7 @@ Model o-- BasicEffect
 Model o-- Mesh
 Model o-- Material
 
-Actor -r-* ActorManager
+Actor -d-* ActorManager
 Actor <|.. Enemy
 Actor <|.. Player
 Actor <|.. Score
