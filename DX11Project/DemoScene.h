@@ -17,31 +17,22 @@
 #include "Particle.h"
 #include "Bullet.h"
 
+class App;
 using Microsoft::WRL::ComPtr;
 
 class DemoScene : public Scene {
 public:
-	DemoScene(
-		ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext,
-		InputManagerPtr inputManager, AudioManagerPtr audioManager, CommonStatesPtr states);
+	explicit DemoScene(App* app);
 	Scene* update() override;
 	void draw() override;
 private:
-	ComPtr<ID3D11Device> m_device;
-	ComPtr<ID3D11DeviceContext> m_deviceContext;
-	CommonStatesPtr m_states;
-	InputManagerPtr m_inputManager;
-	AudioManagerPtr m_audioManager;
-	CameraPtr m_camera;
-	LightParamPtr m_light;
-	ModelPtr m_playerModel, m_enemyModel, m_tiledModel;
-	SpritePtr m_particleSprite, m_bulletSprite;
+	App* m_app;
+	//assets
 	SpriteBatchPtr m_fontCanvas;
-	SpriteFontPtr m_font;
-	boost::timer m_spawnTimer;
 	//actor
 	PlayerPtr m_player;
 	EnemyManagerPtr m_enemies;
 	ParticleManagerPtr m_particles;
 	BulletManagerPtr m_bullets;
+	boost::timer m_spawnTimer;
 };

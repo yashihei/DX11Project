@@ -65,6 +65,9 @@
     <ClCompile Include="Window.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
+    <ClCompile Include="AssetsManager.cpp">
+      <Filter>HKSEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -171,6 +174,9 @@
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>App\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetsManager.h">
+      <Filter>HKSEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

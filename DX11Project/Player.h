@@ -8,15 +8,17 @@
 
 #include "Fwd.h"
 #include "Actor.h"
-#include "Model.h"
-#include "InputManager.h"
 #include "UtilFunc.h"
 #include "Bullet.h"
+#include "App.h"
+#include "AssetsManager.h"
+#include "InputManager.h"
+#include "Model.h"
 
 class Player : public Actor {
 public:
-	Player(InputManagerPtr inputManager, ModelPtr model, BulletManagerPtr bullets, SpritePtr bulletSprite) :
-		m_inputManager(inputManager), m_model(model), m_bulletSprite(bulletSprite), m_bullets(bullets),
+	Player(App* app, BulletManagerPtr bullets) :
+		m_app(app), m_bullets(bullets),
 		m_pos(Vector3::Zero), m_rot(Vector3::Zero), m_vec(Vector3::Zero) {}
 
 	void update() override
@@ -24,14 +26,15 @@ public:
 		auto moveDir = Vector2::Zero;
 		auto fireDir = Vector2::Zero;
 
-		if (m_inputManager->isConnectedPad()) {
-			moveDir.x = m_inputManager->getLeftThumbX();
-			moveDir.y = m_inputManager->getLeftThumbY();
-			fireDir.x = m_inputManager->getRightThumbX();
-			fireDir.y = m_inputManager->getRightThumbY();
+		auto input = m_app->getInputManager();
+		if (input->isConnectedPad()) {
+			moveDir.x = input->getLeftThumbX();
+			moveDir.y = input->getLeftThumbY();
+			fireDir.x = input->getRightThumbX();
+			fireDir.y = input->getRightThumbY();
 		} else {
-			moveDir.x = static_cast<float>(m_inputManager->isPressedRight() - m_inputManager->isPressedLeft());
-			moveDir.y = static_cast<float>(m_inputManager->isPressedUp() - m_inputManager->isPressedDown());
+			moveDir.x = static_cast<float>(input->isPressedRight() - input->isPressedLeft());
+			moveDir.y = static_cast<float>(input->isPressedUp() - input->isPressedDown());
 			//TODO: FireDir from mousePos
 		}
 
@@ -41,7 +44,8 @@ public:
 
 	void draw() override
 	{
-		m_model->draw(m_pos, m_rot);
+		auto model = m_app->getAssetsManager()->getModel("player");
+		model->draw(m_pos, m_rot);
 	}
 
 	Vector3 getPos() const { return m_pos; }
@@ -78,13 +82,11 @@ private:
 
 		fireDir.Normalize();
 
-		auto bullet = std::make_shared<Bullet>(m_bulletSprite, m_pos, Vector3(fireDir.x, 0, fireDir.y));
+		auto bullet = std::make_shared<Bullet>(m_app, m_pos, Vector3(fireDir.x, 0, fireDir.y));
 		m_bullets->add(bullet);
 	}
 
-	InputManagerPtr m_inputManager;
-	ModelPtr m_model;
-	SpritePtr m_bulletSprite;
+	App* m_app;
 	BulletManagerPtr m_bullets;
 	Vector3 m_pos, m_rot, m_vec;
 	boost::timer m_bulletTimer;

@@ -16,6 +16,7 @@ using CameraPtr = std::shared_ptr<Camera>;
 using LightParamPtr = std::shared_ptr<LightParam>;
 using InputManagerPtr = std::shared_ptr<InputManager>;
 using AudioManagerPtr = std::shared_ptr<AudioManager>;
+using AssetsMangerPtr = std::shared_ptr<AssetsManager>;
 using FPSManagerPtr = std::shared_ptr<FPSManager>;
 
 using ModelPtr = std::shared_ptr<Model>;

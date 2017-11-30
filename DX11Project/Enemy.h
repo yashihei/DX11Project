@@ -9,11 +9,13 @@
 #include "Actor.h"
 #include "Model.h"
 #include "Random.h"
+#include "App.h"
+#include "AssetsManager.h"
 
 class Enemy : public Actor {
 public:
-	Enemy(ModelPtr model, Vector3 spawnPos, Vector3 target) :
-		m_model(model), m_pos(spawnPos), m_rot(Vector3::Zero)
+	Enemy(App* app, Vector3 spawnPos, Vector3 target) :
+		m_app(app), m_pos(spawnPos), m_rot(Vector3::Zero)
 	{
 		const float rad = std::atan2f(target.z - m_pos.z, target.x - m_pos.x);
 		m_vec = Vector3(std::cos(rad), 0, std::sin(rad)) * 0.1f;
@@ -35,12 +37,13 @@ public:
 
 	void draw() override
 	{
-		m_model->draw(m_pos, m_rot);
+		auto model = m_app->getAssetsManager()->getModel("enemy");
+		model->draw(m_pos, m_rot);
 	}
 
 	Vector3 getPos() const { return m_pos; }
 private:
-	ModelPtr m_model;
+	App* m_app;
 	Vector3 m_pos, m_rot, m_vec;
 };
 

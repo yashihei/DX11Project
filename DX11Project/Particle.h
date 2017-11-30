@@ -9,11 +9,13 @@
 #include "Fwd.h"
 #include "Sprite.h"
 #include "Actor.h"
+#include "App.h"
+#include "AssetsManager.h"
 
 class Particle : public Actor {
 public:
-	Particle(SpritePtr sprite, const Vector3& pos, const Vector3& vector, const Color& color, const float scale, bool gravity = false) :
-		m_sprite(sprite), m_pos(pos), m_vector(vector), m_color(color), m_scale(scale), m_gravity(gravity) {}
+	Particle(App* app, const Vector3& pos, const Vector3& vector, const Color& color, const float scale, bool gravity = false) :
+		m_app(app), m_pos(pos), m_vector(vector), m_color(color), m_scale(scale), m_gravity(gravity) {}
 
 	void update() override
 	{
@@ -30,10 +32,11 @@ public:
 
 	void draw() override
 	{
-		m_sprite->draw(m_pos, m_color, m_scale);
+		auto sprite = m_app->getAssetsManager()->getSprite("particle");
+		sprite->draw(m_pos, m_color, m_scale);
 	}
 private:
-	SpritePtr m_sprite;
+	App* m_app;
 	Vector3 m_pos, m_vector;
 	Color m_color;
 	float m_scale;

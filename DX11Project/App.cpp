@@ -12,7 +12,10 @@
 #include "Graphics.h"
 #include "InputManager.h"
 #include "AudioManager.h"
+#include "AssetsManager.h"
 #include "FPSManager.h"
+#include "Camera.h"
+#include "LightParam.h"
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_dx11.h>
 #include <DirectXTK/CommonStates.h>
@@ -38,9 +41,12 @@ void App::run()
 	m_graphics = std::make_shared<Graphics>(width, height, m_window->getHandle(), fullScreen);
 	m_inputManager = std::make_shared<InputManager>();
 	m_audioManager = std::make_shared<AudioManager>();
+	m_assetsManager = std::make_shared<AssetsManager>();
+	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, static_cast<float>(width) / static_cast<float>(height));
+	m_light = std::make_shared<LightParam>(Color(1.0f, 1.0f, 1.0f, 1.0f), Color(0.3f, 0.3f, 0.3f, 1.0f), Vector3(0.0f, -1.0f, 0.0f));
 	m_states = std::make_shared<DirectX::CommonStates>(m_graphics->getDevice().Get());
 	m_fpsManager = std::make_shared<FPSManager>();
-	m_currentScene = std::make_shared<DemoScene>(m_graphics->getDevice(), m_graphics->getDeviceContext(), m_inputManager, m_audioManager, m_states);
+	m_currentScene = std::make_shared<DemoScene>(this);
 
 	ImGui_ImplDX11_Init(m_window->getHandle(), m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
 
@@ -58,7 +64,6 @@ void App::frame()
 {
 	ImGui_ImplDX11_NewFrame();
 
-	//Scene change check (State pattern)
 	const auto nextScene = m_currentScene->update();
 	if (m_currentScene.get() != nextScene) {
 		m_currentScene.reset(nextScene);

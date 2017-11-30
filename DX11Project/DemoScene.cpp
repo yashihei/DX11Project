@@ -6,11 +6,13 @@
 
 #include "DemoScene.h"
 
+#include "App.h"
+#include "Graphics.h"
 #include "Model.h"
 #include "InputManager.h"
 #include "AudioManager.h"
+#include "AssetsManager.h"
 #include "Camera.h"
-#include "LightParam.h"
 #include "Random.h"
 #include "ShaderRV.h"
 #include "imgui/imgui.h"
@@ -26,55 +28,51 @@ inline bool IsCollied(const Vector3& pos1, const Vector3& pos2, float r1, float 
 	return tmp.x * tmp.x + tmp.y * tmp.y + tmp.z * tmp.z < (r1 + r2) * (r1 + r2);
 }
 
-inline void emitPatricle(ParticleManagerPtr particles, SpritePtr sprite, int num, const Vector3& pos, const Color& color)
+inline void emitPatricle(App* app, ParticleManagerPtr particles, int num, const Vector3& pos, const Color& color)
 {
 	for (int i = 0; i < num; i++) {
 		Quaternion rotate = Quaternion::CreateFromYawPitchRoll(Random(DirectX::XM_2PI), Random(DirectX::XM_2PI), Random(DirectX::XM_2PI));
 		Vector3 vec(0.75f, 0, 0);
 		vec = Vector3::Transform(vec, rotate);
-		auto particle = std::make_shared<Particle>(sprite, pos, vec, color, 0.75f);
+		auto particle = std::make_shared<Particle>(app, pos, vec, color, 0.75f);
 		particles->add(particle);
 	}
 }
 
-DemoScene::DemoScene(
-	ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext,
-	InputManagerPtr inputManager, AudioManagerPtr audioManager, CommonStatesPtr states) :
-	m_device(device), m_deviceContext(deviceContext),
-	m_states(states), m_inputManager(inputManager), m_audioManager(audioManager)
+DemoScene::DemoScene(App* app) : m_app(app)
 {
-	UINT vpCount = 1;
-	D3D11_VIEWPORT vp = {};
-	m_deviceContext->RSGetViewports(&vpCount, &vp);
+	auto camera = m_app->getCamera();
+	auto device = m_app->getGraphics()->getDevice();
+	auto deviceContext = m_app->getGraphics()->getDeviceContext();
+	auto states = m_app->getStates();
+	auto light = m_app->getLight();
+	auto assetsManager = m_app->getAssetsManager();
 
-	m_camera = std::make_shared<Camera>(Vector3::Zero, Vector3::Zero, Vector3::Up, vp.Width / vp.Height);
-	m_camera->pos = Vector3(0, 50, 0);
-	m_camera->lookAt = Vector3(0, 0, 0);
-	m_camera->up = Vector3::Backward;
-
-	m_light = std::make_shared<LightParam>(Color(1.0f, 1.0f, 1.0f, 1.0f), Color(0.3f, 0.3f, 0.3f, 1.0f), Vector3(0.0f, -1.0f, 0.0f));
+	//set camera param
+	camera->pos = Vector3(0, 50, 0);
+	camera->lookAt = Vector3(0, 0, 0);
+	camera->up = Vector3::Backward;
 
 	//set states
-	m_deviceContext->RSSetState(m_states->CullCounterClockwise());
-	m_deviceContext->OMSetBlendState(m_states->NonPremultiplied(), nullptr, 0xFFffFFff);
+	deviceContext->RSSetState(states->CullCounterClockwise());
+	deviceContext->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFffFFff);
 
 	//load obj models
-	m_playerModel = std::make_shared<Model>(m_device, m_deviceContext, m_states, m_camera, m_light);
-	m_playerModel->createFromObj("assets/actors/player.obj");
-	m_enemyModel = std::make_shared<Model>(m_device, m_deviceContext, m_states, m_camera, m_light);
-	m_enemyModel->createFromObj("assets/actors/enemy.obj");
-	m_tiledModel = std::make_shared<Model>(m_device, m_deviceContext, m_states, m_camera, m_light);
-	m_tiledModel->createFromObj("assets/tiled/tiled.obj");
+	assetsManager->loadModel("assets/actors/player.obj", "player", device, deviceContext, states, camera, light);
+	assetsManager->loadModel("assets/actors/enemy.obj", "enemy", device, deviceContext, states, camera, light);
+	assetsManager->loadModel("assets/tiled/tiled.obj", "tiled", device, deviceContext, states, camera, light);
 
-	auto tex = CreateShaderResourceViewFromFile(m_device, L"assets/circle.png");
-	m_particleSprite = std::make_shared<Sprite>(m_device, m_deviceContext, tex, m_camera);
-	m_bulletSprite = std::make_shared<Sprite>(m_device, m_deviceContext, tex, m_camera);
+	//create sprite
+	assetsManager->loadSprite("assets/circle.png", "particle", device, deviceContext, camera);
+	assetsManager->loadSprite("assets/circle.png", "bullet", device, deviceContext, camera);
 
-	m_fontCanvas = std::make_shared<DirectX::SpriteBatch>(m_deviceContext.Get());
-	m_font = std::make_shared<DirectX::SpriteFont>(m_device.Get(), L"assets/orbitron.spritefont");
+	//create font
+	m_fontCanvas = std::make_shared<DirectX::SpriteBatch>(deviceContext.Get());
+	assetsManager->loadFont("assets/orbitron.spritefont", "orbitron", device);
 
+	//create actor
 	m_bullets = std::make_shared<ActorManager<Bullet>>();
-	m_player = std::make_shared<Player>(m_inputManager, m_playerModel, m_bullets, m_bulletSprite);
+	m_player = std::make_shared<Player>(m_app, m_bullets);
 	m_enemies = std::make_shared<ActorManager<Enemy>>();
 	m_particles = std::make_shared<ActorManager<Particle>>();
 }
@@ -89,31 +87,31 @@ Scene* DemoScene::update()
 	//spawn enemy
 	if (m_spawnTimer.elapsed() > 1.0f) {
 		const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
-		auto enemy = std::make_shared<Enemy>(m_enemyModel, spawnPos, m_player->getPos());
+		auto enemy = std::make_shared<Enemy>(m_app, spawnPos, m_player->getPos());
 		m_enemies->add(enemy);
 		m_spawnTimer.restart();
 	}
 
+	//camera
+	if (m_app->getInputManager()->isPressedButton2())
+		m_app->getCamera()->pos = Vector3(0, 30, -40);
+	else
+		m_app->getCamera()->pos = Vector3(0, 50, 0);
+
 	//bomb
-	if (m_inputManager->isClicledButton1() || m_enemies->size() > 20) {
+	if (m_app->getInputManager()->isClicledButton1() || m_enemies->size() > 20) {
 		for (auto& enemy : *m_enemies) {
-			emitPatricle(m_particles, m_particleSprite, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
+			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
 		}
 		m_enemies->clear();
 	}
-
-	//camera
-	if (m_inputManager->isPressedButton2())
-		m_camera->pos = Vector3(0, 30, -40);
-	else
-		m_camera->pos = Vector3(0, 50, 0);
 
 	//bullet vs enemy
 	for (auto& bullet : *m_bullets) {
 		for (auto& enemy : *m_enemies) {
 			if (IsCollied(bullet->getPos(), enemy->getPos(), 1.0f, 1.0f)) {
 				enemy->kill();
-				emitPatricle(m_particles, m_particleSprite, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
+				emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
 			}
 		}
 	}
@@ -131,25 +129,28 @@ Scene* DemoScene::update()
 
 void DemoScene::draw()
 {
+	auto deviceContext = m_app->getGraphics()->getDeviceContext();
+	auto states = m_app->getStates();
+
 	m_player->draw();
 	m_enemies->draw();
 
 	//draw sprites
-	m_deviceContext->OMSetDepthStencilState(m_states->DepthNone(), 0);
-	m_deviceContext->OMSetBlendState(m_states->Additive(), 0, 0xFfFfFfFf);
+	deviceContext->OMSetDepthStencilState(states->DepthNone(), 0);
+	deviceContext->OMSetBlendState(states->Additive(), 0, 0xFfFfFfFf);
 	m_particles->draw();
 	m_bullets->draw();
-	m_deviceContext->OMSetBlendState(m_states->AlphaBlend(), 0, 0xFfFfFfFf);
-	m_deviceContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
+	deviceContext->OMSetBlendState(states->AlphaBlend(), 0, 0xFfFfFfFf);
+	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
 
 	//draw tile
-	m_deviceContext->RSSetState(m_states->Wireframe());
-	m_tiledModel->draw(Vector3::Zero, Vector3::Zero, Vector3::One * 2);
-	m_deviceContext->RSSetState(m_states->CullClockwise());
+	deviceContext->RSSetState(states->Wireframe());
+	m_app->getAssetsManager()->getModel("tiled")->draw(Vector3::Zero, Vector3::Zero, Vector3::One * 2);
+	deviceContext->RSSetState(states->CullClockwise());
 
 	//draw text
 	m_fontCanvas->Begin();
-	m_font->DrawString(m_fontCanvas.get(), L"DEMOPLAY", Vector2::Zero, DirectX::Colors::White, 0, Vector2::Zero, 0.5f);
+	m_app->getAssetsManager()->getFont("orbitron")->DrawString(m_fontCanvas.get(), L"DEMOPLAY", Vector2::Zero, DirectX::Colors::White, 0, Vector2::Zero, 0.5f);
 	m_fontCanvas->End();
-	m_deviceContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
+	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
 }

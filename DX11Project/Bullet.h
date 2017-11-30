@@ -9,11 +9,13 @@
 #include "Actor.h"
 #include "Sprite.h"
 #include <boost/timer.hpp>
+#include "App.h"
+#include "AssetsManager.h"
 
 class Bullet : public Actor {
 public:
-	Bullet(SpritePtr sprite, const Vector3& spawnPos, const Vector3 vec) :
-		m_sprite(sprite), m_pos(spawnPos), m_vec(vec) {}
+	Bullet(App* app, const Vector3& spawnPos, const Vector3 vec) :
+		m_app(app), m_pos(spawnPos), m_vec(vec) {}
 
 	void update() override
 	{
@@ -26,12 +28,13 @@ public:
 
 	void draw() override
 	{
-		m_sprite->draw(m_pos, Color(1.0f, 0.7f, 0.0f), 0.5f);
+		auto sprite = m_app->getAssetsManager()->getSprite("bullet");
+		sprite->draw(m_pos, Color(1.0f, 0.7f, 0.0f), 0.5f);
 	}
 
 	Vector3 getPos() const { return m_pos; }
 private:
-	SpritePtr m_sprite;
+	App* m_app;
 	Vector3 m_pos, m_vec;
 	boost::timer m_lifeTimer;
 };

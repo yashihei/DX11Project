@@ -13,6 +13,7 @@ struct LightParam;
 class Camera;
 class InputManager;
 class AudioManager;
+class AssetsManager;
 class FPSManager;
 
 class Model;
