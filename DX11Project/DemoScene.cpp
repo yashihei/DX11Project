@@ -80,9 +80,9 @@ DemoScene::DemoScene(App* app) : m_app(app)
 Scene* DemoScene::update()
 {
 	m_player->update();
-	m_enemies->update();
-	m_particles->update();
-	m_bullets->update();
+	m_enemies->updateAll();
+	m_particles->updateAll();
+	m_bullets->updateAll();
 
 	//spawn enemy
 	if (m_spawnTimer.elapsed() > 1.0f) {
@@ -133,13 +133,13 @@ void DemoScene::draw()
 	auto states = m_app->getStates();
 
 	m_player->draw();
-	m_enemies->draw();
+	m_enemies->drawAll();
 
 	//draw sprites
 	deviceContext->OMSetDepthStencilState(states->DepthNone(), 0);
 	deviceContext->OMSetBlendState(states->Additive(), 0, 0xFfFfFfFf);
-	m_particles->draw();
-	m_bullets->draw();
+	m_particles->drawAll();
+	m_bullets->drawAll();
 	deviceContext->OMSetBlendState(states->AlphaBlend(), 0, 0xFfFfFfFf);
 	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
 

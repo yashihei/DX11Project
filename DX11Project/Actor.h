@@ -44,7 +44,7 @@ public:
 		return m_actors.size();
 	}
 
-	void update()
+	void updateAll()
 	{
 		for (auto& actor : m_actors) {
 			actor->update();
@@ -53,7 +53,7 @@ public:
 			[](std::shared_ptr<Type> actor) { return !actor->isEnabled(); }), m_actors.end());
 	}
 
-	void draw()
+	void drawAll()
 	{
 		for (const auto& actor : m_actors) {
 			actor->draw();
