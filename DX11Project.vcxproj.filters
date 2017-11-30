@@ -13,7 +13,6 @@
     </Filter>
     <Filter Include="App">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="App\Actor">
       <UniqueIdentifier>{7b489769-3be8-4144-b2a0-c065d93579b5}</UniqueIdentifier>
@@ -29,153 +28,150 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Source/main.cpp">
       <Filter>App</Filter>
     </ClCompile>
-    <ClCompile Include="App.cpp">
+    <ClCompile Include="Source/App.cpp">
       <Filter>App</Filter>
     </ClCompile>
-    <ClCompile Include="BasicEffect.cpp">
+    <ClCompile Include="Source/BasicEffect.cpp">
       <Filter>HKSEngine\Effects</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteEffect.cpp">
+    <ClCompile Include="Source/SpriteEffect.cpp">
       <Filter>HKSEngine\Effects</Filter>
     </ClCompile>
-    <ClCompile Include="ToonEffect.cpp">
+    <ClCompile Include="Source/ToonEffect.cpp">
       <Filter>HKSEngine\Effects</Filter>
     </ClCompile>
-    <ClCompile Include="AudioManager.cpp">
+    <ClCompile Include="Source/AudioManager.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics.cpp">
+    <ClCompile Include="Source/Graphics.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
+    <ClCompile Include="Source/Model.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
+    <ClCompile Include="Source/Sprite.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite2D.cpp">
+    <ClCompile Include="Source/Sprite2D.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
-    <ClCompile Include="DemoScene.cpp">
+    <ClCompile Include="Source/DemoScene.cpp">
       <Filter>App\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
+    <ClCompile Include="Source/Window.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
-    <ClCompile Include="AssetsManager.cpp">
+    <ClCompile Include="Source/AssetsManager.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Actor.h">
+    <ClInclude Include="Source/Actor.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="AudioManager.h">
+    <ClInclude Include="Source/AudioManager.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
+    <ClInclude Include="Source/Camera.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Easing.h">
+    <ClInclude Include="Source/Easing.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Fwd.h">
+    <ClInclude Include="Source/Fwd.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics.h">
+    <ClInclude Include="Source/Graphics.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
+    <ClInclude Include="Source/InputManager.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="LightParam.h">
+    <ClInclude Include="Source/LightParam.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Log.h">
+    <ClInclude Include="Source/Log.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
+    <ClInclude Include="Source/Model.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Random.h">
+    <ClInclude Include="Source/Random.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
+    <ClInclude Include="Source/Scene.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderRV.h">
+    <ClInclude Include="Source/ShaderRV.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Singleton.h">
+    <ClInclude Include="Source/Singleton.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
+    <ClInclude Include="Source/Sprite.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite2D.h">
+    <ClInclude Include="Source/Sprite2D.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="BasicEffect.h">
+    <ClInclude Include="Source/BasicEffect.h">
       <Filter>HKSEngine\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteEffect.h">
+    <ClInclude Include="Source/SpriteEffect.h">
       <Filter>HKSEngine\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="ToonEffect.h">
+    <ClInclude Include="Source/ToonEffect.h">
       <Filter>HKSEngine\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="App.h">
+    <ClInclude Include="Source/App.h">
       <Filter>App</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
+    <ClInclude Include="Source/Particle.h">
       <Filter>App\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="Source/Player.h">
       <Filter>App\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Score.h">
+    <ClInclude Include="Source/Score.h">
       <Filter>App\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
+    <ClInclude Include="Source/Enemy.h">
       <Filter>App\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="DemoScene.h">
+    <ClInclude Include="Source/DemoScene.h">
       <Filter>App\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="MathAlias.h">
+    <ClInclude Include="Source/MathAlias.h">
       <Filter>HKSEngine\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="Types.h">
+    <ClInclude Include="Source/Types.h">
       <Filter>HKSEngine\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="PtrAlias.h">
+    <ClInclude Include="Source/PtrAlias.h">
       <Filter>HKSEngine\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="UtilDX.h">
+    <ClInclude Include="Source/UtilDX.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="UtilFunc.h">
+    <ClInclude Include="Source/UtilFunc.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="UtilStr.h">
+    <ClInclude Include="Source/UtilStr.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Locator.h">
+    <ClInclude Include="Source/FPSManager.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="FPSManager.h">
+    <ClInclude Include="Source/Window.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>HKSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
+    <ClInclude Include="Source/Bullet.h">
       <Filter>App\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="AssetsManager.h">
+    <ClInclude Include="Source/AssetsManager.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
   </ItemGroup>

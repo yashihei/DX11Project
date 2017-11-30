@@ -70,12 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\boost\boost_1_65_1;.\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\boost\boost_1_65_1;Include;$(IncludePath)</IncludePath>
     <LibraryPath>.\Lib;$(LibraryPath)</LibraryPath>
+    <OutDir>Bin\$(Configuration)\</OutDir>
+    <IntDir>Bin\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\boost\boost_1_65_1;.\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\boost\boost_1_65_1;Include;$(IncludePath)</IncludePath>
     <LibraryPath>.\Lib;$(LibraryPath)</LibraryPath>
+    <OutDir>Bin\$(Configuration)\</OutDir>
+    <IntDir>Bin\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -126,57 +130,56 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="App.cpp" />
-    <ClCompile Include="AssetsManager.cpp" />
-    <ClCompile Include="AudioManager.cpp" />
-    <ClCompile Include="BasicEffect.cpp" />
-    <ClCompile Include="DemoScene.cpp" />
-    <ClCompile Include="Graphics.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="Sprite2D.cpp" />
-    <ClCompile Include="SpriteEffect.cpp" />
-    <ClCompile Include="ToonEffect.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="Source/App.cpp" />
+    <ClCompile Include="Source/AssetsManager.cpp" />
+    <ClCompile Include="Source/AudioManager.cpp" />
+    <ClCompile Include="Source/BasicEffect.cpp" />
+    <ClCompile Include="Source/DemoScene.cpp" />
+    <ClCompile Include="Source/Graphics.cpp" />
+    <ClCompile Include="Source/main.cpp" />
+    <ClCompile Include="Source/Model.cpp" />
+    <ClCompile Include="Source/Sprite.cpp" />
+    <ClCompile Include="Source/Sprite2D.cpp" />
+    <ClCompile Include="Source/SpriteEffect.cpp" />
+    <ClCompile Include="Source/ToonEffect.cpp" />
+    <ClCompile Include="Source/Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Actor.h" />
-    <ClInclude Include="AssetsManager.h" />
-    <ClInclude Include="FPSManager.h" />
-    <ClInclude Include="Locator.h" />
-    <ClInclude Include="PtrAlias.h" />
-    <ClInclude Include="App.h" />
-    <ClInclude Include="AudioManager.h" />
-    <ClInclude Include="BasicEffect.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="DemoScene.h" />
-    <ClInclude Include="Easing.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Fwd.h" />
-    <ClInclude Include="Graphics.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="LightParam.h" />
-    <ClInclude Include="Log.h" />
-    <ClInclude Include="MathAlias.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Random.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="Score.h" />
-    <ClInclude Include="ShaderRV.h" />
-    <ClInclude Include="Bullet.h" />
-    <ClInclude Include="Singleton.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="Sprite2D.h" />
-    <ClInclude Include="SpriteEffect.h" />
-    <ClInclude Include="ToonEffect.h" />
-    <ClInclude Include="Types.h" />
-    <ClInclude Include="UtilDX.h" />
-    <ClInclude Include="UtilFunc.h" />
-    <ClInclude Include="UtilStr.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="Source/Actor.h" />
+    <ClInclude Include="Source/AssetsManager.h" />
+    <ClInclude Include="Source/FPSManager.h" />
+    <ClInclude Include="Source/PtrAlias.h" />
+    <ClInclude Include="Source/App.h" />
+    <ClInclude Include="Source/AudioManager.h" />
+    <ClInclude Include="Source/BasicEffect.h" />
+    <ClInclude Include="Source/Camera.h" />
+    <ClInclude Include="Source/DemoScene.h" />
+    <ClInclude Include="Source/Easing.h" />
+    <ClInclude Include="Source/Enemy.h" />
+    <ClInclude Include="Source/Fwd.h" />
+    <ClInclude Include="Source/Graphics.h" />
+    <ClInclude Include="Source/InputManager.h" />
+    <ClInclude Include="Source/LightParam.h" />
+    <ClInclude Include="Source/Log.h" />
+    <ClInclude Include="Source/MathAlias.h" />
+    <ClInclude Include="Source/Model.h" />
+    <ClInclude Include="Source/Particle.h" />
+    <ClInclude Include="Source/Player.h" />
+    <ClInclude Include="Source/Random.h" />
+    <ClInclude Include="Source/Scene.h" />
+    <ClInclude Include="Source/Score.h" />
+    <ClInclude Include="Source/ShaderRV.h" />
+    <ClInclude Include="Source/Bullet.h" />
+    <ClInclude Include="Source/Singleton.h" />
+    <ClInclude Include="Source/Sprite.h" />
+    <ClInclude Include="Source/Sprite2D.h" />
+    <ClInclude Include="Source/SpriteEffect.h" />
+    <ClInclude Include="Source/ToonEffect.h" />
+    <ClInclude Include="Source/Types.h" />
+    <ClInclude Include="Source/UtilDX.h" />
+    <ClInclude Include="Source/UtilFunc.h" />
+    <ClInclude Include="Source/UtilStr.h" />
+    <ClInclude Include="Source/Window.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\basic.fx">
