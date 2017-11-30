@@ -21,7 +21,7 @@ void AssetsManager::loadModel(const std::string& filePath, const std::string& al
 
 void AssetsManager::loadSprite(const std::string& filePath, const std::string& alias, ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CameraPtr camera)
 {
-	auto tex = CreateShaderResourceViewFromFile(device, s2ws(filePath).c_str());
+	auto tex = CreateShaderResourceViewFromFile(device, filePath);
 	auto sprite = std::make_shared<Sprite>(device, deviceContext, tex, camera);
 	m_sprites[alias] = sprite;
 }

@@ -71,7 +71,7 @@ ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 	if (FAILED(hr))
 		throw std::runtime_error("CreateInputLayout() Failed.");
 
-	m_toonMap = CreateShaderResourceViewFromFile(m_device, L"assets/toon.png");
+	m_toonMap = CreateShaderResourceViewFromFile(m_device, "assets/toon.png");
 }
 
 void ToonEffect::setObjectParams(const Matrix& world, const Matrix& view, const Matrix& proj)

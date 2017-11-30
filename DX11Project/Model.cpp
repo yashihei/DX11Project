@@ -148,7 +148,7 @@ void Model::createFromObj(const std::string& filePath)
 	DirectX::BoundingSphere::CreateFromPoints(m_boundingSphere, points.size(), points.data(), sizeof(Vector3));
 
 	//Load texures
-	const auto nulltex = CreateShaderResourceViewFromFile(m_device, L"assets/null.png");
+	const auto nulltex = CreateShaderResourceViewFromFile(m_device, "assets/null.png");
 	m_textures["nulltex"] = nulltex;
 
 	const auto rootDir = GetDirPath(filePath);
@@ -156,7 +156,7 @@ void Model::createFromObj(const std::string& filePath)
 		const auto texName = materials[i].diffuse_texname;
 		if (!texName.empty()) {
 			const auto dir = rootDir + texName;
-			const auto tex = CreateShaderResourceViewFromFile(m_device, s2ws(dir).c_str());
+			const auto tex = CreateShaderResourceViewFromFile(m_device, dir);
 			m_textures[texName] = tex;
 		}
 	}
