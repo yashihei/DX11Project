@@ -19,8 +19,6 @@
 #include "MathAlias.h"
 #include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/CommonStates.h>
-#include <DirectXTK/SpriteBatch.h>
-#include <DirectXTK/SpriteFont.h>
 
 inline bool IsCollied(const Vector3& pos1, const Vector3& pos2, float r1, float r2)
 {
@@ -67,7 +65,6 @@ DemoScene::DemoScene(App* app) : m_app(app)
 	assetsManager->loadSprite("assets/circle.png", "bullet", device, deviceContext, camera);
 
 	//create font
-	m_fontCanvas = std::make_shared<DirectX::SpriteBatch>(deviceContext.Get());
 	assetsManager->loadFont("assets/orbitron.spritefont", "orbitron", device);
 
 	//create actor
@@ -75,6 +72,7 @@ DemoScene::DemoScene(App* app) : m_app(app)
 	m_player = std::make_shared<Player>(m_app, m_bullets);
 	m_enemies = std::make_shared<ActorManager<Enemy>>();
 	m_particles = std::make_shared<ActorManager<Particle>>();
+	m_score = std::make_shared<Score>(m_app);
 }
 
 Scene* DemoScene::update()
@@ -83,6 +81,7 @@ Scene* DemoScene::update()
 	m_enemies->updateAll();
 	m_particles->updateAll();
 	m_bullets->updateAll();
+	m_score->update();
 
 	//spawn enemy
 	if (m_spawnTimer.elapsed() > 1.0f) {
@@ -102,6 +101,7 @@ Scene* DemoScene::update()
 	if (m_app->getInputManager()->isClicledButton1() || m_enemies->size() > 20) {
 		for (auto& enemy : *m_enemies) {
 			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
+			m_score->addScore(1000);
 		}
 		m_enemies->clear();
 	}
@@ -148,9 +148,6 @@ void DemoScene::draw()
 	m_app->getAssetsManager()->getModel("tiled")->draw(Vector3::Zero, Vector3::Zero, Vector3::One * 2);
 	deviceContext->RSSetState(states->CullClockwise());
 
-	//draw text
-	m_fontCanvas->Begin();
-	m_app->getAssetsManager()->getFont("orbitron")->DrawString(m_fontCanvas.get(), L"DEMOPLAY", Vector2::Zero, DirectX::Colors::White, 0, Vector2::Zero, 0.5f);
-	m_fontCanvas->End();
+	m_score->draw();
 	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
 }

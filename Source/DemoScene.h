@@ -16,6 +16,7 @@
 #include "Enemy.h"
 #include "Particle.h"
 #include "Bullet.h"
+#include "Score.h"
 
 class App;
 using Microsoft::WRL::ComPtr;
@@ -27,12 +28,11 @@ public:
 	void draw() override;
 private:
 	App* m_app;
-	//assets
-	SpriteBatchPtr m_fontCanvas;
 	//actor
 	PlayerPtr m_player;
 	EnemyManagerPtr m_enemies;
 	ParticleManagerPtr m_particles;
 	BulletManagerPtr m_bullets;
+	ScorePtr m_score;
 	boost::timer m_spawnTimer;
 };
