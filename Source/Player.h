@@ -64,8 +64,8 @@ private:
 		m_pos.x = Clamp(m_pos.x, -20.f, 20.f);
 		m_pos.z = Clamp(m_pos.z, -20.f, 20.f);
 
-		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Right, m_vec.z * 0.5f);
-		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Forward, m_vec.x * 0.5f);
+		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Right, m_vec.z);
+		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Forward, m_vec.x);
 	}
 
 	void fire(Vector2& fireDir)

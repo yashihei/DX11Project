@@ -32,8 +32,8 @@ public:
 		if (Random() > 0.99f) m_vec.x *= -1;
 		if (Random() > 0.99f) m_vec.z *= -1;
 
-		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Right, m_vec.z * 0.5f);
-		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Forward, m_vec.x * 0.5f);
+		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Right, m_vec.z);
+		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Forward, m_vec.x);
 	}
 
 	void draw() override
