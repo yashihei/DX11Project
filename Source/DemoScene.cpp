@@ -84,7 +84,7 @@ Scene* DemoScene::update()
 	m_score->update();
 
 	//spawn enemy
-	if (m_spawnTimer.elapsed() > 1.0f) {
+	if (m_spawnTimer.elapsed() > 5.0f) {
 		const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
 		auto enemy = std::make_shared<Enemy>(m_app, spawnPos, m_player->getPos());
 		m_enemies->add(enemy);
@@ -101,7 +101,6 @@ Scene* DemoScene::update()
 	if (m_app->getInputManager()->isClicledButton1() || m_enemies->size() > 20) {
 		for (auto& enemy : *m_enemies) {
 			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
-			m_score->addScore(1000);
 		}
 		m_enemies->clear();
 	}
@@ -110,6 +109,7 @@ Scene* DemoScene::update()
 	for (auto& bullet : *m_bullets) {
 		for (auto& enemy : *m_enemies) {
 			if (IsCollied(bullet->getPos(), enemy->getPos(), 1.0f, 1.0f)) {
+				m_score->addScore(1000);
 				enemy->kill();
 				emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
 			}
@@ -118,7 +118,7 @@ Scene* DemoScene::update()
 
 	const auto playerPos = m_player->getPos();
 	ImGui::Begin("DebugPanel");
-	ImGui::Text("PlayerPos : %f, %f, %f", playerPos.x, playerPos.y, playerPos.z);
+	ImGui::Text("PlayerPos : %.2f, %.2f, %.2f", playerPos.x, playerPos.y, playerPos.z);
 	ImGui::Text("BulletNum : %d", m_bullets->size());
 	ImGui::Text("EnemyNum : %d", m_enemies->size());
 	ImGui::Text("ParticleNum : %d", m_particles->size());
