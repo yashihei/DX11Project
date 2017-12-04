@@ -189,6 +189,14 @@ void Model::createFromObj(const std::string& filePath)
 	}
 }
 
+void Model::draw(const Vector3& pos, const Quaternion& rot, const Vector3& scale)
+{
+	const Matrix world = Matrix::CreateScale(scale) * Matrix::CreateFromQuaternion(rot) * Matrix::CreateTranslation(pos);
+	const Matrix view = m_camera->getViewMat();
+	const Matrix proj = m_camera->getProjMat();
+	draw(world, view, proj);
+}
+
 void Model::draw(const Vector3& pos, const Vector3& rot, const Vector3& scale)
 {
 	const Matrix world = Matrix::CreateScale(scale) * Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z) * Matrix::CreateTranslation(pos);
