@@ -19,7 +19,7 @@ class Player : public Actor {
 public:
 	Player(App* app, BulletManagerPtr bullets) :
 		m_app(app), m_bullets(bullets),
-		m_pos(Vector3::Zero), m_rot(Vector3::Zero), m_vec(Vector3::Zero) {}
+		m_pos(Vector3::Zero), m_vec(Vector3::Zero), m_rot() {}
 
 	void update() override
 	{
@@ -64,9 +64,8 @@ private:
 		m_pos.x = Clamp(m_pos.x, -20.f, 20.f);
 		m_pos.z = Clamp(m_pos.z, -20.f, 20.f);
 
-		//FIXME: ローカル軸回転だとやばい><
-		m_rot.x += m_vec.z * 0.5f;
-		m_rot.z -= m_vec.x * 0.5f;
+		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Right, m_vec.z * 0.5f);
+		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Forward, m_vec.x * 0.5f);
 	}
 
 	void fire(Vector2& fireDir)
@@ -76,9 +75,9 @@ private:
 
 		if (m_bulletTimer.elapsed() < 0.05f) {
 			return;
-		} else {
-			m_bulletTimer.restart();
 		}
+
+		m_bulletTimer.restart();
 
 		fireDir.Normalize();
 
@@ -88,7 +87,8 @@ private:
 
 	App* m_app;
 	BulletManagerPtr m_bullets;
-	Vector3 m_pos, m_rot, m_vec;
+	Vector3 m_pos, m_vec;
+	Quaternion m_rot;
 	boost::timer m_bulletTimer;
 };
 
