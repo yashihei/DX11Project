@@ -81,6 +81,7 @@ void Model::createFromObj(const std::string& filePath)
 	if (!err.empty()) {
 		throw std::runtime_error(filePath + " Load Failed.");
 	}
+	Log("[Load] %1%.\n", filePath);
 
 	//Loop over shapes (g or o)
 	for (unsigned int s = 0; s < shapes.size(); s++) {

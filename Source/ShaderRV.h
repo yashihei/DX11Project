@@ -32,7 +32,7 @@ inline ComPtr<ID3D11ShaderResourceView> CreateShaderResourceViewFromFile(ComPtr<
 		if (FAILED(hr))
 			throw std::runtime_error(filePath + " LoadFromWICFile() Failed.");
 	}
-	Log("Load %1%.\n", filePath);
+	Log("[Load] %1%.\n", filePath);
 
 	hr = CreateShaderResourceView(device.Get(), image.GetImages(), image.GetImageCount(), info, &resource);
 	if (FAILED(hr))
