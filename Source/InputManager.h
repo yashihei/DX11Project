@@ -47,10 +47,10 @@ public:
 
 	bool isConnectedPad() const { return m_gamePad->GetState(m_padIndex).IsConnected(); }
 	void changePadIndex(const int index) { m_padIndex = index; }
-	float getLeftThumbX() const { return m_gamePad->GetState(m_padIndex).thumbSticks.leftX; }
-	float getLeftThumbY() const { return m_gamePad->GetState(m_padIndex).thumbSticks.leftY; }
-	float getRightThumbX() const { return m_gamePad->GetState(m_padIndex).thumbSticks.rightX; }
-	float getRightThumbY() const { return m_gamePad->GetState(m_padIndex).thumbSticks.rightY; }
+	float getLeftThumbX() const { return m_gamePad->GetState(m_padIndex, DirectX::GamePad::DEAD_ZONE_CIRCULAR).thumbSticks.leftX; }
+	float getLeftThumbY() const { return m_gamePad->GetState(m_padIndex, DirectX::GamePad::DEAD_ZONE_CIRCULAR).thumbSticks.leftY; }
+	float getRightThumbX() const { return m_gamePad->GetState(m_padIndex, DirectX::GamePad::DEAD_ZONE_CIRCULAR).thumbSticks.rightX; }
+	float getRightThumbY() const { return m_gamePad->GetState(m_padIndex, DirectX::GamePad::DEAD_ZONE_CIRCULAR).thumbSticks.rightY; }
 
 	void update()
 	{
