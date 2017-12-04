@@ -14,6 +14,7 @@
 #include "AssetsManager.h"
 #include "InputManager.h"
 #include "Model.h"
+#include "Random.h"
 
 class Player : public Actor {
 public:
@@ -80,6 +81,11 @@ private:
 		m_bulletTimer.restart();
 
 		fireDir.Normalize();
+
+		// scatter bullet
+		float rad = DirectX::XMConvertToRadians(5);
+		rad = Random(-rad, rad);
+		fireDir = Vector2::Transform(fireDir, Matrix::CreateRotationZ(rad));
 
 		auto bullet = std::make_shared<Bullet>(m_app, m_pos, Vector3(fireDir.x, 0, fireDir.y));
 		m_bullets->add(bullet);
