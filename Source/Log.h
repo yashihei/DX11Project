@@ -6,12 +6,16 @@
 
 #pragma once
 
+#include "ImGuiLog.h"
 #include <WinBase.h>
 #include <boost/format.hpp>
 
 inline void Log(boost::format& bfmt)
 {
+#ifndef NOLOG
 	OutputDebugString(bfmt.str().c_str());
+	ImGuiLog::instance().AddLog(bfmt.str().c_str());
+#endif
 }
 
 template <class First, class... Rest>
