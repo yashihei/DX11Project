@@ -20,7 +20,7 @@ class Player : public Actor {
 public:
 	Player(App* app, BulletManagerPtr bullets) :
 		m_app(app), m_bullets(bullets),
-		m_pos(Vector3::Zero), m_vec(Vector3::Zero), m_rot() {}
+		m_pos(Vector3::Zero), m_vec(Vector3::Zero), m_rot(), m_state(State::Born) {}
 
 	void update() override
 	{
@@ -96,6 +96,10 @@ private:
 	Vector3 m_pos, m_vec;
 	Quaternion m_rot;
 	boost::timer m_bulletTimer;
+
+	enum class State {
+		Born, Normal, Die
+	} m_state;
 };
 
 using PlayerPtr = std::shared_ptr<Player>;
