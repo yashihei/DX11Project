@@ -16,6 +16,7 @@
 #include "FPSManager.h"
 #include "Camera.h"
 #include "LightParam.h"
+#include "ImGuiLog.h"
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_dx11.h>
 #include <DirectXTK/CommonStates.h>
@@ -76,6 +77,8 @@ void App::frame()
 	ImGui::Begin("DebugPanel");
 	ImGui::Text("FPS : %2.1f", m_fpsManager->getFps());
 	ImGui::End();
+
+	ImGuiLog::instance().Draw("Log");
 
 	m_graphics->beginScene();
 	m_currentScene->draw();

@@ -123,8 +123,6 @@ Scene* DemoScene::update()
 	ImGui::Text("ParticleNum : %d", m_particles->size());
 	ImGui::End();
 
-	ImGuiLog::instance().Draw("Log");
-
 	return this;
 }
 
