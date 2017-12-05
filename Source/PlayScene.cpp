@@ -1,10 +1,10 @@
 // -----------------------------------------------
-// File : DemoScene.cpp
+// File : PlayScene.cpp
 // Copyright (c) 2017 yashihei
 // Licensed under the MIT license
 // -----------------------------------------------
 
-#include "DemoScene.h"
+#include "PlayScene.h"
 
 #include "App.h"
 #include "Graphics.h"
@@ -38,7 +38,7 @@ inline void emitPatricle(App* app, ParticleManagerPtr particles, int num, const 
 	}
 }
 
-DemoScene::DemoScene(App* app) : m_app(app)
+PlayScene::PlayScene(App* app) : m_app(app)
 {
 	auto camera = m_app->getCamera();
 	auto device = m_app->getGraphics()->getDevice();
@@ -78,7 +78,7 @@ DemoScene::DemoScene(App* app) : m_app(app)
 	m_score = std::make_shared<Score>(m_app);
 }
 
-Scene* DemoScene::update()
+Scene* PlayScene::update()
 {
 	m_player->update();
 	m_enemies->updateAll();
@@ -129,7 +129,7 @@ Scene* DemoScene::update()
 	return this;
 }
 
-void DemoScene::draw()
+void PlayScene::draw()
 {
 	auto deviceContext = m_app->getGraphics()->getDeviceContext();
 	auto states = m_app->getStates();

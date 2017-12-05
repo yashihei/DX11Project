@@ -58,9 +58,6 @@
     <ClCompile Include="Source/Sprite2D.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Source/DemoScene.cpp">
-      <Filter>App\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source/Window.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
@@ -68,6 +65,9 @@
       <Filter>HKSEngine</Filter>
     </ClCompile>
     <ClCompile Include="Source\TitleScene.cpp">
+      <Filter>App\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayScene.cpp">
       <Filter>App\Scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -144,9 +144,6 @@
     <ClInclude Include="Source/Enemy.h">
       <Filter>App\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Source/DemoScene.h">
-      <Filter>App\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Source/MathAlias.h">
       <Filter>HKSEngine\Alias</Filter>
     </ClInclude>
@@ -181,6 +178,9 @@
       <Filter>HKSEngine</Filter>
     </ClInclude>
     <ClInclude Include="Source\TitleScene.h">
+      <Filter>App\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayScene.h">
       <Filter>App\Scene</Filter>
     </ClInclude>
   </ItemGroup>

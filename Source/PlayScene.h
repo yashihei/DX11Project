@@ -1,5 +1,5 @@
 // -----------------------------------------------
-// File : DemoScene.h
+// File : PlayScene.h
 // Copyright (c) 2017 yashihei
 // Licensed under the MIT license
 // -----------------------------------------------
@@ -21,9 +21,9 @@
 class App;
 using Microsoft::WRL::ComPtr;
 
-class DemoScene : public Scene {
+class PlayScene : public Scene {
 public:
-	explicit DemoScene(App* app);
+	explicit PlayScene(App* app);
 	Scene* update() override;
 	void draw() override;
 private:

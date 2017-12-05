@@ -12,7 +12,7 @@
 #include "Camera.h"
 #include "LightParam.h"
 #include "InputManager.h"
-#include "DemoScene.h"
+#include "PlayScene.h"
 #include "UtilStr.h"
 #include <DirectXTK/SpriteBatch.h>
 #include <DirectXTK/SpriteFont.h>
@@ -42,7 +42,7 @@ Scene* TitleScene::update()
 {
 	if (m_app->getInputManager()->isClickedButton()) {
 		m_app->getAssetsManager()->allClear();
-		return new DemoScene(m_app);
+		return new PlayScene(m_app);
 	}
 
 	m_titleText = "SP4RK!";

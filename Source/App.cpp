@@ -7,7 +7,7 @@
 #include "App.h"
 
 #define NOMINMAX
-#include "DemoScene.h"
+#include "PlayScene.h"
 #include "TitleScene.h"
 #include "Window.h"
 #include "Graphics.h"
