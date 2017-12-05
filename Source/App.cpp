@@ -49,7 +49,7 @@ void App::run()
 	m_light = std::make_shared<LightParam>(Color(1.0f, 1.0f, 1.0f, 1.0f), Color(0.3f, 0.3f, 0.3f, 1.0f), Vector3(0.0f, -1.0f, 0.0f));
 	m_states = std::make_shared<DirectX::CommonStates>(m_graphics->getDevice().Get());
 	m_fpsManager = std::make_shared<FPSManager>();
-	m_currentScene = std::make_shared<TitleScene>(this);
+	m_currentScene = std::make_shared<PlayScene>(this);
 
 	ImGui_ImplDX11_Init(m_window->getHandle(), m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
 
