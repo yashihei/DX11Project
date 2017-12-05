@@ -9,12 +9,14 @@
 #include <memory>
 #include <DirectXTK/Keyboard.h>
 #include <DirectXTK/GamePad.h>
+#include <DirectXTK/Mouse.h>
 
 class InputManager {
 public:
 	InputManager() : m_padIndex(0)
 	{
 		m_keyboard = std::make_unique<DirectX::Keyboard>();
+		m_mouse = std::make_unique<DirectX::Mouse>();
 		m_gamePad = std::make_unique<DirectX::GamePad>();
 	}
 
@@ -52,16 +54,25 @@ public:
 	float getRightThumbX() const { return m_gamePad->GetState(m_padIndex, DirectX::GamePad::DEAD_ZONE_CIRCULAR).thumbSticks.rightX; }
 	float getRightThumbY() const { return m_gamePad->GetState(m_padIndex, DirectX::GamePad::DEAD_ZONE_CIRCULAR).thumbSticks.rightY; }
 
+	int getMousePosX() const { return m_mouse->GetState().x; }
+	int getMousePosY() const { return m_mouse->GetState().y; }
+
 	void update()
 	{
 		m_keyTracker.Update(m_keyboard->GetState());
+
+		if (m_mouse->IsConnected())
+			m_mouseTracker.Update(m_mouse->GetState());
+
 		if (m_gamePad->GetState(m_padIndex).IsConnected())
 			m_padTracker.Update(m_gamePad->GetState(m_padIndex));
 	}
 private:
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
+	std::unique_ptr<DirectX::Mouse> m_mouse;
 	std::unique_ptr<DirectX::GamePad> m_gamePad;
 	DirectX::Keyboard::KeyboardStateTracker m_keyTracker;
+	DirectX::Mouse::ButtonStateTracker m_mouseTracker;
 	DirectX::GamePad::ButtonStateTracker m_padTracker;
 	using ButtonState = DirectX::GamePad::ButtonStateTracker::ButtonState;
 	int m_padIndex;
