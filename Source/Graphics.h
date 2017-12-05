@@ -14,15 +14,15 @@ using Microsoft::WRL::ComPtr;
 
 class Graphics {
 public:
-	Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen);
+	Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen, bool enableAA);
 	void beginScene();
 	void endScene();
 	ComPtr<ID3D11Device> getDevice() const { return m_device; }
 	ComPtr<ID3D11DeviceContext> getDeviceContext() const { return m_deviceContext; }
 private:
-	bool createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen);
+	bool createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen, bool enableAA);
 	bool createRenderTarget();
-	bool createDepthStencil(int screenWidth, int screenHeight);
+	bool createDepthStencil(int screenWidth, int screenHeight, bool enableAA);
 
 	ComPtr<ID3D11Device> m_device;
 	ComPtr<ID3D11DeviceContext> m_deviceContext;

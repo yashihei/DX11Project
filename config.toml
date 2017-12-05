@@ -4,3 +4,4 @@ title_text = "SP4RK! [DX11]"
 screen_width = 1280
 screen_height = 720
 fullscreen = false
+enableAA = true

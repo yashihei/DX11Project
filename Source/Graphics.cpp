@@ -8,15 +8,15 @@
 
 #include <stdexcept>
 
-Graphics::Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen)
+Graphics::Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen, bool enableAA)
 {
-	if (!createDeviceAndSwapChain(screenWidth, screenHeight, hWnd, fullScreen))
+	if (!createDeviceAndSwapChain(screenWidth, screenHeight, hWnd, fullScreen, enableAA))
 		throw std::runtime_error("Error Create DeviceAndSwapChain.");
 
 	if (!createRenderTarget())
 		throw std::runtime_error("Error Create RenderTarget.");
 
-	if (!createDepthStencil(screenWidth, screenHeight))
+	if (!createDepthStencil(screenWidth, screenHeight, enableAA))
 		throw std::runtime_error("Error Create DepthStencil.");
 
 	m_deviceContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
@@ -44,7 +44,7 @@ void Graphics::endScene()
 	m_swapChain->Present(1, 0);
 }
 
-bool Graphics::createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen)
+bool Graphics::createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen, bool enableAA)
 {
 	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 	swapChainDesc.BufferCount = 1;
@@ -56,8 +56,7 @@ bool Graphics::createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND 
 	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapChainDesc.OutputWindow = hWnd;
-	//マルチサンプリングOFF
-	swapChainDesc.SampleDesc.Count = 1;
+	swapChainDesc.SampleDesc.Count = enableAA ? 4 : 1;
 	swapChainDesc.SampleDesc.Quality = 0;
 	swapChainDesc.Windowed = fullScreen ? FALSE : TRUE;
 	swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
@@ -105,7 +104,7 @@ bool Graphics::createRenderTarget()
 	return true;
 }
 
-bool Graphics::createDepthStencil(int screenWidth, int screenHeight)
+bool Graphics::createDepthStencil(int screenWidth, int screenHeight, bool enableAA)
 {
 	D3D11_TEXTURE2D_DESC depthDesc = {};
 	depthDesc.Width = screenWidth;
@@ -113,7 +112,7 @@ bool Graphics::createDepthStencil(int screenWidth, int screenHeight)
 	depthDesc.MipLevels = 1;
 	depthDesc.ArraySize = 1;
 	depthDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthDesc.SampleDesc.Count = 1;
+	depthDesc.SampleDesc.Count = enableAA ? 4 : 1;
 	depthDesc.SampleDesc.Quality = 0;
 	depthDesc.Usage = D3D11_USAGE_DEFAULT;
 	depthDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
@@ -126,10 +125,8 @@ bool Graphics::createDepthStencil(int screenWidth, int screenHeight)
 
 	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
 	dsvDesc.Format = depthDesc.Format;
-	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	dsvDesc.ViewDimension = enableAA ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D;
 	dsvDesc.Texture2D.MipSlice = 0;
-	//multisample > 0の場合
-	//dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
 
 	hr = m_device->CreateDepthStencilView(m_depthStencilBuffer.Get(), &dsvDesc, &m_depthStencilView);
 	if (FAILED(hr))
