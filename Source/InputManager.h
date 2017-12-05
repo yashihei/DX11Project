@@ -20,6 +20,7 @@ public:
 		m_gamePad = std::make_unique<DirectX::GamePad>();
 	}
 
+	bool isPressedButton() const { return isPressedButton1() | isPressedButton2() | isPressedButton3() | isPressedButton4(); }
 	bool isPressedButton1() const { return m_keyboard->GetState().Z || m_gamePad->GetState(m_padIndex).IsYPressed() || m_mouse->GetState().leftButton; }
 	bool isPressedButton2() const { return m_keyboard->GetState().X || m_gamePad->GetState(m_padIndex).IsBPressed() || m_mouse->GetState().rightButton; }
 	bool isPressedButton3() const { return m_keyboard->GetState().C || m_gamePad->GetState(m_padIndex).IsAPressed() || m_mouse->GetState().middleButton; }
@@ -29,6 +30,7 @@ public:
 	bool isPressedLeft() const { return m_keyboard->GetState().Left || m_gamePad->GetState(m_padIndex).dpad.left; }
 	bool isPressedRight() const { return m_keyboard->GetState().Right || m_gamePad->GetState(m_padIndex).dpad.right; }
 
+	bool isClickedButton() const { return isClickedButton1() | isClickedButton2() | isClickedButton3() | isClickedButton4(); }
 	bool isClickedButton1() const { return m_keyTracker.pressed.Z || m_padTracker.y == PadButtonState::PRESSED || m_mouseTracker.leftButton == MouseButtonState::PRESSED; }
 	bool isClickedButton2() const { return m_keyTracker.pressed.X || m_padTracker.b == PadButtonState::PRESSED || m_mouseTracker.rightButton == MouseButtonState::PRESSED; }
 	bool isClickedButton3() const { return m_keyTracker.pressed.C || m_padTracker.a == PadButtonState::PRESSED || m_mouseTracker.middleButton == MouseButtonState::PRESSED; }
