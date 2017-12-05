@@ -17,6 +17,7 @@
 #include "ShaderRV.h"
 #include "imgui/imgui.h"
 #include "MathAlias.h"
+#include "LightParam.h"
 #include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/CommonStates.h>
 
@@ -50,6 +51,8 @@ DemoScene::DemoScene(App* app) : m_app(app)
 	camera->pos = Vector3(0, 50, 0);
 	camera->lookAt = Vector3(0, 0, 0);
 	camera->up = Vector3::Backward;
+
+	light->direction = Vector3(0.0f, -1.0f, 0.0f);
 
 	//set states
 	deviceContext->RSSetState(states->CullCounterClockwise());
