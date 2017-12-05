@@ -63,8 +63,10 @@ Scene* TitleScene::update()
 void TitleScene::draw()
 {
 	static float rotY = 0.0f;
+	auto input = m_app->getInputManager();
+	auto vec = input->isConnectedPad() ? Vector3(input->getLeftThumbY(), -input->getLeftThumbX(), 0) : Vector3::Zero;
 	rotY += DirectX::XMConvertToRadians(0.25f);
-	m_app->getAssetsManager()->getModel("ball")->draw(Vector3(0.75f, 0, 0), Vector3(0, rotY, 0));
+	m_app->getAssetsManager()->getModel("ball")->draw(Vector3(0.75f, 0, 0), Vector3(0, rotY, 0) + vec);
 
 	auto font = m_app->getAssetsManager()->getFont("orbitron");
 	m_fontCanvas->Begin();
