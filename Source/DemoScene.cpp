@@ -92,7 +92,7 @@ Scene* DemoScene::update()
 	}
 
 	//bomb
-	if (m_app->getInputManager()->isClicledButton1() || m_enemies->size() > 20) {
+	if (m_app->getInputManager()->isClickedButton1() || m_enemies->size() > 20) {
 		for (auto& enemy : *m_enemies) {
 			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
 		}

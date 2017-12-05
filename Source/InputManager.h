@@ -29,14 +29,14 @@ public:
 	bool isPressedLeft() const { return m_keyboard->GetState().Left || m_gamePad->GetState(m_padIndex).dpad.left; }
 	bool isPressedRight() const { return m_keyboard->GetState().Right || m_gamePad->GetState(m_padIndex).dpad.right; }
 
-	bool isClicledButton1() const { return m_keyTracker.pressed.Z || m_padTracker.y == PadButtonState::PRESSED || m_mouseTracker.leftButton == MouseButtonState::PRESSED; }
-	bool isClicledButton2() const { return m_keyTracker.pressed.X || m_padTracker.b == PadButtonState::PRESSED || m_mouseTracker.rightButton == MouseButtonState::PRESSED; }
-	bool isClicledButton3() const { return m_keyTracker.pressed.C || m_padTracker.a == PadButtonState::PRESSED || m_mouseTracker.middleButton == MouseButtonState::PRESSED; }
-	bool isClicledButton4() const { return m_keyTracker.pressed.V || m_padTracker.x == PadButtonState::PRESSED; }
-	bool isClicledUp() const { return m_keyTracker.pressed.Up || m_padTracker.dpadUp == PadButtonState::PRESSED; }
-	bool isClicledDown() const { return m_keyTracker.pressed.Down || m_padTracker.dpadDown == PadButtonState::PRESSED; }
-	bool isClicledLeft() const { return m_keyTracker.pressed.Left || m_padTracker.dpadLeft == PadButtonState::PRESSED; }
-	bool isClicledRight() const { return m_keyTracker.pressed.Right || m_padTracker.dpadRight == PadButtonState::PRESSED; }
+	bool isClickedButton1() const { return m_keyTracker.pressed.Z || m_padTracker.y == PadButtonState::PRESSED || m_mouseTracker.leftButton == MouseButtonState::PRESSED; }
+	bool isClickedButton2() const { return m_keyTracker.pressed.X || m_padTracker.b == PadButtonState::PRESSED || m_mouseTracker.rightButton == MouseButtonState::PRESSED; }
+	bool isClickedButton3() const { return m_keyTracker.pressed.C || m_padTracker.a == PadButtonState::PRESSED || m_mouseTracker.middleButton == MouseButtonState::PRESSED; }
+	bool isClickedButton4() const { return m_keyTracker.pressed.V || m_padTracker.x == PadButtonState::PRESSED; }
+	bool isClickedUp() const { return m_keyTracker.pressed.Up || m_padTracker.dpadUp == PadButtonState::PRESSED; }
+	bool isClickedDown() const { return m_keyTracker.pressed.Down || m_padTracker.dpadDown == PadButtonState::PRESSED; }
+	bool isClickedLeft() const { return m_keyTracker.pressed.Left || m_padTracker.dpadLeft == PadButtonState::PRESSED; }
+	bool isClickedRight() const { return m_keyTracker.pressed.Right || m_padTracker.dpadRight == PadButtonState::PRESSED; }
 
 	bool isRelesedButton1() const { return m_keyTracker.released.Z || m_padTracker.y == PadButtonState::RELEASED || m_mouseTracker.leftButton == MouseButtonState::RELEASED; }
 	bool isRelesedButton2() const { return m_keyTracker.released.X || m_padTracker.b == PadButtonState::RELEASED || m_mouseTracker.rightButton == MouseButtonState::RELEASED; }
