@@ -91,12 +91,6 @@ Scene* DemoScene::update()
 		m_spawnTimer.restart();
 	}
 
-	//camera
-	if (m_app->getInputManager()->isPressedButton2())
-		m_app->getCamera()->pos = Vector3(0, 30, -40);
-	else
-		m_app->getCamera()->pos = Vector3(0, 50, 0);
-
 	//bomb
 	if (m_app->getInputManager()->isClicledButton1() || m_enemies->size() > 20) {
 		for (auto& enemy : *m_enemies) {
@@ -115,6 +109,11 @@ Scene* DemoScene::update()
 			}
 		}
 	}
+
+	//tps camera
+	auto camera = m_app->getCamera();
+	camera->lookAt = m_player->getPos();
+	camera->pos = m_player->getPos() + Vector3(0, 50, 0);
 
 	const auto playerPos = m_player->getPos();
 	ImGui::Begin("DebugPanel");
