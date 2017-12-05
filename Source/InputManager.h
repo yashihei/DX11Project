@@ -21,9 +21,9 @@ public:
 	}
 
 	bool isPressedButton() const { return isPressedButton1() | isPressedButton2() | isPressedButton3() | isPressedButton4(); }
-	bool isPressedButton1() const { return m_keyboard->GetState().Z || m_gamePad->GetState(m_padIndex).IsYPressed() || m_mouse->GetState().leftButton; }
-	bool isPressedButton2() const { return m_keyboard->GetState().X || m_gamePad->GetState(m_padIndex).IsBPressed() || m_mouse->GetState().rightButton; }
-	bool isPressedButton3() const { return m_keyboard->GetState().C || m_gamePad->GetState(m_padIndex).IsAPressed() || m_mouse->GetState().middleButton; }
+	bool isPressedButton1() const { return m_keyboard->GetState().Z || m_gamePad->GetState(m_padIndex).IsYPressed(); }
+	bool isPressedButton2() const { return m_keyboard->GetState().X || m_gamePad->GetState(m_padIndex).IsBPressed(); }
+	bool isPressedButton3() const { return m_keyboard->GetState().C || m_gamePad->GetState(m_padIndex).IsAPressed(); }
 	bool isPressedButton4() const { return m_keyboard->GetState().V || m_gamePad->GetState(m_padIndex).IsXPressed(); }
 	bool isPressedUp() const { return m_keyboard->GetState().Up || m_gamePad->GetState(m_padIndex).dpad.up; }
 	bool isPressedDown() const { return m_keyboard->GetState().Down || m_gamePad->GetState(m_padIndex).dpad.down; }
@@ -31,18 +31,18 @@ public:
 	bool isPressedRight() const { return m_keyboard->GetState().Right || m_gamePad->GetState(m_padIndex).dpad.right; }
 
 	bool isClickedButton() const { return isClickedButton1() | isClickedButton2() | isClickedButton3() | isClickedButton4(); }
-	bool isClickedButton1() const { return m_keyTracker.pressed.Z || m_padTracker.y == PadButtonState::PRESSED || m_mouseTracker.leftButton == MouseButtonState::PRESSED; }
-	bool isClickedButton2() const { return m_keyTracker.pressed.X || m_padTracker.b == PadButtonState::PRESSED || m_mouseTracker.rightButton == MouseButtonState::PRESSED; }
-	bool isClickedButton3() const { return m_keyTracker.pressed.C || m_padTracker.a == PadButtonState::PRESSED || m_mouseTracker.middleButton == MouseButtonState::PRESSED; }
+	bool isClickedButton1() const { return m_keyTracker.pressed.Z || m_padTracker.y == PadButtonState::PRESSED; }
+	bool isClickedButton2() const { return m_keyTracker.pressed.X || m_padTracker.b == PadButtonState::PRESSED; }
+	bool isClickedButton3() const { return m_keyTracker.pressed.C || m_padTracker.a == PadButtonState::PRESSED; }
 	bool isClickedButton4() const { return m_keyTracker.pressed.V || m_padTracker.x == PadButtonState::PRESSED; }
 	bool isClickedUp() const { return m_keyTracker.pressed.Up || m_padTracker.dpadUp == PadButtonState::PRESSED; }
 	bool isClickedDown() const { return m_keyTracker.pressed.Down || m_padTracker.dpadDown == PadButtonState::PRESSED; }
 	bool isClickedLeft() const { return m_keyTracker.pressed.Left || m_padTracker.dpadLeft == PadButtonState::PRESSED; }
 	bool isClickedRight() const { return m_keyTracker.pressed.Right || m_padTracker.dpadRight == PadButtonState::PRESSED; }
 
-	bool isRelesedButton1() const { return m_keyTracker.released.Z || m_padTracker.y == PadButtonState::RELEASED || m_mouseTracker.leftButton == MouseButtonState::RELEASED; }
-	bool isRelesedButton2() const { return m_keyTracker.released.X || m_padTracker.b == PadButtonState::RELEASED || m_mouseTracker.rightButton == MouseButtonState::RELEASED; }
-	bool isRelesedButton3() const { return m_keyTracker.released.C || m_padTracker.a == PadButtonState::RELEASED || m_mouseTracker.middleButton == MouseButtonState::RELEASED; }
+	bool isRelesedButton1() const { return m_keyTracker.released.Z || m_padTracker.y == PadButtonState::RELEASED; }
+	bool isRelesedButton2() const { return m_keyTracker.released.X || m_padTracker.b == PadButtonState::RELEASED; }
+	bool isRelesedButton3() const { return m_keyTracker.released.C || m_padTracker.a == PadButtonState::RELEASED; }
 	bool isRelesedButton4() const { return m_keyTracker.released.V || m_padTracker.x == PadButtonState::RELEASED; }
 	bool isRelesedUp() const { return m_keyTracker.released.Up || m_padTracker.dpadUp == PadButtonState::RELEASED; }
 	bool isRelesedDown() const { return m_keyTracker.released.Down || m_padTracker.dpadDown == PadButtonState::RELEASED; }
