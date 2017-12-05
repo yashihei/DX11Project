@@ -56,13 +56,13 @@ DemoScene::DemoScene(App* app) : m_app(app)
 	deviceContext->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFffFFff);
 
 	//load obj models
-	assetsManager->loadModel("assets/actors/player.obj", "player", device, deviceContext, states, camera, light);
-	assetsManager->loadModel("assets/actors/enemy.obj", "enemy", device, deviceContext, states, camera, light);
-	assetsManager->loadModel("assets/tiled/tiled.obj", "tiled", device, deviceContext, states, camera, light);
+	assetsManager->loadModel("assets/model/player/player.obj", "player", device, deviceContext, states, camera, light);
+	assetsManager->loadModel("assets/model/enemy/enemy.obj", "enemy", device, deviceContext, states, camera, light);
+	assetsManager->loadModel("assets/model/tiled/tiled.obj", "tiled", device, deviceContext, states, camera, light);
 
 	//create sprite
-	assetsManager->loadSprite("assets/circle.png", "particle", device, deviceContext, camera);
-	assetsManager->loadSprite("assets/circle.png", "bullet", device, deviceContext, camera);
+	assetsManager->loadSprite("assets/texture/circle.png", "particle", device, deviceContext, camera);
+	assetsManager->loadSprite("assets/texture/circle.png", "bullet", device, deviceContext, camera);
 
 	//create font
 	assetsManager->loadFont("assets/orbitron.spritefont", "orbitron", device);

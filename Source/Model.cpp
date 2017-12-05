@@ -149,7 +149,7 @@ void Model::createFromObj(const std::string& filePath)
 	DirectX::BoundingSphere::CreateFromPoints(m_boundingSphere, points.size(), points.data(), sizeof(Vector3));
 
 	//Load texures
-	const auto nulltex = CreateShaderResourceViewFromFile(m_device, "assets/null.png");
+	const auto nulltex = CreateShaderResourceViewFromFile(m_device, "assets/texture/null.png");
 	m_textures["nulltex"] = nulltex;
 
 	const auto rootDir = GetDirPath(filePath);
