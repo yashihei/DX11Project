@@ -143,6 +143,7 @@
     <ClCompile Include="Source/SpriteEffect.cpp" />
     <ClCompile Include="Source/ToonEffect.cpp" />
     <ClCompile Include="Source/Window.cpp" />
+    <ClCompile Include="Source\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source/Actor.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Source/UtilStr.h" />
     <ClInclude Include="Source/Window.h" />
     <ClInclude Include="Source\ImGuiLog.h" />
+    <ClInclude Include="Source\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\basic.fx">

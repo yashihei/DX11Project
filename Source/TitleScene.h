@@ -1,0 +1,19 @@
+﻿// -----------------------------------------------
+// File : TitleScene.h
+// Copyright (c) 2017 yashihei
+// Licensed under the MIT license
+// -----------------------------------------------
+
+#pragma once
+#include "Scene.h"
+
+class App;
+
+class TitleScene : public Scene {
+public:
+	explicit TitleScene(App* app);
+	Scene* update() override;
+	void draw() override;
+private:
+	App* m_app;
+};

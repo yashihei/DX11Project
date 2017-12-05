@@ -67,6 +67,9 @@
     <ClCompile Include="Source/AssetsManager.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TitleScene.cpp">
+      <Filter>App\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source/Actor.h">
@@ -176,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="Source\ImGuiLog.h">
       <Filter>HKSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TitleScene.h">
+      <Filter>App\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
