@@ -15,6 +15,7 @@ namespace DirectX {
 		struct Quaternion;
 		struct Plane;
 		class Ray;
+		class Viewport;
 		struct Rectangle;
 		struct Color;
 	}
@@ -28,5 +29,6 @@ using Matrix = DirectX::SimpleMath::Matrix;
 using Quaternion = DirectX::SimpleMath::Quaternion;
 using Plane = DirectX::SimpleMath::Plane;
 using Ray = DirectX::SimpleMath::Ray;
+using Viewport = DirectX::SimpleMath::Viewport;
 using Rect = DirectX::SimpleMath::Rectangle;
 using Color = DirectX::SimpleMath::Color;
