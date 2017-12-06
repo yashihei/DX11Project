@@ -20,7 +20,8 @@ class Player : public Actor {
 public:
 	Player(App* app, BulletManagerPtr bullets) :
 		m_app(app), m_bullets(bullets),
-		m_pos(Vector3::Zero), m_vec(Vector3::Zero), m_rot(), m_state(State::Born) {}
+		m_pos(Vector3::Zero), m_vec(Vector3::Zero), m_rot(),
+		m_life(3), m_state(State::Normal) {}
 
 	void update() override
 	{
@@ -39,16 +40,43 @@ public:
 			//TODO: FireDir from mousePos
 		}
 
-		moveControl(moveDir);
-		fire(fireDir);
+		switch (m_state) {
+		case State::Born:
+			//create ring * 3
+			break;
+		case State::Normal:
+			moveControl(moveDir);
+			fire(fireDir);
+			break;
+		case State::Die:
+			if (m_stateTimer.elapsed() > 1.5f) {
+				m_stateTimer.restart();
+				m_state = State::Normal;
+			}
+			break;
+		default: ;
+		}
 	}
 
 	void draw() override
 	{
+		if (m_state != State::Normal)
+			return;
+
 		auto model = m_app->getAssetsManager()->getModel("player");
 		model->draw(m_pos, m_rot);
 	}
 
+	void destroy()
+	{
+		if (m_state != State::Normal)
+			return;
+		m_state = State::Die;
+		m_life -= 1;
+		m_stateTimer.restart();
+	}
+	
+	bool isAlive() const { return m_state == State::Normal; }
 	Vector3 getPos() const { return m_pos; }
 private:
 	void moveControl(Vector2& moveDir)
@@ -95,7 +123,8 @@ private:
 	BulletManagerPtr m_bullets;
 	Vector3 m_pos, m_vec;
 	Quaternion m_rot;
-	boost::timer m_bulletTimer;
+	boost::timer m_bulletTimer, m_stateTimer;
+	int m_life;
 
 	enum class State {
 		Born, Normal, Die

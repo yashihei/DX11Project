@@ -88,18 +88,12 @@ Scene* PlayScene::update()
 
 	//spawn enemy
 	if (m_spawnTimer.elapsed() > 5.0f) {
-		const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
-		auto enemy = std::make_shared<Enemy>(m_app, spawnPos, m_player->getPos());
-		m_enemies->add(enemy);
-		m_spawnTimer.restart();
-	}
-
-	//bomb
-	if (m_app->getInputManager()->isClickedButton1() || m_enemies->size() > 20) {
-		for (auto& enemy : *m_enemies) {
-			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1.f);
+		for (int i = 0; i < 5; i++) {
+			const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
+			auto enemy = std::make_shared<Enemy>(m_app, spawnPos, m_player->getPos());
+			m_enemies->add(enemy);
+			m_spawnTimer.restart();
 		}
-		m_enemies->clear();
 	}
 
 	//bullet vs enemy
@@ -111,6 +105,25 @@ Scene* PlayScene::update()
 				emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1.f);
 			}
 		}
+	}
+
+	//enemy vs player
+	bool enemiesClear = false;
+	for (auto& enemy : *m_enemies) {
+		if (IsCollied(m_player->getPos(), enemy->getPos(), 0.8f, 0.8f)) {
+			m_player->destroy();
+			emitPatricle(m_app, m_particles, 100, m_player->getPos(), Color(0.8f, 0.2f, 0.2f), 1.f);
+			enemiesClear = true;
+			m_spawnTimer.restart();
+			break;
+		}
+	}
+
+	if (enemiesClear) {
+		for (auto& enemy : *m_enemies) {
+			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1.f);
+		}
+		m_enemies->clear();
 	}
 
 	//tps camera
