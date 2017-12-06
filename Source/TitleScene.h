@@ -19,7 +19,5 @@ public:
 	void draw() override;
 private:
 	App* m_app;
-	boost::timer m_textTimer;
 	SpriteBatchPtr m_fontCanvas;
-	std::string m_titleText;
 };
