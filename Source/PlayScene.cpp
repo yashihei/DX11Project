@@ -27,13 +27,13 @@ inline bool IsCollied(const Vector3& pos1, const Vector3& pos2, float r1, float 
 	return tmp.x * tmp.x + tmp.y * tmp.y + tmp.z * tmp.z < (r1 + r2) * (r1 + r2);
 }
 
-inline void emitPatricle(App* app, ParticleManagerPtr particles, int num, const Vector3& pos, const Color& color)
+inline void emitPatricle(App* app, ParticleManagerPtr particles, int num, const Vector3& pos, const Color& color, float scale)
 {
 	for (int i = 0; i < num; i++) {
 		Quaternion rotate = Quaternion::CreateFromYawPitchRoll(Random(DirectX::XM_2PI), Random(DirectX::XM_2PI), Random(DirectX::XM_2PI));
 		Vector3 vec(0.75f, 0, 0);
 		vec = Vector3::Transform(vec, rotate);
-		auto particle = std::make_shared<Particle>(app, pos, vec, color, 0.75f);
+		auto particle = std::make_shared<Particle>(app, pos, vec, color, scale);
 		particles->add(particle);
 	}
 }
@@ -97,7 +97,7 @@ Scene* PlayScene::update()
 	//bomb
 	if (m_app->getInputManager()->isClickedButton1() || m_enemies->size() > 20) {
 		for (auto& enemy : *m_enemies) {
-			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
+			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1.f);
 		}
 		m_enemies->clear();
 	}
@@ -108,7 +108,7 @@ Scene* PlayScene::update()
 			if (IsCollied(bullet->getPos(), enemy->getPos(), 1.0f, 1.0f)) {
 				m_score->addScore(1000);
 				enemy->kill();
-				emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.05f, 0.8f, 0.4f));
+				emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1.f);
 			}
 		}
 	}
