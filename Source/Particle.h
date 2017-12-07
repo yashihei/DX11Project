@@ -14,8 +14,8 @@
 
 class Particle : public Actor {
 public:
-	Particle(App* app, const Vector3& pos, const Vector3& vector, const Color& color, const float scale, bool gravity = false) :
-		m_app(app), m_pos(pos), m_vector(vector), m_color(color), m_scale(scale), m_gravity(gravity) {}
+	Particle(App* app, const Vector3& pos, const Vector3& vector, const Color& color, const float scale) :
+		m_app(app), m_pos(pos), m_vector(vector), m_color(color), m_scale(scale) {}
 
 	void update() override
 	{
@@ -25,9 +25,6 @@ public:
 		m_color.w *= 0.95f;
 		if (m_color.w < 0.05f)
 			kill();
-
-		if (m_gravity)
-			m_vector += Vector3(0, -0.1f, 0);
 	}
 
 	void draw() override
@@ -40,7 +37,6 @@ private:
 	Vector3 m_pos, m_vector;
 	Color m_color;
 	float m_scale;
-	bool m_gravity;
 };
 
 using ParticlePtr = std::shared_ptr<Particle>;

@@ -90,6 +90,7 @@ public:
 			return;
 		m_state = State::Die;
 		m_life -= 1;
+		m_vec = Vector3::Zero;
 		m_stateTimer.restart();
 	}
 	
