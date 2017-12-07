@@ -62,7 +62,7 @@ public:
 			//create ring * 3
 			break;
 		case State::Normal:
-			moveControl(moveDir);
+			move(moveDir);
 			fire(fireDir);
 			break;
 		case State::Die:
@@ -97,7 +97,7 @@ public:
 	bool isAlive() const { return m_state == State::Normal; }
 	Vector3 getPos() const { return m_pos; }
 private:
-	void moveControl(Vector2& moveDir)
+	void move(Vector2& moveDir)
 	{
 		if (moveDir != Vector2::Zero) {
 			moveDir.Normalize();
