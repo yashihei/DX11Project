@@ -15,6 +15,10 @@
 #include "InputManager.h"
 #include "Model.h"
 #include "Random.h"
+#include "UtilDX.h"
+#include "Camera.h"
+#include "Log.h"
+#include "Window.h"
 
 class Player : public Actor {
 public:
@@ -37,7 +41,20 @@ public:
 		} else {
 			moveDir.x = static_cast<float>(input->isPressedRight() - input->isPressedLeft());
 			moveDir.y = static_cast<float>(input->isPressedUp() - input->isPressedDown());
-			//TODO: FireDir from mousePos
+
+			//マウスレイを飛ばす
+			const auto mousePos = Vector2(static_cast<float>(input->getMousePosX()), static_cast<float>(input->getMousePosY()));
+			const Viewport vp(0, 0, static_cast<float>(m_app->getWindow()->getWidth()), static_cast<float>(m_app->getWindow()->getHeight()));
+			const auto proj = m_app->getCamera()->getProjMat();
+			const auto view = m_app->getCamera()->getViewMat();
+			auto ray = GetMouseRay(mousePos, vp, proj, view);
+
+			//レイと地面の交点へfireDirを向ける
+			float distance = 0;
+			ray.Intersects(Plane(Vector3::Zero, Vector3::Up), distance);
+			const auto hitPos = ray.position + ray.direction * distance;
+			fireDir.x = hitPos.x - m_pos.x;
+			fireDir.y = hitPos.z - m_pos.z;
 		}
 
 		switch (m_state) {

@@ -70,3 +70,17 @@ inline void CreateConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteS
 	if (FAILED(hr))
 		throw std::runtime_error("CreateConstantBuffer Failed.");
 }
+
+inline Ray GetMouseRay(const Vector2& mousePos, const Viewport& vp, const Matrix& proj, const Matrix& view)
+{
+	auto nearPoint = Vector3(mousePos.x, mousePos.y, 0.0f);
+	auto farPoint = Vector3(mousePos.x, mousePos.y, 1.0f);
+
+	nearPoint = vp.Unproject(nearPoint, proj, view, Matrix::Identity);
+	farPoint = vp.Unproject(farPoint, proj, view, Matrix::Identity);
+
+	auto dir = farPoint - nearPoint;
+	dir.Normalize();
+
+	return Ray(nearPoint, dir);
+}
