@@ -25,10 +25,10 @@ public:
 	bool isPressedButton2() const { return m_keyboard->GetState().X || m_gamePad->GetState(m_padIndex).IsBPressed(); }
 	bool isPressedButton3() const { return m_keyboard->GetState().C || m_gamePad->GetState(m_padIndex).IsAPressed(); }
 	bool isPressedButton4() const { return m_keyboard->GetState().V || m_gamePad->GetState(m_padIndex).IsXPressed(); }
-	bool isPressedUp() const { return m_keyboard->GetState().Up || m_gamePad->GetState(m_padIndex).dpad.up; }
-	bool isPressedDown() const { return m_keyboard->GetState().Down || m_gamePad->GetState(m_padIndex).dpad.down; }
-	bool isPressedLeft() const { return m_keyboard->GetState().Left || m_gamePad->GetState(m_padIndex).dpad.left; }
-	bool isPressedRight() const { return m_keyboard->GetState().Right || m_gamePad->GetState(m_padIndex).dpad.right; }
+	bool isPressedUp() const { return m_keyboard->GetState().Up || m_keyboard->GetState().W || m_gamePad->GetState(m_padIndex).dpad.up; }
+	bool isPressedDown() const { return m_keyboard->GetState().Down || m_keyboard->GetState().S || m_gamePad->GetState(m_padIndex).dpad.down; }
+	bool isPressedLeft() const { return m_keyboard->GetState().Left || m_keyboard->GetState().A || m_gamePad->GetState(m_padIndex).dpad.left; }
+	bool isPressedRight() const { return m_keyboard->GetState().Right || m_keyboard->GetState().D || m_gamePad->GetState(m_padIndex).dpad.right; }
 
 	bool isClickedButton() const { return isClickedButton1() | isClickedButton2() | isClickedButton3() | isClickedButton4(); }
 	bool isClickedButton1() const { return m_keyTracker.pressed.Z || m_padTracker.y == PadButtonState::PRESSED; }
