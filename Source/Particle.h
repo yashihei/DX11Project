@@ -6,11 +6,12 @@
 
 #pragma once
 
-#include "Fwd.h"
+#include "App.h"
 #include "Sprite.h"
 #include "Actor.h"
-#include "App.h"
 #include "AssetsManager.h"
+#include "MathAlias.h"
+#include <DirectXTK/SimpleMath.h>
 
 class Particle : public Actor {
 public:

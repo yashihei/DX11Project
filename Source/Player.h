@@ -6,11 +6,10 @@
 
 #pragma once
 
-#include "Fwd.h"
+#include "App.h"
 #include "Actor.h"
 #include "UtilFunc.h"
 #include "Bullet.h"
-#include "App.h"
 #include "AssetsManager.h"
 #include "InputManager.h"
 #include "Model.h"
@@ -19,6 +18,8 @@
 #include "Camera.h"
 #include "Log.h"
 #include "Window.h"
+#include "MathAlias.h"
+#include <DirectXTK/SimpleMath.h>
 
 class Player : public Actor {
 public:

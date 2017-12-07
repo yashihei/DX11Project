@@ -6,11 +6,13 @@
 
 #pragma once
 
+#include "App.h"
 #include "Actor.h"
 #include "Sprite.h"
-#include <boost/timer.hpp>
-#include "App.h"
 #include "AssetsManager.h"
+#include "MathAlias.h"
+#include <DirectXTK/SimpleMath.h>
+#include <boost/timer.hpp>
 
 class Bullet : public Actor {
 public:

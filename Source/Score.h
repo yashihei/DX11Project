@@ -6,12 +6,12 @@
 
 #pragma once
 
+#include "App.h"
 #include "PtrAlias.h"
 #include "Actor.h"
 #include "MathAlias.h"
 #include "AssetsManager.h"
 #include "Graphics.h"
-#include "App.h"
 #include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/SpriteBatch.h>
 #include <DirectXTK/SpriteFont.h>
