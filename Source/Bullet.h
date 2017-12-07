@@ -29,7 +29,7 @@ public:
 	void draw() override
 	{
 		auto sprite = m_app->getAssetsManager()->getSprite("bullet");
-		sprite->draw(m_pos, Color(1.0f, 0.7f, 0.0f), 0.5f);
+		sprite->draw(m_pos, Color(1.0f, 0.7f, 0.0f), 0.75f);
 	}
 
 	Vector3 getPos() const { return m_pos; }
