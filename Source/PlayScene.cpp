@@ -131,6 +131,11 @@ Scene* PlayScene::update()
 	camera->lookAt = m_player->getPos();
 	camera->pos = m_player->getPos() + Vector3(0, 50, 0);
 
+	if (m_app->getInputManager()->isPressedButton2()) {
+		camera->lookAt = Vector3::Zero;
+		camera->pos = Vector3(0, 20, -50);
+	}
+
 	const auto playerPos = m_player->getPos();
 	ImGui::Begin("DebugPanel");
 	ImGui::Text("PlayerPos : %.2f, %.2f, %.2f", playerPos.x, playerPos.y, playerPos.z);
