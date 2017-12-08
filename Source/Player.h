@@ -20,6 +20,7 @@
 #include "Window.h"
 #include "MathAlias.h"
 #include <DirectXTK/SimpleMath.h>
+#include <imgui/imgui.h>
 
 class Player : public Actor {
 public:
@@ -118,23 +119,25 @@ private:
 
 	void fire(Vector2& fireDir)
 	{
+		float fireInterval = 0.075f;
+		float fireSpeed = 0.8f;
+
 		if (fireDir == Vector2::Zero)
 			return;
 
-		if (m_bulletTimer.elapsed() < 0.05f) {
+		if (m_bulletTimer.elapsed() < fireInterval) {
 			return;
 		}
-
 		m_bulletTimer.restart();
 
 		fireDir.Normalize();
-
 		// scatter bullet
 		float rad = DirectX::XMConvertToRadians(5);
 		rad = Random(-rad, rad);
 		fireDir = Vector2::Transform(fireDir, Matrix::CreateRotationZ(rad));
 
-		auto bullet = std::make_shared<Bullet>(m_app, m_pos, Vector3(fireDir.x, 0, fireDir.y));
+		auto fireVec = Vector3(fireDir.x, 0, fireDir.y) * fireSpeed;
+		auto bullet = std::make_shared<Bullet>(m_app, m_pos, fireVec);
 		m_bullets->add(bullet);
 	}
 
