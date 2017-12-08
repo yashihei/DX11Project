@@ -33,7 +33,7 @@ inline void emitPatricle(App* app, ParticleManagerPtr particles, int num, const 
 		Quaternion rotate = Quaternion::CreateFromYawPitchRoll(Random(DirectX::XM_2PI), Random(DirectX::XM_2PI), Random(DirectX::XM_2PI));
 		Vector3 vec(0.75f, 0, 0);
 		vec = Vector3::Transform(vec, rotate);
-		auto particle = std::make_shared<Particle>(app, pos, vec, color, scale);
+		auto particle = std::make_shared<NormalParticle>(app, pos, vec, color, scale);
 		particles->add(particle);
 	}
 }
@@ -66,15 +66,16 @@ PlayScene::PlayScene(App* app) : m_app(app)
 	//create sprite
 	assetsManager->loadSprite("assets/texture/circle.png", "particle", device, deviceContext, camera);
 	assetsManager->loadSprite("assets/texture/circle.png", "bullet", device, deviceContext, camera);
+	assetsManager->loadSprite("assets/texture/ring.png", "ring", device, deviceContext, camera);
 
 	//create font
 	assetsManager->loadFont("assets/orbitron.spritefont", "orbitron", device);
 
 	//create actor
 	m_bullets = std::make_shared<ActorManager<Bullet>>();
+	m_particles = std::make_shared<ActorManager<Particle>>();
 	m_player = std::make_shared<Player>(m_app, m_bullets);
 	m_enemies = std::make_shared<ActorManager<Enemy>>();
-	m_particles = std::make_shared<ActorManager<Particle>>();
 	m_score = std::make_shared<Score>(m_app);
 }
 
