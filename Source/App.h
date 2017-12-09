@@ -28,6 +28,7 @@ public:
 	CameraPtr getCamera() const { return m_camera; }
 	LightParamPtr getLight() const { return m_light; }
 	CommonStatesPtr getStates() const { return m_states; }
+	TimePtr getTime() const { return m_time; }
 private:
 	void frame();
 
@@ -40,6 +41,7 @@ private:
 	LightParamPtr m_light;
 	CommonStatesPtr m_states;
 	FPSManagerPtr m_fpsManager;
+	TimePtr m_time;
 	ScenePtr m_currentScene;
 };
 

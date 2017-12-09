@@ -175,6 +175,7 @@
     <ClInclude Include="Source\Sprite.h" />
     <ClInclude Include="Source\Sprite2D.h" />
     <ClInclude Include="Source\SpriteEffect.h" />
+    <ClInclude Include="Source\Time.h" />
     <ClInclude Include="Source\ToonEffect.h" />
     <ClInclude Include="Source\Types.h" />
     <ClInclude Include="Source\UtilDX.h" />

@@ -16,6 +16,7 @@ namespace hks {
 	class AudioManager;
 	class AssetsManager;
 	class FPSManager;
+	class Time;
 
 	class Model;
 	class Sprite;

@@ -20,6 +20,7 @@ using InputManagerPtr = std::shared_ptr<InputManager>;
 using AudioManagerPtr = std::shared_ptr<AudioManager>;
 using AssetsMangerPtr = std::shared_ptr<AssetsManager>;
 using FPSManagerPtr = std::shared_ptr<FPSManager>;
+using TimePtr = std::shared_ptr<Time>;
 
 using ModelPtr = std::shared_ptr<Model>;
 using SpritePtr = std::shared_ptr<Sprite>;

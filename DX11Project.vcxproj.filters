@@ -183,6 +183,9 @@
     <ClInclude Include="Source\PlayScene.h">
       <Filter>App\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Time.h">
+      <Filter>HKSEngine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\basic.fx">

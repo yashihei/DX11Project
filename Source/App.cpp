@@ -18,6 +18,7 @@
 #include "Camera.h"
 #include "LightParam.h"
 #include "ImGuiLog.h"
+#include "Time.h"
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_dx11.h>
 #include <DirectXTK/CommonStates.h>
@@ -51,6 +52,7 @@ void App::run()
 	m_light = std::make_shared<LightParam>(Color(1.0f, 1.0f, 1.0f, 1.0f), Color(0.3f, 0.3f, 0.3f, 1.0f), Vector3(0.0f, -1.0f, 0.0f));
 	m_states = std::make_shared<DirectX::CommonStates>(m_graphics->getDevice().Get());
 	m_fpsManager = std::make_shared<FPSManager>();
+	m_time = std::make_shared<Time>();
 	m_currentScene = std::make_shared<PlayScene>(this);
 
 	ImGui_ImplDX11_Init(m_window->getHandle(), m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
@@ -89,6 +91,7 @@ void App::frame()
 	m_graphics->endScene();
 
 	m_fpsManager->sync(60);
+	m_time->update();
 }
 
 } // namespace sp4rk
