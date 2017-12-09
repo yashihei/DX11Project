@@ -5,8 +5,9 @@
 // -----------------------------------------------
 
 #include "AudioManager.h"
-
 #include "UtilStr.h"
+
+namespace hks {
 
 AudioManager::AudioManager()
 {
@@ -77,3 +78,5 @@ void AudioManager::setVolume(const std::string& alias, float volume)
 		m_soundEffectsInstance[alias]->SetVolume(volume);
 	}
 }
+
+} // namespace hks

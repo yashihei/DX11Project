@@ -10,6 +10,8 @@
 #include <DirectXTK/SimpleMath.h>
 #include "MathAlias.h"
 
+namespace hks {
+
 class Camera {
 public:
 	Camera(const Vector3& _pos, const Vector3& _lookAt, const Vector3& up, float aspect) :
@@ -32,3 +34,5 @@ public:
 private:
 	Matrix m_proj;
 };
+
+} // namespace hks

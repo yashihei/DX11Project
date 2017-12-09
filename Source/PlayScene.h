@@ -18,8 +18,11 @@
 #include "Bullet.h"
 #include "Score.h"
 
-class App;
+namespace sp4rk {
+
+using namespace hks;
 using Microsoft::WRL::ComPtr;
+class App;
 
 class PlayScene : public Scene {
 public:
@@ -36,3 +39,5 @@ private:
 	ScorePtr m_score;
 	boost::timer m_spawnTimer;
 };
+
+} // namespace sp4rk

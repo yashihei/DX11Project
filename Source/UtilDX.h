@@ -13,6 +13,8 @@
 #include <DirectXTK/SimpleMath.h>
 #include "MathAlias.h"
 
+namespace hks {
+
 using Microsoft::WRL::ComPtr;
 
 inline Color GetColorFromHSV(float h_, float s_, float v_, float alpha = 1.0f)
@@ -84,3 +86,5 @@ inline Ray GetMouseRay(const Vector2& mousePos, const Viewport& vp, const Matrix
 
 	return Ray(nearPoint, dir);
 }
+
+} // namespace hks

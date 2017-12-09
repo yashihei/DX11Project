@@ -9,6 +9,8 @@
 #include <Windows.h>
 #include <string>
 
+namespace hks {
+
 class Window {
 public:
 	Window(const std::string& titleText, int width, int height, bool fullScreen, bool cursor = true);
@@ -24,3 +26,5 @@ private:
 	std::string m_titleText;
 	int m_width, m_height;
 };
+
+} // namespace hks

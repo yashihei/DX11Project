@@ -10,6 +10,8 @@
 #include <WinBase.h>
 #include <boost/format.hpp>
 
+namespace hks {
+
 inline void Log(boost::format& bfmt)
 {
 #ifndef NOLOG
@@ -30,3 +32,5 @@ inline void Log(const std::string& fmt, const Rest&... rest)
 	boost::format bfmt(fmt);
 	Log(bfmt, rest...);
 }
+
+} // namespace hks

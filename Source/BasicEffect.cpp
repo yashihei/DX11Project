@@ -34,6 +34,8 @@ namespace {
 }
 #pragma pack(pop)
 
+namespace hks {
+
 BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
@@ -132,3 +134,5 @@ void BasicEffect::apply()
 	m_deviceContext->VSSetConstantBuffers(0, 3, buffers);
 	m_deviceContext->PSSetConstantBuffers(0, 3, buffers);
 }
+
+} // namespace hks

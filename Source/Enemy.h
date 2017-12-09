@@ -12,6 +12,10 @@
 #include "App.h"
 #include "AssetsManager.h"
 
+namespace sp4rk {
+
+using namespace hks;
+
 class Enemy : public Actor {
 public:
 	Enemy(App* app, Vector3 spawnPos, Vector3 target) :
@@ -50,3 +54,5 @@ private:
 };
 
 using EnemyManagerPtr = std::shared_ptr<ActorManager<Enemy>>;
+
+} // namespace sp4rk

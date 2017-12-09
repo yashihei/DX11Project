@@ -13,6 +13,8 @@
 #include "PtrAlias.h"
 #include "MathAlias.h"
 
+namespace hks {
+
 using Microsoft::WRL::ComPtr;
 
 class Sprite {
@@ -33,3 +35,5 @@ private:
 	SpriteEffectPtr m_spriteEffect;
 	CameraPtr m_camera;
 };
+
+} // namespace hks

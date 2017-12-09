@@ -10,6 +10,8 @@
 #include <DirectXTK/SimpleMath.h>
 #include "MathAlias.h"
 
+namespace hks {
+
 struct LightParam {
 	LightParam() = default;
 
@@ -19,3 +21,5 @@ struct LightParam {
 	Color diffuse, ambient;
 	Vector3 direction;
 };
+
+} // namespace hks

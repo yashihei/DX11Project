@@ -11,6 +11,8 @@
 #include <functional>
 #include <algorithm>
 
+namespace hks {
+
 class Actor {
 public:
 	Actor() : m_enable(true) {}
@@ -70,3 +72,5 @@ public:
 private:
 	std::list<std::shared_ptr<Type>> m_actors;
 };
+
+} // namespace hks

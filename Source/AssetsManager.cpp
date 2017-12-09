@@ -12,6 +12,8 @@
 #include "ShaderRV.h"
 #include <DirectXTK/SpriteFont.h>
 
+namespace hks {
+
 void AssetsManager::loadModel(const std::string& filePath, const std::string& alias, ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states, CameraPtr camera, LightParamPtr light)
 {
 	auto model = std::make_shared<Model>(device, deviceContext, states, camera, light);
@@ -49,3 +51,5 @@ SpriteFontPtr AssetsManager::getFont(const std::string& alias)
 	assert(m_fonts.count(alias) != 0);
 	return m_fonts[alias];
 }
+
+} // namespace hks

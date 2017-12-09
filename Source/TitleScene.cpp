@@ -17,6 +17,8 @@
 #include <DirectXTK/SpriteBatch.h>
 #include <DirectXTK/SpriteFont.h>
 
+namespace sp4rk {
+
 TitleScene::TitleScene(App* app) : m_app(app)
 {
 	auto device = m_app->getGraphics()->getDevice();
@@ -55,3 +57,5 @@ void TitleScene::draw()
 	font->DrawString(m_fontCanvas.get(), L"PUSH TO ST4RT", Vector2(25, 375), DirectX::Colors::White, 0, Vector2::Zero, 0.5f);
 	m_fontCanvas->End();
 }
+
+} // namespace sp4rk

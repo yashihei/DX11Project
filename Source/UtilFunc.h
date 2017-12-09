@@ -8,6 +8,8 @@
 
 #include <algorithm>
 
+namespace hks {
+
 template <class Type>
 inline const Type& Clamp(const Type& x, const Type& min, const Type& max)
 {
@@ -38,3 +40,5 @@ inline void Each(const T& v, const F& f)
 {
 	std::for_each(v.begin(), v.end(), f);
 }
+
+} //namespace hks

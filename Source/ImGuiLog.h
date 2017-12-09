@@ -7,6 +7,8 @@
 #include "Singleton.h"
 #include <imgui/imgui.h>
 
+namespace hks {
+
 struct ImGuiLog : public Singleton<ImGuiLog>
 {
 	ImGuiTextBuffer     Buf;
@@ -68,3 +70,5 @@ struct ImGuiLog : public Singleton<ImGuiLog>
 		ImGui::End();
 	}
 };
+
+} // namespace hks

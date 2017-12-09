@@ -14,6 +14,10 @@
 #include <DirectXTK/SimpleMath.h>
 #include <boost/timer.hpp>
 
+namespace sp4rk {
+
+using namespace hks;
+
 class Bullet : public Actor {
 public:
 	Bullet(App* app, const Vector3& spawnPos, const Vector3 vec) :
@@ -42,3 +46,5 @@ private:
 };
 
 using BulletManagerPtr = std::shared_ptr<ActorManager<Bullet>>;
+
+} // namespace sp4rk

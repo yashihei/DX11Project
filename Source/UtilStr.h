@@ -12,6 +12,8 @@
 #include <stdexcept>
 #include <errhandlingapi.h>
 
+namespace hks {
+
 //from:http://nekko1119.hatenablog.com/entry/2017/01/02/054629
 inline std::wstring s2ws(const std::string& src)
 {
@@ -40,3 +42,5 @@ inline std::string GetDirPath(const std::string& filePath)
 	_splitpath_s(filePath.c_str(), NULL, 0, dest.data(), dest_size, NULL, 0, NULL, 0);
 	return std::string(dest.data());
 }
+
+} // namespace hks

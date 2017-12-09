@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <DirectXTK/Audio.h>
 
+namespace hks {
+
 class AudioManager {
 public:
 	AudioManager();
@@ -30,3 +32,5 @@ private:
 	std::unordered_map<std::string, std::unique_ptr<DirectX::SoundEffect>> m_soundEffects;
 	std::unordered_map<std::string, std::unique_ptr<DirectX::SoundEffectInstance>> m_soundEffectsInstance;
 };
+
+} // namespace hks

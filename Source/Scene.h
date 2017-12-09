@@ -6,6 +6,8 @@
 
 #pragma once
 
+namespace hks {
+
 class Scene {
 public:
 	Scene() = default;
@@ -13,3 +15,5 @@ public:
 	virtual Scene* update() = 0;
 	virtual void draw() = 0;
 };
+
+} // namespace hks

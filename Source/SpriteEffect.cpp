@@ -18,6 +18,8 @@ namespace {
 	};
 }
 
+namespace hks {
+
 SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
@@ -106,3 +108,5 @@ void SpriteEffect::apply()
 	m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 	m_deviceContext->PSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 }
+
+} // namespace hks

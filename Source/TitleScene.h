@@ -10,6 +10,9 @@
 #include "PtrAlias.h"
 #include <string>
 
+namespace sp4rk {
+
+using namespace hks;
 class App;
 
 class TitleScene : public Scene {
@@ -21,3 +24,5 @@ private:
 	App* m_app;
 	SpriteBatchPtr m_fontCanvas;
 };
+
+} // namespace sp4rk

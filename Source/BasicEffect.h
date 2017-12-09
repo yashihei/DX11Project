@@ -11,6 +11,8 @@
 #include <DirectXTK/SimpleMath.h>
 #include "MathAlias.h"
 
+namespace hks {
+
 using Microsoft::WRL::ComPtr;
 
 class BasicEffect {
@@ -32,3 +34,5 @@ private:
 	ComPtr<ID3D11InputLayout> m_layout;
 	ComPtr<ID3D11ShaderResourceView> m_texture;
 };
+
+} //namespace hks

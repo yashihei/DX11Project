@@ -8,6 +8,8 @@
 
 #include <random>
 
+namespace hks {
+
 using RNG = std::mt19937;
 
 //®”Œ^ -> int_distirbutionA•‚“®¬”“_Œ^ -> real_distribution
@@ -75,3 +77,5 @@ inline Type RandomSelect(std::initializer_list<Type> ilist)
 {
 	return RandomSelect(std::begin(ilist), std::end(ilist));
 }
+
+} // namespace hks

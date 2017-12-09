@@ -10,6 +10,10 @@
 #include "Fwd.h"
 #include "PtrAlias.h"
 
+namespace sp4rk {
+
+using namespace hks;
+
 class App {
 public:
 	App() = default;
@@ -38,3 +42,5 @@ private:
 	FPSManagerPtr m_fpsManager;
 	ScenePtr m_currentScene;
 };
+
+} // namespace sp4rk

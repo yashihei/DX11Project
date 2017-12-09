@@ -11,6 +11,8 @@
 #include <DirectXTK/GamePad.h>
 #include <DirectXTK/Mouse.h>
 
+namespace hks {
+
 class InputManager {
 public:
 	InputManager() : m_padIndex(0)
@@ -80,3 +82,5 @@ private:
 	using MouseButtonState = DirectX::Mouse::ButtonStateTracker::ButtonState;
 	int m_padIndex;
 };
+
+} // namespace hks

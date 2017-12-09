@@ -9,6 +9,8 @@
 #include <memory>
 #include "Fwd.h"
 
+namespace hks {
+
 using WindowPtr = std::shared_ptr<Window>;
 using GraphicsPtr = std::shared_ptr<Graphics>;
 using ScenePtr = std::shared_ptr<Scene>;
@@ -25,6 +27,8 @@ using Sprite2DPtr = std::shared_ptr<Sprite2D>;
 using BasicEffectPtr = std::shared_ptr<BasicEffect>;
 using SpriteEffectPtr = std::shared_ptr<SpriteEffect>;
 using ToonEffectPtr = std::shared_ptr<ToonEffect>;
+
+} // namespace hks
 
 using CommonStatesPtr = std::shared_ptr<DirectX::CommonStates>;
 using SpriteFontPtr = std::shared_ptr<DirectX::SpriteFont>;

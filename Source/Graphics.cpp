@@ -5,8 +5,9 @@
 // -----------------------------------------------
 
 #include "Graphics.h"
-
 #include <stdexcept>
+
+namespace hks {
 
 Graphics::Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen, bool enableAA)
 {
@@ -134,3 +135,5 @@ bool Graphics::createDepthStencil(int screenWidth, int screenHeight, bool enable
 
 	return true;
 }
+
+} // namespace hks

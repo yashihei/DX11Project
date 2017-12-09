@@ -11,7 +11,7 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	auto app = std::make_unique<App>();
+	auto app = std::make_unique<sp4rk::App>();
 
 	try {
 		app->run();

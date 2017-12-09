@@ -22,6 +22,10 @@
 #include <DirectXTK/SimpleMath.h>
 #include <imgui/imgui.h>
 
+namespace sp4rk {
+
+using namespace hks;
+
 class Player : public Actor {
 public:
 	Player(App* app, BulletManagerPtr bullets) :
@@ -154,3 +158,5 @@ private:
 };
 
 using PlayerPtr = std::shared_ptr<Player>;
+
+} // namespace sp4rk

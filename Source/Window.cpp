@@ -11,6 +11,8 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_dx11.h>
 
+namespace hks {
+
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 Window::Window(const std::string& titleText, int width, int height, bool fullScreen, bool cursor) :
@@ -116,3 +118,5 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	}
 	return 0;
 }
+
+} // namespace hks

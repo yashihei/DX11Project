@@ -6,6 +6,8 @@
 
 #pragma once
 
+namespace hks {
+
 template <class Type>
 class Singleton {
 public:
@@ -21,3 +23,5 @@ protected:
 	Singleton() = default;
 	virtual ~Singleton() = default;
 };
+
+} // namespace hks

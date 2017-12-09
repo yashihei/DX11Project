@@ -13,6 +13,8 @@
 #include "UtilStr.h"
 #include "Log.h"
 
+namespace hks {
+
 inline ComPtr<ID3D11ShaderResourceView> CreateShaderResourceViewFromFile(ComPtr<ID3D11Device> device, const std::string& filePath)
 {
 	using Microsoft::WRL::ComPtr;
@@ -40,3 +42,5 @@ inline ComPtr<ID3D11ShaderResourceView> CreateShaderResourceViewFromFile(ComPtr<
 
 	return resource;
 }
+
+} // namespace hks

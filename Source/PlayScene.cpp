@@ -21,6 +21,8 @@
 #include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/CommonStates.h>
 
+namespace sp4rk {
+
 inline bool IsCollied(const Vector3& pos1, const Vector3& pos2, float r1, float r2)
 {
 	const Vector3 tmp = pos2 - pos1;
@@ -172,3 +174,5 @@ void PlayScene::draw()
 	m_score->draw();
 	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
 }
+
+} // namespace sp4rk

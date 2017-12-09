@@ -15,6 +15,8 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <ObjLoader/tiny_obj_loader.h>
 
+namespace hks {
+
 Mesh::Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std::vector<unsigned long>& indices, int materialID) :
 	m_indexCount(indices.size()), m_materialID(materialID)
 {
@@ -228,3 +230,5 @@ void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 		mesh->draw(m_deviceContext);
 	}
 }
+
+} // namespace hks

@@ -12,6 +12,8 @@
 #include <deque>
 #include <numeric>
 
+namespace hks {
+
 class FPSManager {
 public:
 	FPSManager() : m_nowFPS(0.0) {
@@ -49,3 +51,5 @@ private:
 	std::deque<double> m_sample;
 	DWORD m_prevTime;
 };
+
+} // namespace hks

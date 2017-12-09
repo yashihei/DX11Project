@@ -11,6 +11,8 @@
 #include <DirectXTK/SimpleMath.h>
 #include "MathAlias.h"
 
+namespace hks {
+
 using Microsoft::WRL::ComPtr;
 
 class SpriteEffect {
@@ -29,3 +31,5 @@ private:
 	ComPtr<ID3D11SamplerState> m_samplerState;
 	ComPtr<ID3D11ShaderResourceView> m_texture;
 };
+
+} // namespace hks

@@ -23,6 +23,8 @@
 #include <DirectXTK/CommonStates.h>
 #include <cpptoml/cpptoml.h>
 
+namespace sp4rk {
+
 App::~App()
 {
 	ImGui_ImplDX11_Shutdown();
@@ -88,3 +90,5 @@ void App::frame()
 
 	m_fpsManager->sync(60);
 }
+
+} // namespace sp4rk

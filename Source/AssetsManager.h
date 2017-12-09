@@ -12,6 +12,8 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 
+namespace hks {
+
 using Microsoft::WRL::ComPtr;
 
 class AssetsManager {
@@ -36,3 +38,5 @@ private:
 	std::unordered_map<std::string, SpritePtr> m_sprites;
 	std::unordered_map<std::string, SpriteFontPtr> m_fonts;
 };
+
+} // namespace hks

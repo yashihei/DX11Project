@@ -19,6 +19,8 @@ namespace {
 	};
 }
 
+namespace hks {
+
 Sprite::Sprite(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, ComPtr<ID3D11ShaderResourceView> texture, CameraPtr camera)
 	: m_device(device), m_deviceContext(deviceContext), m_texture(texture), m_camera(camera)
 {
@@ -109,3 +111,5 @@ void Sprite::createIndexBuffer()
 	if (FAILED(hr))
 		throw std::runtime_error("CreateIndexBuffer Failed.");
 }
+
+} // namespace hks

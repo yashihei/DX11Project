@@ -17,6 +17,8 @@
 #include "PtrAlias.h"
 #include "MathAlias.h"
 
+namespace hks {
+
 using Microsoft::WRL::ComPtr;
 using ModelVertex = DirectX::VertexPositionNormalTexture;
 
@@ -58,3 +60,5 @@ private:
 	DirectX::BoundingSphere m_boundingSphere;
 	BasicEffectPtr m_effect;
 };
+
+} // namespace hks

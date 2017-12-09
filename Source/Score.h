@@ -16,6 +16,10 @@
 #include <DirectXTK/SpriteBatch.h>
 #include <DirectXTK/SpriteFont.h>
 
+namespace sp4rk {
+
+using namespace hks;
+
 class Score : public Actor {
 public:
 	explicit Score(App* app) : m_app(app), m_score(0), m_viewScore(0)
@@ -42,7 +46,7 @@ public:
 		font->DrawString(m_fontCanvas.get(), str.c_str(), Vector2(10, 10), DirectX::Colors::White, 0, Vector2::Zero, 0.35f);
 		m_fontCanvas->End();
 	}
-	
+
 	int getScore() const { return m_score; }
 private:
 	App* m_app;
@@ -51,3 +55,5 @@ private:
 };
 
 using ScorePtr = std::shared_ptr<Score>;
+
+} // namespace sp4rk

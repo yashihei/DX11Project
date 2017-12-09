@@ -15,6 +15,10 @@
 #include <DirectXTK/SimpleMath.h>
 #include <boost/timer.hpp>
 
+namespace sp4rk {
+
+using namespace hks;
+
 class Particle : public Actor {
 public:
 	explicit Particle(App* app) : m_app(app) {}
@@ -79,3 +83,5 @@ private:
 	Color m_color;
 	float m_scale;
 };
+
+} // namespace sp4rk

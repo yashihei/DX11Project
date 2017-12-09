@@ -10,6 +10,8 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 
+namespace hks {
+
 using Microsoft::WRL::ComPtr;
 
 class Graphics {
@@ -31,3 +33,5 @@ private:
 	ComPtr<ID3D11DepthStencilView> m_depthStencilView;
 	ComPtr<ID3D11Texture2D> m_depthStencilBuffer;
 };
+
+} // namespace hks
