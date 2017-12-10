@@ -140,12 +140,10 @@ Scene* PlayScene::update()
 	}
 
 	const auto playerPos = m_player->getPos();
-	ImGui::Begin("DebugPanel");
 	ImGui::Text("PlayerPos : %.2f, %.2f, %.2f", playerPos.x, playerPos.y, playerPos.z);
 	ImGui::Text("BulletNum : %d", m_bullets->size());
 	ImGui::Text("EnemyNum : %d", m_enemies->size());
 	ImGui::Text("ParticleNum : %d", m_particles->size());
-	ImGui::End();
 
 	return this;
 }

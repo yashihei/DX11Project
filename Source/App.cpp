@@ -79,9 +79,7 @@ void App::frame()
 	m_inputManager->update();
 	m_audioManager->update();
 
-	ImGui::Begin("DebugPanel");
 	ImGui::Text("FPS : %2.1f", m_fpsManager->getFps());
-	ImGui::End();
 
 	ImGuiLog::instance().Draw("Log");
 
