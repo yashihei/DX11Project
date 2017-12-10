@@ -42,33 +42,8 @@ public:
 		m_bulletCount += m_app->getTime()->deltaTime();
 		m_stateCount += m_app->getTime()->deltaTime();
 
-		auto moveDir = Vector2::Zero;
-		auto fireDir = Vector2::Zero;
-
-		auto input = m_app->getInputManager();
-		if (input->isConnectedPad()) {
-			moveDir.x = input->getLeftThumbX();
-			moveDir.y = input->getLeftThumbY();
-			fireDir.x = input->getRightThumbX();
-			fireDir.y = input->getRightThumbY();
-		} else {
-			moveDir.x = static_cast<float>(input->isPressedRight() - input->isPressedLeft());
-			moveDir.y = static_cast<float>(input->isPressedUp() - input->isPressedDown());
-
-			//マウスレイを飛ばす
-			const auto mousePos = Vector2(static_cast<float>(input->getMousePosX()), static_cast<float>(input->getMousePosY()));
-			const Viewport vp(0, 0, static_cast<float>(m_app->getWindow()->getWidth()), static_cast<float>(m_app->getWindow()->getHeight()));
-			const auto proj = m_app->getCamera()->getProjMat();
-			const auto view = m_app->getCamera()->getViewMat();
-			auto ray = GetMouseRay(mousePos, vp, proj, view);
-
-			//レイと地面の交点へfireDirを向ける
-			float distance = 0;
-			ray.Intersects(Plane(Vector3::Zero, Vector3::Up), distance);
-			const auto hitPos = ray.position + ray.direction * distance;
-			fireDir.x = hitPos.x - m_pos.x;
-			fireDir.y = hitPos.z - m_pos.z;
-		}
+		auto moveDir = getMoveDir();
+		auto fireDir = getFireDir();
 
 		switch (m_state) {
 		case State::Born:
@@ -110,6 +85,48 @@ public:
 	bool isAlive() const { return m_state == State::Normal; }
 	Vector3 getPos() const { return m_pos; }
 private:
+	Vector2 getMoveDir() const
+	{
+		auto moveDir = Vector2::Zero;
+		auto input = m_app->getInputManager();
+
+		if (input->isConnectedPad()) {
+			moveDir.x = input->getLeftThumbX();
+			moveDir.y = input->getLeftThumbY();
+		} else {
+			moveDir.x = static_cast<float>(input->isPressedRight() - input->isPressedLeft());
+			moveDir.y = static_cast<float>(input->isPressedUp() - input->isPressedDown());
+		}
+
+		return moveDir;
+	}
+
+	Vector2 getFireDir() const
+	{
+		auto fireDir = Vector2::Zero;
+		auto input = m_app->getInputManager();
+
+		if (input->isConnectedPad()) {
+			fireDir.x = input->getRightThumbX();
+			fireDir.y = input->getRightThumbY();
+		} else {
+			//マウスレイを飛ばす
+			const auto mousePos = Vector2(static_cast<float>(input->getMousePosX()), static_cast<float>(input->getMousePosY()));
+			const Viewport vp(0, 0, static_cast<float>(m_app->getWindow()->getWidth()), static_cast<float>(m_app->getWindow()->getHeight()));
+			const auto proj = m_app->getCamera()->getProjMat();
+			const auto view = m_app->getCamera()->getViewMat();
+			auto ray = GetMouseRay(mousePos, vp, proj, view);
+			//レイと地面の交点へfireDirを向ける
+			float distance = 0;
+			ray.Intersects(Plane(Vector3::Zero, Vector3::Up), distance);
+			const auto hitPos = ray.position + ray.direction * distance;
+			fireDir.x = hitPos.x - m_pos.x;
+			fireDir.y = hitPos.z - m_pos.z;
+		}
+
+		return fireDir;
+	}
+
 	void move(Vector2& moveDir)
 	{
 		if (moveDir != Vector2::Zero) {
@@ -156,7 +173,7 @@ private:
 	BulletManagerPtr m_bullets;
 	Vector3 m_pos, m_vec;
 	Quaternion m_rot;
-	float m_bulletCount, m_stateCount;
+	float m_count, m_bulletCount, m_stateCount;
 	int m_life;
 
 	enum class State {
