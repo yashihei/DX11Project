@@ -17,6 +17,7 @@
 #include "UtilDX.h"
 #include "Camera.h"
 #include "Log.h"
+#include "Time.h"
 #include "Window.h"
 #include "MathAlias.h"
 #include <DirectXTK/SimpleMath.h>
@@ -31,10 +32,16 @@ public:
 	Player(App* app, BulletManagerPtr bullets) :
 		m_app(app), m_bullets(bullets),
 		m_pos(Vector3::Zero), m_vec(Vector3::Zero), m_rot(),
-		m_life(3), m_state(State::Normal) {}
+		m_bulletCount(0), m_stateCount(0),
+		m_life(3), m_state(State::Normal)
+	{
+	}
 
 	void update() override
 	{
+		m_bulletCount += m_app->getTime()->deltaTime();
+		m_stateCount += m_app->getTime()->deltaTime();
+
 		auto moveDir = Vector2::Zero;
 		auto fireDir = Vector2::Zero;
 
@@ -72,8 +79,8 @@ public:
 			fire(fireDir);
 			break;
 		case State::Die:
-			if (m_stateTimer.elapsed() > 1.5f) {
-				m_stateTimer.restart();
+			if (m_stateCount > 1.5f) {
+				m_stateCount = 0;
 				m_state = State::Normal;
 			}
 			break;
@@ -97,7 +104,7 @@ public:
 		m_state = State::Die;
 		m_life -= 1;
 		m_vec = Vector3::Zero;
-		m_stateTimer.restart();
+		m_stateCount = 0;
 	}
 	
 	bool isAlive() const { return m_state == State::Normal; }
@@ -129,10 +136,10 @@ private:
 		if (fireDir == Vector2::Zero)
 			return;
 
-		if (m_bulletTimer.elapsed() < fireInterval) {
+		if (m_bulletCount < fireInterval) {
 			return;
 		}
-		m_bulletTimer.restart();
+		m_bulletCount = 0;
 
 		fireDir.Normalize();
 		// scatter bullet
@@ -149,7 +156,7 @@ private:
 	BulletManagerPtr m_bullets;
 	Vector3 m_pos, m_vec;
 	Quaternion m_rot;
-	boost::timer m_bulletTimer, m_stateTimer;
+	float m_bulletCount, m_stateCount;
 	int m_life;
 
 	enum class State {

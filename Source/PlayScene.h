@@ -37,7 +37,7 @@ private:
 	ParticleManagerPtr m_particles;
 	BulletManagerPtr m_bullets;
 	ScorePtr m_score;
-	boost::timer m_spawnTimer;
+	float m_spawnCount;
 };
 
 } // namespace sp4rk

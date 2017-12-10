@@ -11,6 +11,7 @@
 #include "Sprite.h"
 #include "AssetsManager.h"
 #include "MathAlias.h"
+#include "Time.h"
 #include <DirectXTK/SimpleMath.h>
 #include <boost/timer.hpp>
 
@@ -21,13 +22,16 @@ using namespace hks;
 class Bullet : public Actor {
 public:
 	Bullet(App* app, const Vector3& spawnPos, const Vector3 vec) :
-		m_app(app), m_pos(spawnPos), m_vec(vec) {}
+		m_app(app), m_pos(spawnPos), m_vec(vec), m_lifeCount(0)
+	{
+	}
 
 	void update() override
 	{
 		m_pos += m_vec;
 
-		if (m_lifeTimer.elapsed() > 2.5f) {
+		m_lifeCount += m_app->getTime()->deltaTime();
+		if (m_lifeCount > 2.5f) {
 			kill();
 		}
 	}
@@ -42,7 +46,7 @@ public:
 private:
 	App* m_app;
 	Vector3 m_pos, m_vec;
-	boost::timer m_lifeTimer;
+	float m_lifeCount;
 };
 
 using BulletManagerPtr = std::shared_ptr<ActorManager<Bullet>>;

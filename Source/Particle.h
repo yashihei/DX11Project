@@ -10,6 +10,7 @@
 #include "Sprite.h"
 #include "Actor.h"
 #include "Easing.h"
+#include "Time.h"
 #include "AssetsManager.h"
 #include "MathAlias.h"
 #include <DirectXTK/SimpleMath.h>
@@ -21,10 +22,15 @@ using namespace hks;
 
 class Particle : public Actor {
 public:
-	explicit Particle(App* app) : m_app(app) {}
+	explicit Particle(App* app) : m_app(app), m_time(0) {}
+
+	void update() override
+	{
+		m_time += m_app->getTime()->deltaTime();
+	}
 protected:
 	App* m_app;
-	//TODO:deltatime
+	float m_time;
 };
 
 using ParticleManagerPtr = std::shared_ptr<ActorManager<Particle>>;
@@ -38,6 +44,8 @@ public:
 
 	void update() override
 	{
+		Particle::update();
+
 		m_pos += m_vector;
 		m_vector *= 0.90f;
 		m_scale *= 0.95f;
@@ -67,6 +75,8 @@ public:
 
 	void update() override
 	{
+		Particle::update();
+
 		m_scale *= 1.1f;
 		m_color.w *= 0.95f;
 		if (m_scale > 10.f)

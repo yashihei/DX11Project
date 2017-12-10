@@ -40,7 +40,7 @@ inline void emitPatricle(App* app, ParticleManagerPtr particles, int num, const 
 	}
 }
 
-PlayScene::PlayScene(App* app) : m_app(app)
+PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0)
 {
 	auto camera = m_app->getCamera();
 	auto device = m_app->getGraphics()->getDevice();
@@ -89,13 +89,14 @@ Scene* PlayScene::update()
 	m_bullets->updateAll();
 	m_score->update();
 
+	m_spawnCount += m_app->getTime()->deltaTime();
 	//spawn enemy
-	if (m_spawnTimer.elapsed() > 5.0f) {
+	if (m_spawnCount > 5.0f) {
 		for (int i = 0; i < 5; i++) {
 			const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
 			auto enemy = std::make_shared<Enemy>(m_app, spawnPos, m_player->getPos());
 			m_enemies->add(enemy);
-			m_spawnTimer.restart();
+			m_spawnCount = 0;
 		}
 	}
 
@@ -117,7 +118,7 @@ Scene* PlayScene::update()
 			m_player->destroy();
 			emitPatricle(m_app, m_particles, 100, m_player->getPos(), Color(0.8f, 0.2f, 0.2f), 1.f);
 			enemiesClear = true;
-			m_spawnTimer.restart();
+			m_spawnCount = 0;
 			break;
 		}
 	}
