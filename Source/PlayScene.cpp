@@ -102,7 +102,7 @@ Scene* PlayScene::update()
 	//bullet vs enemy
 	for (auto& bullet : *m_bullets) {
 		for (auto& enemy : *m_enemies) {
-			if (IsCollied(bullet->getPos(), enemy->getPos(), 1.0f, 1.0f)) {
+			if (IsCollied(bullet->getPos(), enemy->getPos(), 0.5f, 1.0f)) {
 				m_score->addScore(1000);
 				enemy->kill();
 				emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1.f);
