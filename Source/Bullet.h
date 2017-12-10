@@ -13,7 +13,6 @@
 #include "MathAlias.h"
 #include "Time.h"
 #include <DirectXTK/SimpleMath.h>
-#include <boost/timer.hpp>
 
 namespace sp4rk {
 
@@ -28,9 +27,11 @@ public:
 
 	void update() override
 	{
-		m_pos += m_vec;
+		const auto deltaTime = m_app->getTime()->deltaTime();
 
-		m_lifeCount += m_app->getTime()->deltaTime();
+		m_pos += m_vec * deltaTime;
+
+		m_lifeCount += deltaTime;
 		if (m_lifeCount > 2.5f) {
 			kill();
 		}

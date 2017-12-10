@@ -129,26 +129,32 @@ private:
 
 	void move(Vector2& moveDir)
 	{
+		const float deltaTime = m_app->getTime()->deltaTime();
+		const float accel = 2.5f;
+		const float maxSpeed = 17.0f;
+
 		if (moveDir != Vector2::Zero) {
 			moveDir.Normalize();
-			moveDir *= 0.05f;
+			moveDir *= accel;
 			m_vec.x += moveDir.x;
 			m_vec.z += moveDir.y;
 		}
 
-		m_vec *= 0.85f;
-		m_pos += m_vec;
+		m_vec *= 0.95f;
+		m_vec = DirectX::XMVector3ClampLength(m_vec, 0, maxSpeed);
+
+		m_pos += m_vec * deltaTime;
 		m_pos.x = Clamp(m_pos.x, -20.f, 20.f);
 		m_pos.z = Clamp(m_pos.z, -20.f, 20.f);
 
-		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Right, m_vec.z);
-		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Forward, m_vec.x);
+		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Right, m_vec.z * deltaTime);
+		m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Forward, m_vec.x * deltaTime);
 	}
 
 	void fire(Vector2& fireDir)
 	{
 		float fireInterval = 0.075f;
-		float fireSpeed = 0.8f;
+		float fireSpeed = 50.f;
 
 		if (fireDir == Vector2::Zero)
 			return;
@@ -173,7 +179,7 @@ private:
 	BulletManagerPtr m_bullets;
 	Vector3 m_pos, m_vec;
 	Quaternion m_rot;
-	float m_count, m_bulletCount, m_stateCount;
+	float m_bulletCount, m_stateCount;
 	int m_life;
 
 	enum class State {
