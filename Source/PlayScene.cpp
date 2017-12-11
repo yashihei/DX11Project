@@ -18,6 +18,7 @@
 #include "imgui/imgui.h"
 #include "MathAlias.h"
 #include "LightParam.h"
+#include "Time.h"
 #include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/CommonStates.h>
 

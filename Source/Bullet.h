@@ -6,43 +6,21 @@
 
 #pragma once
 
-#include "App.h"
 #include "Actor.h"
-#include "Sprite.h"
-#include "AssetsManager.h"
 #include "MathAlias.h"
-#include "Time.h"
+#include <d3d11.h>
 #include <DirectXTK/SimpleMath.h>
 
 namespace sp4rk {
 
+class App;
 using namespace hks;
 
 class Bullet : public Actor {
 public:
-	Bullet(App* app, const Vector3& spawnPos, const Vector3 vec) :
-		m_app(app), m_pos(spawnPos), m_vec(vec), m_lifeCount(0)
-	{
-	}
-
-	void update() override
-	{
-		const auto deltaTime = m_app->getTime()->deltaTime();
-
-		m_pos += m_vec * deltaTime;
-
-		m_lifeCount += deltaTime;
-		if (m_lifeCount > 2.5f) {
-			kill();
-		}
-	}
-
-	void draw() override
-	{
-		auto sprite = m_app->getAssetsManager()->getSprite("bullet");
-		sprite->draw(m_pos, Color(1.0f, 0.7f, 0.0f), 0.75f);
-	}
-
+	Bullet(App* app, const Vector3& spawnPos, const Vector3 vec);
+	void update() override;
+	void draw() override;
 	Vector3 getPos() const { return m_pos; }
 private:
 	App* m_app;
