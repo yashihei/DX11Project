@@ -141,6 +141,13 @@ Scene* PlayScene::update()
 		camera->pos = Vector3(0, 20, -50);
 	}
 
+	//slow
+	if (m_app->getInputManager()->isPressedButton3()) {
+		m_app->getTime()->changeScale(0.5f);
+	} else {
+		m_app->getTime()->changeScale(1.0f);
+	}
+
 	const auto playerPos = m_player->getPos();
 	ImGui::Text("PlayerPos : %.2f, %.2f, %.2f", playerPos.x, playerPos.y, playerPos.z);
 	ImGui::Text("BulletNum : %d", m_bullets->size());
