@@ -10,6 +10,7 @@
 #include "Time.h"
 #include "AssetsManager.h"
 #include "Easing.h"
+#include "Log.h"
 
 namespace sp4rk {
 
@@ -22,9 +23,9 @@ void Particle::update()
 	m_time += m_app->getTime()->deltaTime();
 }
 
-NormalParticle::NormalParticle(App* app, const Vector3& pos, const Vector3& vector, const Color& color, const float scale):
+NormalParticle::NormalParticle(App* app, const Vector3& pos, const Vector3& vector, const Color& color, const float scale, const float lifeTime) :
 	Particle(app),
-	m_pos(pos), m_vector(vector), m_color(color), m_scale(scale)
+	m_pos(pos), m_vector(vector), m_color(color), m_scale(scale), m_lifeTime(lifeTime)
 {
 }
 
@@ -32,11 +33,14 @@ void NormalParticle::update()
 {
 	Particle::update();
 
-	m_pos += m_vector;
-	m_vector *= 0.90f;
-	m_scale *= 0.95f;
-	m_color.w *= 0.95f;
-	if (m_color.w < 0.05f)
+	float deltaTime = m_app->getTime()->deltaTime();
+	auto t = Easing::InExp(m_time, m_lifeTime, 1, 0);
+
+	m_pos += (m_vector * t) * deltaTime;
+	m_scale = t;
+	m_color.w = t;
+
+	if (m_time > m_lifeTime)
 		kill();
 }
 

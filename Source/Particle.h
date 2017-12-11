@@ -29,13 +29,13 @@ using ParticleManagerPtr = std::shared_ptr<ActorManager<Particle>>;
 
 class NormalParticle : public Particle {
 public:
-	NormalParticle(App* app, const Vector3& pos, const Vector3& vector, const Color& color, const float scale);
+	NormalParticle(App* app, const Vector3& pos, const Vector3& vector, const Color& color, const float scale, const float lifeTime);
 	void update() override;
 	void draw() override;
 private:
 	Vector3 m_pos, m_vector;
 	Color m_color;
-	float m_scale;
+	float m_scale, m_lifeTime;
 };
 
 //FIXME
