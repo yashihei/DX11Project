@@ -27,8 +27,7 @@ void Enemy::update()
 	const float deltaTime = m_app->getTime()->deltaTime();
 
 	m_pos += m_vec * deltaTime;
-	m_pos.x = Clamp(m_pos.x, -20.f, 20.f);
-	m_pos.z = Clamp(m_pos.z, -20.f, 20.f);
+	m_pos.Clamp(Vector3(-20.f), Vector3(20.f));
 
 	// ˆê’èŠm—¦‚Å•ûŒü“]Š·
 	if (Random() > 0.99f) m_vec.x *= -1;
