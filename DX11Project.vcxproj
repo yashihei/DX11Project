@@ -28,13 +28,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -71,13 +71,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\boost\boost_1_65_1;Include;$(IncludePath)</IncludePath>
-    <LibraryPath>.\Lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>.\Lib\vc140;$(LibraryPath)</LibraryPath>
     <OutDir>Bin\$(Configuration)\</OutDir>
     <IntDir>Bin\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\boost\boost_1_65_1;Include;$(IncludePath)</IncludePath>
-    <LibraryPath>.\Lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>.\Lib\vc140;$(LibraryPath)</LibraryPath>
     <OutDir>Bin\$(Configuration)\</OutDir>
     <IntDir>Bin\$(Configuration)\</IntDir>
   </PropertyGroup>
