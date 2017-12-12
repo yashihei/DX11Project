@@ -67,8 +67,8 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0)
 	assetsManager->loadModel("assets/model/tiled/tiled.obj", "tiled", device, deviceContext, states, camera, light);
 
 	//create sprite
-	assetsManager->loadSprite("assets/texture/circle.png", "particle", device, deviceContext, camera);
-	assetsManager->loadSprite("assets/texture/circle.png", "bullet", device, deviceContext, camera);
+	assetsManager->loadSprite("assets/texture/circle_flat.png", "particle", device, deviceContext, camera);
+	assetsManager->loadSprite("assets/texture/circle_flat.png", "bullet", device, deviceContext, camera);
 	assetsManager->loadSprite("assets/texture/ring.png", "ring", device, deviceContext, camera);
 
 	//create font
