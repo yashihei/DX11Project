@@ -30,13 +30,13 @@ inline bool IsCollied(const Vector3& pos1, const Vector3& pos2, float r1, float 
 	return tmp.x * tmp.x + tmp.y * tmp.y + tmp.z * tmp.z < (r1 + r2) * (r1 + r2);
 }
 
-inline void emitPatricle(App* app, ParticleManagerPtr particles, int num, const Vector3& pos, const Color& color, float scale)
+inline void emitPatricle(App* app, ParticleManagerPtr particles, int num, const Vector3& pos, const Color& color, float size, float speed, float lifeTime)
 {
 	for (int i = 0; i < num; i++) {
 		Quaternion rotate = Quaternion::CreateFromYawPitchRoll(Random(DirectX::XM_2PI), Random(DirectX::XM_2PI), Random(DirectX::XM_2PI));
-		Vector3 vec(0.75f, 0, 0);
+		Vector3 vec(speed, 0, 0);
 		vec = Vector3::Transform(vec, rotate);
-		auto particle = std::make_shared<NormalParticle>(app, pos, vec, color, scale);
+		auto particle = std::make_shared<NormalParticle>(app, pos, vec, color, size, lifeTime);
 		particles->add(particle);
 	}
 }
@@ -107,7 +107,7 @@ Scene* PlayScene::update()
 			if (IsCollied(bullet->getPos(), enemy->getPos(), 0.5f, 1.0f)) {
 				m_score->addScore(1000);
 				enemy->kill();
-				emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1.f);
+				emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1, 45, 1);
 			}
 		}
 	}
@@ -117,7 +117,7 @@ Scene* PlayScene::update()
 	for (auto& enemy : *m_enemies) {
 		if (IsCollied(m_player->getPos(), enemy->getPos(), 0.8f, 0.8f)) {
 			m_player->destroy();
-			emitPatricle(m_app, m_particles, 100, m_player->getPos(), Color(0.8f, 0.2f, 0.2f), 1.f);
+			emitPatricle(m_app, m_particles, 100, m_player->getPos(), Color(0.8f, 0.2f, 0.2f), 1, 45, 1);
 			enemiesClear = true;
 			m_spawnCount = 0;
 			break;
@@ -126,7 +126,7 @@ Scene* PlayScene::update()
 
 	if (enemiesClear) {
 		for (auto& enemy : *m_enemies) {
-			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1.f);
+			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1, 45, 1);
 		}
 		m_enemies->clear();
 	}
