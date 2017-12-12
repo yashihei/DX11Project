@@ -15,7 +15,7 @@
 namespace sp4rk {
 
 Enemy::Enemy(App* app, Vector3 spawnPos, Vector3 target):
-	m_app(app), m_pos(spawnPos), m_rot()
+	m_app(app), m_pos(spawnPos), m_rot(), m_count(0)
 {
 	const float speed = 5.0f;
 	const float rad = std::atan2f(target.z - m_pos.z, target.x - m_pos.x);
@@ -25,6 +25,9 @@ Enemy::Enemy(App* app, Vector3 spawnPos, Vector3 target):
 void Enemy::update()
 {
 	const float deltaTime = m_app->getTime()->deltaTime();
+	m_count += deltaTime;
+
+	if (m_count < 0.75f) return;
 
 	m_pos += m_vec * deltaTime;
 	m_pos.Clamp(Vector3(-20.f), Vector3(20.f));
