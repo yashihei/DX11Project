@@ -1,6 +1,6 @@
-- Boost 1.64.0
-- DIRECTX TEXTURE LIBRARY (DirectXTex)
-- DirectXTK - the DirectX Tool Kit for DirectX 11
-- MikuMikuFormats
-- tinyobjloader
-- imgui
+- Boost http://www.boost.org/
+- DIRECTX TEXTURE LIBRARY (DirectXTex) https://github.com/Microsoft/DirectXTex
+- DirectXTK - the DirectX Tool Kit for DirectX 11 https://github.com/Microsoft/DirectXTK
+- tinyobjloader https://github.com/syoyo/tinyobjloader
+- imgui https://github.com/ocornut/imgui
+- cpptoml https://github.com/skystrife/cpptoml

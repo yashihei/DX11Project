@@ -1,7 +1,6 @@
 @startuml
 
 hide empty members
-note "オレンジは未実装" as orange #FFA726
 
 class Game {
     + update()
@@ -19,14 +18,15 @@ class InputManager
 class AudioManager
 class FPSManager
 class SceneManager #FFA726
-class AssetsManager #FFA726
+class AssetsManager
+class Time
 class Camera {
     + getViewMat()
     + getProjMat()
 }
 class LightParam
 
-class GraphicsDevice #FFA726 {
+class GraphicsDevice {
     - ID3D11Device device
     - ID3D11DeviceContext deviceContext
 }
@@ -88,6 +88,7 @@ Game o-- LightParam
 Game o-- Camera
 Game o-- FPSManager
 Game o-- SceneManager
+Game o-- Time
 
 SceneManager *-- Scene
 
