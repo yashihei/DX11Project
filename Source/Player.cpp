@@ -158,7 +158,7 @@ void Player::fire(Vector2& fireDir)
 	fireDir = Vector2::Transform(fireDir, Matrix::CreateRotationZ(rad));
 
 	auto fireVec = Vector3(fireDir.x, 0, fireDir.y) * fireSpeed;
-	auto bullet = std::make_shared<Bullet>(m_app, m_pos, fireVec);
+	auto bullet = std::make_shared<Bullet>(m_app, m_pos + Vector3(fireDir.x, 0, fireDir.y) * 0.5f, fireVec);
 	m_bullets->add(bullet);
 }
 
