@@ -25,7 +25,7 @@ void Particle::update()
 
 NormalParticle::NormalParticle(App* app, const Vector3& pos, const Vector3& vector, const Color& color, const float size, const float lifeTime) :
 	Particle(app),
-	m_pos(pos), m_vector(vector), m_color(color), m_size(size), m_lifeTime(lifeTime)
+	m_pos(pos), m_vector(vector), m_color(color), m_size(size), m_startSize(size), m_lifeTime(lifeTime)
 {
 }
 
@@ -33,12 +33,12 @@ void NormalParticle::update()
 {
 	Particle::update();
 
-	float deltaTime = m_app->getTime()->deltaTime();
-	auto t = Easing::InExp(m_time, m_lifeTime, 1, 0);
+	const float deltaTime = m_app->getTime()->deltaTime();
+	const float x = Easing::InExp(m_time, m_lifeTime, 1, 0);
 
-	m_pos += (m_vector * t) * deltaTime;
-	m_size = t;
-	m_color.w = t;
+	m_pos += (m_vector * x) * deltaTime;
+	m_size = m_startSize * x;
+	m_color.w = x;
 
 	if (m_time > m_lifeTime)
 		kill();

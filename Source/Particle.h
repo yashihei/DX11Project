@@ -35,7 +35,7 @@ public:
 private:
 	Vector3 m_pos, m_vector;
 	Color m_color;
-	float m_size, m_lifeTime;
+	float m_size, m_startSize, m_lifeTime;
 };
 
 //FIXME
