@@ -50,9 +50,9 @@ void NormalParticle::draw()
 	sprite->draw(m_pos, m_color, m_size);
 }
 
-SpawnRing::SpawnRing(App* app, const Vector3& pos, Color color):
+SpawnRing::SpawnRing(App* app, const Vector3& pos, const Color& color, float lifeTime) :
 	Particle(app),
-	m_pos(pos), m_color(color), m_size(0.5f)
+	m_pos(pos), m_color(color), m_size(0), m_lifeTime(lifeTime)
 {
 }
 
@@ -60,9 +60,10 @@ void SpawnRing::update()
 {
 	Particle::update();
 
-	m_size *= 1.1f;
-	m_color.w *= 0.95f;
-	if (m_size > 10.f)
+	m_size = Easing::OutQuart(m_time, m_lifeTime, 0.5f, 10.0f);
+	m_color.w = Easing::InQuart(m_time, m_lifeTime, 1, 0);
+
+	if (m_time > m_lifeTime)
 		kill();
 }
 

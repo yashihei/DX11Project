@@ -97,6 +97,8 @@ Scene* PlayScene::update()
 			const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
 			auto enemy = std::make_shared<Enemy>(m_app, spawnPos, m_player->getPos());
 			m_enemies->add(enemy);
+			auto ring = std::make_shared<SpawnRing>(m_app, spawnPos, Color(0.35f, 0.8f, 0.4f), 0.5f);
+			m_particles->add(ring);
 			m_spawnCount = 0;
 		}
 	}
