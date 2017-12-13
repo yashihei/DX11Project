@@ -71,13 +71,13 @@ void App::frame()
 {
 	ImGui_ImplDX11_NewFrame();
 
+	m_inputManager->update();
+	m_audioManager->update();
+
 	const auto nextScene = m_currentScene->update();
 	if (m_currentScene.get() != nextScene) {
 		m_currentScene.reset(nextScene);
 	}
-
-	m_inputManager->update();
-	m_audioManager->update();
 
 	ImGui::Text("FPS : %2.1f", m_fpsManager->getFps());
 
