@@ -50,7 +50,7 @@ BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext
 
 	//create ps
 	ComPtr<ID3DBlob> PSBuffer;
-	CompileFromFile(filePath, "PS", "ps_5_0", &PSBuffer);
+	CompileFromFile(filePath, "PSHalf", "ps_5_0", &PSBuffer);
 	hr = m_device->CreatePixelShader(PSBuffer->GetBufferPointer(), PSBuffer->GetBufferSize(), NULL, &m_pixelShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreatePixelShader() Failed.");
