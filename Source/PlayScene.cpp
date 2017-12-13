@@ -92,7 +92,7 @@ Scene* PlayScene::update()
 
 	m_spawnCount += m_app->getTime()->deltaTime();
 	//spawn enemy
-	if (m_spawnCount > 5.0f) {
+	if (m_spawnCount > 2.5f) {
 		for (int i = 0; i < 5; i++) {
 			const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
 			auto enemy = std::make_shared<Enemy>(m_app, spawnPos, m_player->getPos());
@@ -119,7 +119,7 @@ Scene* PlayScene::update()
 	for (auto& enemy : *m_enemies) {
 		if (IsCollied(m_player->getPos(), enemy->getPos(), 0.8f, 0.8f)) {
 			m_player->destroy();
-			emitPatricle(m_app, m_particles, 50, m_player->getPos(), Color(0.8f, 0.2f, 0.2f), 1, 35, 0.5f);
+			emitPatricle(m_app, m_particles, 50, m_player->getPos(), Color(0.8f, 0.2f, 0.2f), 1, 45, 1);
 			enemiesClear = true;
 			m_spawnCount = 0;
 			break;
@@ -145,7 +145,7 @@ Scene* PlayScene::update()
 
 	//slow
 	if (m_app->getInputManager()->isPressedButton3()) {
-		m_app->getTime()->changeScale(0.5f);
+		m_app->getTime()->changeScale(0.3f);
 	} else {
 		m_app->getTime()->changeScale(1.0f);
 	}
