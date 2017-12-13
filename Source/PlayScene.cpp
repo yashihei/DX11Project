@@ -172,7 +172,7 @@ void PlayScene::draw()
 	deviceContext->OMSetBlendState(states->Additive(), 0, 0xFfFfFfFf);
 	m_particles->drawAll();
 	m_bullets->drawAll();
-	deviceContext->OMSetBlendState(states->AlphaBlend(), 0, 0xFfFfFfFf);
+	deviceContext->OMSetBlendState(states->NonPremultiplied(), 0, 0xFfFfFfFf);
 	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
 
 	//draw tile
@@ -181,6 +181,7 @@ void PlayScene::draw()
 	deviceContext->RSSetState(states->CullCounterClockwise());
 
 	m_score->draw();
+	deviceContext->OMSetBlendState(states->NonPremultiplied(), 0, 0xFfFfFfFf);
 	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
 }
 
