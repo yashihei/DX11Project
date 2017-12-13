@@ -19,8 +19,10 @@
 #include "MathAlias.h"
 #include "LightParam.h"
 #include "Time.h"
+#include "Sprite2D.h"
 #include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/CommonStates.h>
+#include <DirectXColors.h>
 
 namespace sp4rk {
 
@@ -73,6 +75,9 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0)
 
 	//create font
 	assetsManager->loadFont("assets/orbitron.spritefont", "orbitron", device);
+
+	auto cursorTex = CreateShaderResourceViewFromFile(device, "assets/texture/cursor.png");
+	m_cursor = std::make_shared<Sprite2D>(device, deviceContext, cursorTex);
 
 	//create actor
 	m_bullets = std::make_shared<ActorManager<Bullet>>();
@@ -183,6 +188,10 @@ void PlayScene::draw()
 	m_score->draw();
 	deviceContext->OMSetBlendState(states->NonPremultiplied(), 0, 0xFfFfFfFf);
 	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
+
+	// draw cursor
+	if (!m_app->getInputManager()->isConnectedPad())
+		m_cursor->draw(m_app->getInputManager()->getMousePos(), 0, 0.7f, Color(DirectX::Colors::LightGreen));
 }
 
 } // namespace sp4rk

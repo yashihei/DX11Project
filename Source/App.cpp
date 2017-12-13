@@ -43,7 +43,7 @@ void App::run()
 
 	MSG msg = {};
 
-	m_window = std::make_shared<Window>(titleText, width, height, fullScreen);
+	m_window = std::make_shared<Window>(titleText, width, height, fullScreen, false);
 	m_graphics = std::make_shared<Graphics>(width, height, m_window->getHandle(), fullScreen, enableAA);
 	m_inputManager = std::make_shared<InputManager>();
 	m_audioManager = std::make_shared<AudioManager>();

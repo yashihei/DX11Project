@@ -37,6 +37,7 @@ private:
 	ParticleManagerPtr m_particles;
 	BulletManagerPtr m_bullets;
 	ScorePtr m_score;
+	Sprite2DPtr m_cursor;
 	float m_spawnCount;
 };
 
