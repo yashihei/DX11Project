@@ -90,3 +90,21 @@ float4 PS(PSInput input) : SV_TARGET
 
 	return outColor;
 }
+
+float4 PSHalf(PSInput input) : SV_TARGET
+{
+	float4 outColor;
+
+	float diffuseAmount = dot(-lightDirection, input.normal);
+	diffuseAmount = diffuseAmount * 0.5f + 0.5f;
+	diffuseAmount *= diffuseAmount;
+
+	float3 diffuseColor = diffuseMaterial.rgb;
+	diffuseColor *= tex2d.Sample(sampleType, input.texCoord).rgb;
+	diffuseColor *= diffuseAmount;
+
+	float alpha = tex2d.Sample(sampleType, input.texCoord).a * diffuseMaterial.a;
+	outColor = CombineRGBWithAlpha(diffuseColor, alpha);
+
+	return outColor;
+}
