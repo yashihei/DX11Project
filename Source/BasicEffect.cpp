@@ -39,7 +39,7 @@ namespace hks {
 BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext) :
 	m_device(device), m_deviceContext(deviceContext)
 {
-	WCHAR* filePath = L"./Shader/basic.fx";
+	WCHAR* filePath = L"assets/shader/basic.fx";
 
 	//create vs
 	ComPtr<ID3DBlob> VSbuffer;
