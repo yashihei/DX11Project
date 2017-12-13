@@ -178,7 +178,7 @@ void PlayScene::draw()
 	//draw tile
 	deviceContext->RSSetState(states->Wireframe());
 	m_app->getAssetsManager()->getModel("tiled")->draw(Vector3::Zero, Vector3::Zero, Vector3::One * 2);
-	deviceContext->RSSetState(states->CullClockwise());
+	deviceContext->RSSetState(states->CullCounterClockwise());
 
 	m_score->draw();
 	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
