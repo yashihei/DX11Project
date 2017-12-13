@@ -39,11 +39,12 @@ void App::run()
 	const auto width = config->get_as<int>("screen_width").value_or(1280);
 	const auto height = config->get_as<int>("screen_height").value_or(720);
 	const auto fullScreen = config->get_as<bool>("fullscreen").value_or(false);
+	const auto mouseCursor = config->get_as<bool>("mouse_cursor").value_or(false);
 	const auto enableAA = config->get_as<bool>("enableAA").value_or(true);
 
 	MSG msg = {};
 
-	m_window = std::make_shared<Window>(titleText, width, height, fullScreen, false);
+	m_window = std::make_shared<Window>(titleText, width, height, fullScreen, mouseCursor);
 	m_graphics = std::make_shared<Graphics>(width, height, m_window->getHandle(), fullScreen, enableAA);
 	m_inputManager = std::make_shared<InputManager>();
 	m_audioManager = std::make_shared<AudioManager>();
