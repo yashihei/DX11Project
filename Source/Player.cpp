@@ -99,7 +99,7 @@ Vector2 Player::getFireDir() const
 		fireDir.y = input->getRightThumbY();
 	} else {
 		//マウスレイを飛ばす
-		const auto mousePos = Vector2(static_cast<float>(input->getMousePosX()), static_cast<float>(input->getMousePosY()));
+		const auto mousePos = input->getMousePos();
 		const Viewport vp(0, 0, static_cast<float>(m_app->getWindow()->getWidth()), static_cast<float>(m_app->getWindow()->getHeight()));
 		const auto proj = m_app->getCamera()->getProjMat();
 		const auto view = m_app->getCamera()->getViewMat();

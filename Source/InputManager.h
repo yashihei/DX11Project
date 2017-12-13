@@ -58,8 +58,7 @@ public:
 	float getRightThumbX() const { return m_gamePad->GetState(m_padIndex, DirectX::GamePad::DEAD_ZONE_CIRCULAR).thumbSticks.rightX; }
 	float getRightThumbY() const { return m_gamePad->GetState(m_padIndex, DirectX::GamePad::DEAD_ZONE_CIRCULAR).thumbSticks.rightY; }
 
-	int getMousePosX() const { return m_mouse->GetState().x; }
-	int getMousePosY() const { return m_mouse->GetState().y; }
+	Vector2 getMousePos() const { return { static_cast<float>(m_mouse->GetState().x), static_cast<float>(m_mouse->GetState().y) }; }
 
 	void update()
 	{
