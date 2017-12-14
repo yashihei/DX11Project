@@ -14,6 +14,7 @@
 #include "InputManager.h"
 #include "PlayScene.h"
 #include "UtilStr.h"
+#include "Random.h"
 #include <DirectXTK/SpriteBatch.h>
 #include <DirectXTK/SpriteFont.h>
 
@@ -34,9 +35,7 @@ TitleScene::TitleScene(App* app) : m_app(app)
 
 	light->direction = Vector3(0.0f, 0.0f, 1.0f);
 
-	assetsManager->loadModel("assets/model/ball/ball.obj", "ball", device, deviceContext, states, camera, light);
 	assetsManager->loadFont("assets/orbitron.spritefont", "orbitron", device);
-
 	m_fontCanvas = std::make_shared<DirectX::SpriteBatch>(deviceContext.Get());
 }
 
@@ -64,12 +63,6 @@ Scene* TitleScene::update()
 
 void TitleScene::draw()
 {
-	static float rotY = 0.0f;
-	auto input = m_app->getInputManager();
-	auto vec = input->isConnectedPad() ? Vector3(input->getLeftThumbY(), -input->getLeftThumbX(), 0) : Vector3::Zero;
-	rotY += DirectX::XMConvertToRadians(0.25f);
-	m_app->getAssetsManager()->getModel("ball")->draw(Vector3(0.75f, 0, 0), Vector3(0, rotY, 0) + vec);
-
 	auto font = m_app->getAssetsManager()->getFont("orbitron");
 	m_fontCanvas->Begin();
 	font->DrawString(m_fontCanvas.get(), s2ws(m_titleText).c_str(), Vector2(15, 275), DirectX::Colors::White, 0, Vector2::Zero, 1.0f);
