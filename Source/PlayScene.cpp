@@ -23,6 +23,7 @@
 #include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/CommonStates.h>
 #include <DirectXColors.h>
+#include "TitleScene.h"
 
 namespace sp4rk {
 
@@ -140,7 +141,7 @@ Scene* PlayScene::update()
 
 	//tps camera
 	auto camera = m_app->getCamera();
-	camera->lookAt = m_player->getPos();
+	camera->lookAt = m_player->getPos()/1.5f;
 	camera->pos = m_player->getPos() + Vector3(0, 50, 0);
 
 	if (m_app->getInputManager()->isPressedButton2()) {
@@ -185,13 +186,14 @@ void PlayScene::draw()
 	m_app->getAssetsManager()->getModel("tiled")->draw(Vector3::Zero, Vector3::Zero, Vector3::One * 2);
 	deviceContext->RSSetState(states->CullCounterClockwise());
 
+	//SpriteBatch‚ÌŒÄ‚Ño‚µ‚ÅAlphaBlend, DepthNone, CullCounterClockwise, LinearClamp‚ª“K—p‚³‚ê‚é
 	m_score->draw();
 	deviceContext->OMSetBlendState(states->NonPremultiplied(), 0, 0xFfFfFfFf);
 	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
 
 	// draw cursor
 	if (!m_app->getInputManager()->isConnectedPad())
-		m_cursor->draw(m_app->getInputManager()->getMousePos(), 0, 0.7f, Color(DirectX::Colors::LightGreen));
+		m_cursor->draw(m_app->getInputManager()->getMousePos(), 0, 0.5f, Color(DirectX::Colors::LightGreen));
 }
 
 } // namespace sp4rk
