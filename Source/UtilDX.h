@@ -12,6 +12,8 @@
 #include <stdexcept>
 #include <DirectXTK/SimpleMath.h>
 #include "MathAlias.h"
+#include "Log.h"
+#include "UtilStr.h"
 
 namespace hks {
 
@@ -58,6 +60,8 @@ inline void CompileFromFile(WCHAR* filePath, LPCSTR entryPoint, LPCSTR shaderMod
 
 	if (FAILED(hr))
 		throw std::runtime_error((char*)errorBlob->GetBufferPointer());
+
+	Log("[Compile] %1%.\n", ws2s(filePath));
 }
 
 inline void CreateConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteSize, ID3D11Buffer** constantBuffer)
