@@ -8,6 +8,7 @@
 
 #include "ShaderRV.h"
 #include "BasicEffect.h"
+#include "ToonEffect.h"
 #include "Camera.h"
 #include "LightParam.h"
 #include "UtilStr.h"
@@ -66,7 +67,7 @@ void Mesh::draw(ComPtr<ID3D11DeviceContext> deviceContext)
 Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CameraPtr camera, LightParamPtr light) :
 	m_device(device), m_deviceContext(deviceContext), m_camera(camera), m_light(light)
 {
-	m_effect = std::make_shared<BasicEffect>(m_device, m_deviceContext);
+	m_effect = std::make_shared<ToonEffect>(m_device, m_deviceContext);
 }
 
 void Model::createFromObj(const std::string& filePath)

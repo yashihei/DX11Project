@@ -51,7 +51,7 @@ ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 
 	//create ps
 	ComPtr<ID3DBlob> PSBuffer;
-	CompileFromFile(filePath, "PS", "ps_5_0", &PSBuffer);
+	CompileFromFile(filePath, "PSHalf", "ps_5_0", &PSBuffer);
 	hr = m_device->CreatePixelShader(PSBuffer->GetBufferPointer(), PSBuffer->GetBufferSize(), NULL, &m_pixelShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreatePixelShader() Failed.");
@@ -88,15 +88,13 @@ ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 	if (FAILED(hr))
 		throw std::runtime_error("CreateSamplerState() Failed.");
 
-	m_toonMap = CreateShaderResourceViewFromFile(m_device, "assets/texture/toon.png");
+	m_toonMap = CreateShaderResourceViewFromFile(m_device, "assets/texture/toon3.png");
 }
 
 void ToonEffect::setObjectParams(const Matrix& world, const Matrix& view, const Matrix& proj)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
-	//コンスタントバッファ書き換え
-	//TODO: apply時にコンスタントバッファ書き換えるように
 	HRESULT hr = m_deviceContext->Map(m_constantBufferObject.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
 		ObjectConstants* data = reinterpret_cast<ObjectConstants*>(resource.pData);

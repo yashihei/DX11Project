@@ -59,20 +59,22 @@ PSInput VS(VSInput input)
 	return output;
 }
 
-float4 PS(PSInput input) : SV_TARGET
+float4 PSHalf(PSInput input) : SV_TARGET
 {
-	//TODO:light‘Î‰ž
-	//TODO:material‘Î‰ž
-	float4 texColor, texColor2;
-	float lightIntensity;
 	float4 outColor;
 
-	texColor = tex2d.Sample(sampleType, input.texCoord);
-	lightIntensity = saturate(dot(input.normal, -lightDirection));
+	// half lambert
+	float diffuseAmount = dot(-lightDirection, input.normal);
+	diffuseAmount = diffuseAmount * 0.5f + 0.5f;
+	diffuseAmount *= diffuseAmount;
 
-	//FIXME:lightIntensity == 1.0f‚Ì‚Æ‚«wrap‚³‚ê‚Ä‚é
-	texColor2 = toonMapTex.Sample(sampleType, float2(lightIntensity, 0));
+	float4 toonColor = toonMapTex.Sample(sampleType, float2(diffuseAmount, diffuseAmount));
 
-	outColor = texColor * texColor2; 
+	float4 diffuseColor = diffuseMaterial;
+	diffuseColor *= tex2d.Sample(sampleType, input.texCoord);
+	diffuseColor *= diffuseLight;
+
+	outColor = diffuseColor * toonColor;
+
 	return outColor;
 }

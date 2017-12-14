@@ -57,7 +57,7 @@ private:
 	std::vector<Material> m_materials;
 	std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_textures;
 	DirectX::BoundingSphere m_boundingSphere;
-	BasicEffectPtr m_effect;
+	ToonEffectPtr m_effect;
 };
 
 } // namespace hks
