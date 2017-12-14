@@ -60,7 +60,6 @@ BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext
 	CreateConstantBuffer(m_device, sizeof(LightConstants), &m_constantBufferLight);
 	CreateConstantBuffer(m_device, sizeof(MaterialConstants), &m_constantBufferMaterial);
 
-	//--------------------------------------------------
 	//create input layout
 	const D3D11_INPUT_ELEMENT_DESC layout[] = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -72,6 +71,21 @@ BasicEffect::BasicEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext
 	hr = m_device->CreateInputLayout(layout, numElement, VSbuffer->GetBufferPointer(), VSbuffer->GetBufferSize(), &m_layout);
 	if (FAILED(hr))
 		throw std::runtime_error("CreateInputLayout() Failed.");
+
+	//create sampler
+	D3D11_SAMPLER_DESC samplerDesc = {};
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = samplerDesc.AddressV = samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	samplerDesc.BorderColor[0] = samplerDesc.BorderColor[1] = samplerDesc.BorderColor[2] = samplerDesc.BorderColor[3] = 0;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	hr = m_device->CreateSamplerState(&samplerDesc, &m_samplerState);
+	if (FAILED(hr))
+		throw std::runtime_error("CreateSamplerState() Failed.");
 }
 
 void BasicEffect::setObjectParams(const Matrix& world, const Matrix& view, const Matrix& proj)
@@ -122,7 +136,9 @@ void BasicEffect::setMaterialParams(const Vector4& diffuse, const Vector4& ambie
 
 void BasicEffect::apply()
 {
-	//set InputLayout (TODO:move model class)
+	//set sampler
+	m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
+	//set InputLayout
 	m_deviceContext->IASetInputLayout(m_layout.Get());
 	//set texture
 	m_deviceContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());

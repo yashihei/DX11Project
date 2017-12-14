@@ -14,9 +14,9 @@
 
 namespace hks {
 
-void AssetsManager::loadModel(const std::string& filePath, const std::string& alias, ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states, CameraPtr camera, LightParamPtr light)
+void AssetsManager::loadModel(const std::string& filePath, const std::string& alias, ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CameraPtr camera, LightParamPtr light)
 {
-	auto model = std::make_shared<Model>(device, deviceContext, states, camera, light);
+	auto model = std::make_shared<Model>(device, deviceContext, camera, light);
 	model->createFromObj(filePath);
 	m_models[alias] = model;
 }

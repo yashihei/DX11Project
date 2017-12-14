@@ -20,7 +20,7 @@ class AssetsManager {
 public:
 	AssetsManager() = default;
 
-	void loadModel(const std::string& filePath, const std::string& alias, ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states, CameraPtr camera, LightParamPtr light);
+	void loadModel(const std::string& filePath, const std::string& alias, ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CameraPtr camera, LightParamPtr light);
 	void loadSprite(const std::string& filePath, const std::string& alias, ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CameraPtr camera);
 	void loadFont(const std::string& filePath, const std::string& alias, ComPtr<ID3D11Device> device);
 	ModelPtr getModel(const std::string& alias);

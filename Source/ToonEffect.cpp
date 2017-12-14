@@ -73,6 +73,21 @@ ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 	if (FAILED(hr))
 		throw std::runtime_error("CreateInputLayout() Failed.");
 
+	//create sampler
+	D3D11_SAMPLER_DESC samplerDesc = {};
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = samplerDesc.AddressV = samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	samplerDesc.BorderColor[0] = samplerDesc.BorderColor[1] = samplerDesc.BorderColor[2] = samplerDesc.BorderColor[3] = 0;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	hr = m_device->CreateSamplerState(&samplerDesc, &m_samplerState);
+	if (FAILED(hr))
+		throw std::runtime_error("CreateSamplerState() Failed.");
+
 	m_toonMap = CreateShaderResourceViewFromFile(m_device, "assets/texture/toon.png");
 }
 
@@ -124,7 +139,9 @@ void ToonEffect::setMaterialParams(const Vector4& diffuse, const Vector4& ambien
 
 void ToonEffect::apply()
 {
-	//set input layout (TODO:move model class)
+	//set sampler
+	m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
+	//set input layout
 	m_deviceContext->IASetInputLayout(m_layout.Get());
 	//set texture
 	m_deviceContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());

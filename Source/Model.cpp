@@ -63,8 +63,8 @@ void Mesh::draw(ComPtr<ID3D11DeviceContext> deviceContext)
 	deviceContext->DrawIndexed(m_indexCount, 0, 0);
 }
 
-Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CommonStatesPtr states, CameraPtr camera, LightParamPtr light) :
-	m_device(device), m_deviceContext(deviceContext), m_states(states), m_camera(camera), m_light(light)
+Model::Model(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, CameraPtr camera, LightParamPtr light) :
+	m_device(device), m_deviceContext(deviceContext), m_camera(camera), m_light(light)
 {
 	m_effect = std::make_shared<BasicEffect>(m_device, m_deviceContext);
 }
@@ -210,9 +210,6 @@ void Model::draw(const Vector3& pos, const Vector3& rot, const Vector3& scale)
 
 void Model::draw(const Matrix& world, const Matrix& view, const Matrix& proj)
 {
-	auto samplerState = m_states->LinearWrap();
-	m_deviceContext->PSSetSamplers(0, 1, &samplerState);
-
 	m_effect->setLightParams(m_light->diffuse, m_light->ambient, m_light->direction);
 	m_effect->setObjectParams(world.Transpose(), view.Transpose(), proj.Transpose());
 

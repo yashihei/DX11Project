@@ -64,9 +64,9 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0)
 	deviceContext->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFffFFff);
 
 	//load obj models
-	assetsManager->loadModel("assets/model/player/player.obj", "player", device, deviceContext, states, camera, light);
-	assetsManager->loadModel("assets/model/enemy/enemy.obj", "enemy", device, deviceContext, states, camera, light);
-	assetsManager->loadModel("assets/model/tiled/tiled.obj", "tiled", device, deviceContext, states, camera, light);
+	assetsManager->loadModel("assets/model/player/player.obj", "player", device, deviceContext, camera, light);
+	assetsManager->loadModel("assets/model/enemy/enemy.obj", "enemy", device, deviceContext, camera, light);
+	assetsManager->loadModel("assets/model/tiled/tiled.obj", "tiled", device, deviceContext, camera, light);
 
 	//create sprite
 	assetsManager->loadSprite("assets/texture/circle_flat.png", "particle", device, deviceContext, camera);
