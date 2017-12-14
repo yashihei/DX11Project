@@ -101,6 +101,12 @@ Scene* PlayScene::update()
 	if (m_spawnCount > 2.5f) {
 		for (int i = 0; i < 5; i++) {
 			const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
+			const auto disPos = spawnPos - m_player->getPos();
+			//プレイヤーから近すぎるスポーンはやり直す
+			if (disPos.Length() < 3.0f) {
+				i--;
+				continue;
+			}
 			auto enemy = std::make_shared<Enemy>(m_app, spawnPos, m_player->getPos());
 			m_enemies->add(enemy);
 			auto ring = std::make_shared<SpawnRing>(m_app, spawnPos, Color(0.35f, 0.8f, 0.4f), 0.5f, 10.0f, 0.5f);
