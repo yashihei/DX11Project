@@ -40,13 +40,13 @@ private:
 
 class SpawnRing : public Particle {
 public:
-	SpawnRing(App* app, const Vector3& pos, const Color& color, float lifeTime);
+	SpawnRing(App* app, const Vector3& pos, const Color& color, float minSize, float maxSize, float lifeTime);
 	void update() override;
 	void draw() override;
 private:
 	Vector3 m_pos;
 	Color m_color;
-	float m_size, m_lifeTime;
+	float m_size, m_minSize, m_maxSize, m_lifeTime;
 };
 
 } // namespace sp4rk
