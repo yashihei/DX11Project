@@ -15,7 +15,7 @@
 namespace sp4rk {
 
 Enemy::Enemy(App* app, Vector3 spawnPos, Vector3 target):
-	m_app(app), m_pos(spawnPos), m_rot(), m_count(0)
+	m_app(app), m_pos(spawnPos), m_rot(), m_count(0), m_turnCount(0)
 {
 	const float speed = 5.0f;
 	const float rad = std::atan2f(target.z - m_pos.z, target.x - m_pos.x);
@@ -26,6 +26,7 @@ void Enemy::update()
 {
 	const float deltaTime = m_app->getTime()->deltaTime();
 	m_count += deltaTime;
+	m_turnCount += deltaTime;
 
 	if (m_count < 0.75f) return;
 
@@ -33,8 +34,13 @@ void Enemy::update()
 	m_pos.Clamp(Vector3(-20.f), Vector3(20.f));
 
 	// ˆê’èŠm—¦‚Å•ûŒü“]Š·
-	if (Random() > 0.99f) m_vec.x *= -1;
-	if (Random() > 0.99f) m_vec.z *= -1;
+	if (Random() > (2.0 - m_turnCount)) {
+		m_vec.x *= -1;
+		m_turnCount = 0;
+	} else if (Random() > (2.0 - m_turnCount)) {
+		m_vec.z *= -1;
+		m_turnCount = 0;
+	}
 
 	m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Right, m_vec.z * deltaTime);
 	m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Forward, m_vec.x * deltaTime);

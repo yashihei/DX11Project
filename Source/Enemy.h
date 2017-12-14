@@ -26,7 +26,7 @@ private:
 	App* m_app;
 	Vector3 m_pos, m_vec;
 	Quaternion m_rot;
-	float m_count;
+	float m_count, m_turnCount;
 };
 
 using EnemyManagerPtr = std::shared_ptr<ActorManager<Enemy>>;
