@@ -85,6 +85,9 @@
     <ClCompile Include="Source\Score.cpp">
       <Filter>App\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Source\BloomEffect.cpp">
+      <Filter>HKSEngine\Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor.h">
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="Source\Time.h">
       <Filter>HKSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BloomEffect.h">
+      <Filter>HKSEngine\Effects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
