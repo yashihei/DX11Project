@@ -20,10 +20,10 @@
 #include "LightParam.h"
 #include "Time.h"
 #include "Sprite2D.h"
+#include "TitleScene.h"
 #include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/CommonStates.h>
 #include <DirectXColors.h>
-#include "TitleScene.h"
 
 namespace sp4rk {
 
@@ -96,8 +96,8 @@ Scene* PlayScene::update()
 	m_bullets->updateAll();
 	m_score->update();
 
-	m_spawnCount += m_app->getTime()->deltaTime();
 	//spawn enemy
+	m_spawnCount += m_app->getTime()->deltaTime();
 	if (m_spawnCount > 2.5f) {
 		for (int i = 0; i < 5; i++) {
 			const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
@@ -137,7 +137,6 @@ Scene* PlayScene::update()
 			break;
 		}
 	}
-
 	if (enemiesClear) {
 		for (auto& enemy : *m_enemies) {
 			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1, 45, 1);
@@ -145,11 +144,10 @@ Scene* PlayScene::update()
 		m_enemies->clear();
 	}
 
-	//tps camera
+	//camera control
 	auto camera = m_app->getCamera();
 	camera->lookAt = m_player->getPos();
 	camera->pos = m_player->getPos() + Vector3(0, 50, 0);
-
 	if (m_app->getInputManager()->isPressedButton2()) {
 		camera->lookAt = Vector3::Zero;
 		camera->pos = Vector3(0, 20, -50);
