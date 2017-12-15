@@ -1,6 +1,6 @@
 // basic.fx
 
-Texture2D tex2d : register(t0);
+Texture2D diffuseTex : register(t0);
 Texture2D toonMapTex : register(t1);
 SamplerState sampleType : register(s0);
 
@@ -71,7 +71,7 @@ float4 PSHalf(PSInput input) : SV_TARGET
 	float4 toonColor = toonMapTex.Sample(sampleType, float2(diffuseAmount, diffuseAmount));
 
 	float4 diffuseColor = diffuseMaterial;
-	diffuseColor *= tex2d.Sample(sampleType, input.texCoord);
+	diffuseColor *= diffuseTex.Sample(sampleType, input.texCoord);
 	diffuseColor *= diffuseLight;
 
 	outColor = diffuseColor * toonColor;

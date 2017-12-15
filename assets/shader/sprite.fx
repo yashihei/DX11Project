@@ -1,6 +1,6 @@
 // test.fx
 
-Texture2D tex2d : register(t0);
+Texture2D diffuseTex : register(t0);
 SamplerState sampleType : register(s0);
 
 cbuffer Params : register(b0)
@@ -42,5 +42,5 @@ PSInput VS(VSInput input)
 
 float4 PS(PSInput input) : SV_TARGET
 {
-	return tex2d.Sample(sampleType, input.texCoord) * input.color;
+	return diffuseTex.Sample(sampleType, input.texCoord) * input.color;
 }

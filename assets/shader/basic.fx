@@ -1,6 +1,6 @@
 // basic.fx
 
-Texture2D tex2d : register(t0);
+Texture2D diffuseTex : register(t0);
 SamplerState sampleType : register(s0);
 
 cbuffer ObjectParams : register(b0)
@@ -83,9 +83,9 @@ float4 PS(PSInput input) : SV_TARGET
 	float3 temp = ambientMaterial.rgb * ambientLight.rgb;
 	temp += LambertLighting(-lightDirection, input.normal, diffuseLight.rgb, diffuseMaterial.rgb);
 	temp = saturate(temp);
-	temp *= tex2d.Sample(sampleType, input.texCoord).rgb;
+	temp *= diffuseTex.Sample(sampleType, input.texCoord).rgb;
 
-	float alpha = tex2d.Sample(sampleType, input.texCoord).a * diffuseMaterial.a;
+	float alpha = diffuseTex.Sample(sampleType, input.texCoord).a * diffuseMaterial.a;
 	outColor = CombineRGBWithAlpha(temp, alpha);
 
 	return outColor;
@@ -100,10 +100,10 @@ float4 PSHalf(PSInput input) : SV_TARGET
 	diffuseAmount *= diffuseAmount;
 
 	float3 diffuseColor = diffuseMaterial.rgb;
-	diffuseColor *= tex2d.Sample(sampleType, input.texCoord).rgb;
+	diffuseColor *= diffuseTex.Sample(sampleType, input.texCoord).rgb;
 	diffuseColor *= diffuseAmount;
 
-	float alpha = tex2d.Sample(sampleType, input.texCoord).a * diffuseMaterial.a;
+	float alpha = diffuseTex.Sample(sampleType, input.texCoord).a * diffuseMaterial.a;
 	outColor = CombineRGBWithAlpha(diffuseColor, alpha);
 
 	return outColor;
