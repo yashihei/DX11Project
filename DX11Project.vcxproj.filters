@@ -212,5 +212,8 @@
     <FxCompile Include="assets\shader\toon.fx">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="assets\shader\bloom.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
