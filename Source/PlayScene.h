@@ -39,6 +39,7 @@ private:
 	ScorePtr m_score;
 	Sprite2DPtr m_cursor;
 	float m_spawnCount;
+	bool m_pausing;
 };
 
 } // namespace sp4rk

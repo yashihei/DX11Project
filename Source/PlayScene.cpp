@@ -44,7 +44,7 @@ inline void emitPatricle(App* app, ParticleManagerPtr particles, int num, const 
 	}
 }
 
-PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0)
+PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false)
 {
 	auto camera = m_app->getCamera();
 	auto device = m_app->getGraphics()->getDevice();
@@ -160,6 +160,14 @@ Scene* PlayScene::update()
 		m_app->getTime()->changeScale(0.3f);
 	} else {
 		m_app->getTime()->changeScale(1.0f);
+	}
+
+	//pause
+	if (m_app->getInputManager()->isClickedButton4()) {
+		m_pausing = !m_pausing;
+	}
+	if (m_pausing) {
+		m_app->getTime()->changeScale(0);
 	}
 
 	const auto playerPos = m_player->getPos();
