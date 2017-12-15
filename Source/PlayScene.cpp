@@ -147,7 +147,7 @@ Scene* PlayScene::update()
 
 	//tps camera
 	auto camera = m_app->getCamera();
-	camera->lookAt = m_player->getPos()/1.5f;
+	camera->lookAt = m_player->getPos();
 	camera->pos = m_player->getPos() + Vector3(0, 50, 0);
 
 	if (m_app->getInputManager()->isPressedButton2()) {
