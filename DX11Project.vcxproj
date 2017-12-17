@@ -134,7 +134,6 @@
     <ClCompile Include="Source\AssetsManager.cpp" />
     <ClCompile Include="Source\AudioManager.cpp" />
     <ClCompile Include="Source\BasicEffect.cpp" />
-    <ClCompile Include="Source\BloomEffect.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
@@ -154,7 +153,6 @@
   <ItemGroup>
     <ClInclude Include="Source\Actor.h" />
     <ClInclude Include="Source\AssetsManager.h" />
-    <ClInclude Include="Source\BloomEffect.h" />
     <ClInclude Include="Source\FPSManager.h" />
     <ClInclude Include="Source\PtrAlias.h" />
     <ClInclude Include="Source\App.h" />
@@ -194,10 +192,6 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="assets\shader\basic.fx">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="assets\shader\bloom.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </FxCompile>

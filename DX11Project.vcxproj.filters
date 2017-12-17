@@ -85,9 +85,6 @@
     <ClCompile Include="Source\Score.cpp">
       <Filter>App\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BloomEffect.cpp">
-      <Filter>HKSEngine\Effects</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor.h">
@@ -204,9 +201,6 @@
     <ClInclude Include="Source\Time.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\BloomEffect.h">
-      <Filter>HKSEngine\Effects</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="assets\shader\basic.fx">
@@ -216,9 +210,6 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="assets\shader\toon.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="assets\shader\bloom.fx">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
