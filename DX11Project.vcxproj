@@ -136,12 +136,14 @@
     <ClCompile Include="Source\BasicEffect.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
+    <ClCompile Include="Source\GraphicsContext.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\PlayScene.cpp" />
     <ClCompile Include="Source\Graphics.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Model.cpp" />
+    <ClCompile Include="Source\RenderTarget.cpp" />
     <ClCompile Include="Source\Score.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\Sprite2D.cpp" />
@@ -154,6 +156,7 @@
     <ClInclude Include="Source\Actor.h" />
     <ClInclude Include="Source\AssetsManager.h" />
     <ClInclude Include="Source\FPSManager.h" />
+    <ClInclude Include="Source\GraphicsContext.h" />
     <ClInclude Include="Source\PtrAlias.h" />
     <ClInclude Include="Source\App.h" />
     <ClInclude Include="Source\AudioManager.h" />
@@ -172,6 +175,7 @@
     <ClInclude Include="Source\Particle.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Random.h" />
+    <ClInclude Include="Source\RenderTarget.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Score.h" />
     <ClInclude Include="Source\ShaderRV.h" />

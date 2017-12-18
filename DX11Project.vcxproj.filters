@@ -26,6 +26,9 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{5dc8acce-7f67-4249-b496-cfd50897916b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HKSEngine\Graphics">
+      <UniqueIdentifier>{87326657-8eac-4d16-8f2b-45ca387ac784}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -44,9 +47,6 @@
       <Filter>HKSEngine\Effects</Filter>
     </ClCompile>
     <ClCompile Include="Source\AudioManager.cpp">
-      <Filter>HKSEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics.cpp">
       <Filter>HKSEngine</Filter>
     </ClCompile>
     <ClCompile Include="Source\Model.cpp">
@@ -85,6 +85,15 @@
     <ClCompile Include="Source\Score.cpp">
       <Filter>App\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Source\RenderTarget.cpp">
+      <Filter>HKSEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics.cpp">
+      <Filter>HKSEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GraphicsContext.cpp">
+      <Filter>HKSEngine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor.h">
@@ -100,9 +109,6 @@
       <Filter>HKSEngine</Filter>
     </ClInclude>
     <ClInclude Include="Source\Fwd.h">
-      <Filter>HKSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics.h">
       <Filter>HKSEngine</Filter>
     </ClInclude>
     <ClInclude Include="Source\InputManager.h">
@@ -200,6 +206,15 @@
     </ClInclude>
     <ClInclude Include="Source\Time.h">
       <Filter>HKSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RenderTarget.h">
+      <Filter>HKSEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics.h">
+      <Filter>HKSEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GraphicsContext.h">
+      <Filter>HKSEngine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
