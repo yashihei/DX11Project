@@ -14,4 +14,14 @@ TEST(UtilFunc, ClampTest)
 TEST(UtilFunc, WrapTest)
 {
 	EXPECT_EQ(5, Wrap(15, 0, 10));
+	EXPECT_EQ(5, Wrap(-5, 0, 10));
+}
+
+TEST(UtilFunc, RangeTest)
+{
+	EXPECT_TRUE(InRange(0, 0, 10));
+	EXPECT_TRUE(InRange(5, 0, 10));
+	EXPECT_TRUE(InRange(10, 0, 10));
+	EXPECT_FALSE(InRange(-10, 0, 10));
+	EXPECT_FALSE(InRange(20, 0, 10));
 }
