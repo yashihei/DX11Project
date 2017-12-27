@@ -16,8 +16,8 @@ using Microsoft::WRL::ComPtr;
 
 class RenderTarget {
 public:
-	RenderTarget(ID3D11Device* device, int32 width, int32 height);
-	RenderTarget(ID3D11Device* device, IDXGISwapChain* swapChain, int32 width, int32 height);
+	RenderTarget(ID3D11Device* device, int32 width, int32 height, int32 multiSampleCount);
+	RenderTarget(ID3D11Device* device, IDXGISwapChain* swapChain, int32 width, int32 height, int32 multiSampleCount);
 	ID3D11RenderTargetView* getRenderTargetView() const;
 	ID3D11DepthStencilView* getDepthStencilView() const;
 	ID3D11ShaderResourceView* getShaderResourceView() const;

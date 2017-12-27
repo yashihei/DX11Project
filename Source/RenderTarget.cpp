@@ -13,7 +13,7 @@ void BuildRenderTarget(
 	ID3D11Device* device,
 	DXGI_FORMAT format,
 	int32 width, int32 height,
-	int32 sampleCount,
+	int32 multiSampleCount,
 	ComPtr<ID3D11Texture2D>& renderTargetBuffer,
 	ComPtr<ID3D11RenderTargetView>& renderTargetView,
 	ComPtr<ID3D11ShaderResourceView>& shaderResourceView)
@@ -25,7 +25,7 @@ void BuildRenderTarget(
 	textureDesc.Height = height;
 	textureDesc.ArraySize = 1;
 	textureDesc.MipLevels = 1;
-	textureDesc.SampleDesc.Count = sampleCount;
+	textureDesc.SampleDesc.Count = multiSampleCount;
 	textureDesc.SampleDesc.Quality = 0;
 	textureDesc.Usage = D3D11_USAGE_DEFAULT;
 	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
@@ -41,7 +41,7 @@ void BuildRenderTarget(
 	// Create RTV
 	D3D11_RENDER_TARGET_VIEW_DESC rtvDesc = {};
 	rtvDesc.Format = textureDesc.Format;
-	rtvDesc.ViewDimension = sampleCount > 1 ? D3D11_RTV_DIMENSION_TEXTURE2DMS : D3D11_RTV_DIMENSION_TEXTURE2D;
+	rtvDesc.ViewDimension = multiSampleCount > 1 ? D3D11_RTV_DIMENSION_TEXTURE2DMS : D3D11_RTV_DIMENSION_TEXTURE2D;
 	rtvDesc.Texture2D.MipSlice = 0;
 
 	hr = device->CreateRenderTargetView(renderTargetBuffer.Get(), &rtvDesc, &renderTargetView);
@@ -53,7 +53,7 @@ void BuildRenderTarget(
 	// Create SRV
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 	srvDesc.Format = textureDesc.Format;
-	srvDesc.ViewDimension = sampleCount > 1 ? D3D11_SRV_DIMENSION_TEXTURE2DMS : D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.ViewDimension = multiSampleCount > 1 ? D3D11_SRV_DIMENSION_TEXTURE2DMS : D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.Texture2D.MipLevels = textureDesc.MipLevels;
 
@@ -68,7 +68,7 @@ void BuildDepthBuffer(
 	ID3D11Device* device,
 	DXGI_FORMAT format,
 	int32 width, int32 height,
-	int32 sampleCount,
+	int32 multiSampleCount,
 	ComPtr<ID3D11Texture2D>& depthStencilBuffer,
 	ComPtr<ID3D11DepthStencilView>& depthStencilView)
 {
@@ -79,7 +79,7 @@ void BuildDepthBuffer(
 	textureDesc.Height = height;
 	textureDesc.ArraySize = 1;
 	textureDesc.MipLevels = 1;
-	textureDesc.SampleDesc.Count = sampleCount;
+	textureDesc.SampleDesc.Count = multiSampleCount;
 	textureDesc.SampleDesc.Quality = 0;
 	textureDesc.Usage = D3D11_USAGE_DEFAULT;
 	textureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
@@ -95,7 +95,7 @@ void BuildDepthBuffer(
 	// Create the DSV
 	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
 	dsvDesc.Format = textureDesc.Format;
-	dsvDesc.ViewDimension = sampleCount > 1 ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D;
+	dsvDesc.ViewDimension = multiSampleCount > 1 ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D;
 	dsvDesc.Texture2D.MipSlice = 0;
 
 	hr = device->CreateDepthStencilView(depthStencilBuffer.Get(), &dsvDesc, &depthStencilView);
@@ -125,21 +125,21 @@ void BuildBackBufferBySwapChain(
 	}
 }
 
-RenderTarget::RenderTarget(ID3D11Device* device, int32 width, int32 height)
+RenderTarget::RenderTarget(ID3D11Device* device, int32 width, int32 height, int32 multiSampleCount)
 {
 	const DXGI_FORMAT surfaceFormat = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	const DXGI_FORMAT depthFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
-	BuildRenderTarget(device, surfaceFormat, width, height, 4, m_renderTargetBuffer, m_renderTargetView, m_shaderResourceView);
-	BuildDepthBuffer(device, depthFormat, width, height, 4, m_depthStencilBuffer, m_depthStencilView);
+	BuildRenderTarget(device, surfaceFormat, width, height, multiSampleCount, m_renderTargetBuffer, m_renderTargetView, m_shaderResourceView);
+	BuildDepthBuffer(device, depthFormat, width, height, multiSampleCount, m_depthStencilBuffer, m_depthStencilView);
 }
 
-RenderTarget::RenderTarget(ID3D11Device* device, IDXGISwapChain* swapChain, int32 width, int32 height)
+RenderTarget::RenderTarget(ID3D11Device* device, IDXGISwapChain* swapChain, int32 width, int32 height, int32 multiSampleCount)
 {
 	const DXGI_FORMAT depthFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	BuildBackBufferBySwapChain(device, swapChain, m_renderTargetBuffer, m_renderTargetView);
-	BuildDepthBuffer(device, depthFormat, width, height, 4, m_depthStencilBuffer, m_depthStencilView);
+	BuildDepthBuffer(device, depthFormat, width, height, multiSampleCount, m_depthStencilBuffer, m_depthStencilView);
 }
 
 ID3D11RenderTargetView* RenderTarget::getRenderTargetView() const
