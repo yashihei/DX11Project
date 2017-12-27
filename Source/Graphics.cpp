@@ -25,7 +25,6 @@ void CreateDeviceAndSwapChain(
 	swapChainDesc.BufferCount = 1;
 	swapChainDesc.BufferDesc.Width = screenWidth;
 	swapChainDesc.BufferDesc.Height = screenHeight;
-	//MEMO: format, refreshrate‚Í‰¼’u‚«
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
 	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
@@ -43,14 +42,23 @@ void CreateDeviceAndSwapChain(
 #if defined(DEBUG) || defined(_DEBUG)
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-	D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
+
+	const std::array<D3D_FEATURE_LEVEL, 7> featureLevels = {
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0,
+		D3D_FEATURE_LEVEL_10_1,
+		D3D_FEATURE_LEVEL_10_0,
+		D3D_FEATURE_LEVEL_9_3,
+		D3D_FEATURE_LEVEL_9_2,
+		D3D_FEATURE_LEVEL_9_1,
+	};
 
 	HRESULT hr = D3D11CreateDeviceAndSwapChain(
 		NULL,
 		D3D_DRIVER_TYPE_HARDWARE,
 		NULL,
 		createDeviceFlags,
-		&featureLevel,
+		featureLevels.data(),
 		1,
 		D3D11_SDK_VERSION,
 		&swapChainDesc,
