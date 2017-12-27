@@ -136,7 +136,6 @@
     <ClCompile Include="Source\BasicEffect.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
-    <ClCompile Include="Source\GraphicsContext.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\PlayScene.cpp" />
@@ -156,7 +155,6 @@
     <ClInclude Include="Source\Actor.h" />
     <ClInclude Include="Source\AssetsManager.h" />
     <ClInclude Include="Source\FPSManager.h" />
-    <ClInclude Include="Source\GraphicsContext.h" />
     <ClInclude Include="Source\PtrAlias.h" />
     <ClInclude Include="Source\App.h" />
     <ClInclude Include="Source\AudioManager.h" />
