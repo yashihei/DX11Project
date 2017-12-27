@@ -9,6 +9,7 @@
 namespace hks {
 	class Window;
 	class Graphics;
+	class RenderTarget;
 	class Scene;
 	struct LightParam;
 	class Camera;
@@ -21,6 +22,7 @@ namespace hks {
 	class Model;
 	class Sprite;
 	class Sprite2D;
+
 	class BasicEffect;
 	class SpriteEffect;
 	class ToonEffect;

@@ -5,47 +5,21 @@
 // -----------------------------------------------
 
 #include "Graphics.h"
+#include "RenderTarget.h"
 #include <stdexcept>
+#include <array>
 
 namespace hks {
 
-Graphics::Graphics(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen, bool enableAA)
-{
-	if (!createDeviceAndSwapChain(screenWidth, screenHeight, hWnd, fullScreen, enableAA))
-		throw std::runtime_error("Error Create DeviceAndSwapChain.");
-
-	if (!createRenderTarget())
-		throw std::runtime_error("Error Create RenderTarget.");
-
-	if (!createDepthStencil(screenWidth, screenHeight, enableAA))
-		throw std::runtime_error("Error Create DepthStencil.");
-
-	m_deviceContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
-
-	//setting viewport
-	D3D11_VIEWPORT vp = {};
-	vp.Width = static_cast<float>(screenWidth);
-	vp.Height = static_cast<float>(screenHeight);
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
-	m_deviceContext->RSSetViewports(1, &vp);
-}
-
-void Graphics::beginScene()
-{
-	float color[] = { 0.1f, 0.1f, 0.1f, 1 };
-	m_deviceContext->ClearRenderTargetView(m_renderTargetView.Get(), color);
-	m_deviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-}
-
-void Graphics::endScene()
-{
-	m_swapChain->Present(1, 0);
-}
-
-bool Graphics::createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND hWnd, bool fullScreen, bool enableAA)
+void CreateDeviceAndSwapChain(
+	HWND hWnd,
+	int screenWidth,
+	int screenHeight,
+	bool fullScreen,
+	bool enableAA,
+	ComPtr<ID3D11Device>& device,
+	ComPtr<ID3D11DeviceContext>& deviceContext,
+	ComPtr<IDXGISwapChain>& swapChain)
 {
 	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 	swapChainDesc.BufferCount = 1;
@@ -80,60 +54,49 @@ bool Graphics::createDeviceAndSwapChain(int screenWidth, int screenHeight, HWND 
 		1,
 		D3D11_SDK_VERSION,
 		&swapChainDesc,
-		&m_swapChain,
-		&m_device,
+		&swapChain,
+		&device,
 		NULL,
-		&m_deviceContext
+		&deviceContext
 	);
-	if (FAILED(hr))
-		return false;
 
-	return true;
+	if (FAILED(hr)) {
+		throw std::runtime_error("Failed to create DeviceAndSwapChain.");
+	}
 }
 
-bool Graphics::createRenderTarget()
+Graphics::Graphics(HWND hWnd, int screenWidth, int screenHeight, bool fullScreen, bool enableAA)
 {
-	ComPtr<ID3D11Texture2D> backBuffer;
-	HRESULT hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
-	if (FAILED(hr))
-		return false;
+	CreateDeviceAndSwapChain(hWnd, screenWidth, screenHeight, fullScreen, enableAA, m_device, m_deviceContext, m_swapChain);
 
-	hr = m_device->CreateRenderTargetView(backBuffer.Get(), NULL, &m_renderTargetView);
-	if (FAILED(hr))
-		return false;
+	// Create backbuffer
+	m_backbuffer = std::make_shared<RenderTarget>(m_device.Get(), m_swapChain.Get(), screenWidth, screenHeight, enableAA ? 4 : 1);
 
-	return true;
+	// Use backbuffer
+	std::array<ID3D11RenderTargetView*, 1> rendertargetViews = { m_backbuffer->getRenderTargetView() };
+	m_deviceContext->OMSetRenderTargets(1, rendertargetViews.data(), m_backbuffer->getDepthStencilView());
+
+	// Set viewport
+	D3D11_VIEWPORT vp = {};
+	vp.Width = static_cast<float>(screenWidth);
+	vp.Height = static_cast<float>(screenHeight);
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	m_deviceContext->RSSetViewports(1, &vp);
 }
 
-bool Graphics::createDepthStencil(int screenWidth, int screenHeight, bool enableAA)
+void Graphics::beginScene()
 {
-	D3D11_TEXTURE2D_DESC depthDesc = {};
-	depthDesc.Width = screenWidth;
-	depthDesc.Height = screenHeight;
-	depthDesc.MipLevels = 1;
-	depthDesc.ArraySize = 1;
-	depthDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthDesc.SampleDesc.Count = enableAA ? 4 : 1;
-	depthDesc.SampleDesc.Quality = 0;
-	depthDesc.Usage = D3D11_USAGE_DEFAULT;
-	depthDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	depthDesc.CPUAccessFlags = 0;
-	depthDesc.MiscFlags = 0;
+	float color[] = { 0.1f, 0.1f, 0.1f, 1 };
+	m_deviceContext->ClearRenderTargetView(m_backbuffer->getRenderTargetView(), color);
+	m_deviceContext->ClearDepthStencilView(m_backbuffer->getDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+}
 
-	HRESULT hr = m_device->CreateTexture2D(&depthDesc, NULL, &m_depthStencilBuffer);
-	if (FAILED(hr))
-		return false;
-
-	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
-	dsvDesc.Format = depthDesc.Format;
-	dsvDesc.ViewDimension = enableAA ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D;
-	dsvDesc.Texture2D.MipSlice = 0;
-
-	hr = m_device->CreateDepthStencilView(m_depthStencilBuffer.Get(), &dsvDesc, &m_depthStencilView);
-	if (FAILED(hr))
-		return false;
-
-	return true;
+void Graphics::endScene()
+{
+	m_swapChain->Present(1, 0);
 }
 
 } // namespace hks
