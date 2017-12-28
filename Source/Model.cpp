@@ -18,7 +18,7 @@
 
 namespace hks {
 
-Mesh::Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std::vector<unsigned long>& indices, int materialID) :
+Mesh::Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std::vector<unsigned long>& indices, int32 materialID) :
 	m_indexCount(indices.size()), m_materialID(materialID)
 {
 	//Create VertexBuffer
@@ -56,8 +56,8 @@ Mesh::Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std:
 
 void Mesh::draw(ComPtr<ID3D11DeviceContext> deviceContext)
 {
-	unsigned int stride = sizeof(ModelVertex);
-	unsigned int offset = 0;
+	uint32 stride = sizeof(ModelVertex);
+	uint32 offset = 0;
 	deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 	deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -87,14 +87,14 @@ void Model::createFromObj(const std::string& filePath)
 	Log("[Load] %1%.\n", filePath);
 
 	//Loop over shapes (g or o)
-	for (unsigned int s = 0; s < shapes.size(); s++) {
+	for (uint32 s = 0; s < shapes.size(); s++) {
 		std::vector<ModelVertex> vertices;
 		std::vector<unsigned long> indices;
-		int materialID = shapes[s].mesh.material_ids[0];
-		int indexOffset = 0, indexCount = 0;
+		int32 materialID = shapes[s].mesh.material_ids[0];
+		int32 indexOffset = 0, indexCount = 0;
 
 		//Loop over faces
-		for (unsigned int f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+		for (uint32 f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
 			//ƒ}ƒeƒŠƒAƒ‹‚ªˆÙ‚È‚éê‡mesh‚ð•ªŠ„‚·‚é
 			if (materialID != shapes[s].mesh.material_ids[f]) {
 				auto mesh = std::make_shared<Mesh>(m_device, vertices, indices, materialID);
@@ -106,8 +106,8 @@ void Model::createFromObj(const std::string& filePath)
 			}
 
 			//Loop over vertices in the
-			const int fv = shapes[s].mesh.num_face_vertices[f];
-			for (int v = 0; v < fv; v++) {
+			const int32 fv = shapes[s].mesh.num_face_vertices[f];
+			for (int32 v = 0; v < fv; v++) {
 				const auto idx = shapes[s].mesh.indices[indexOffset + v];
 
 				Vector3 pos = {};
@@ -146,7 +146,7 @@ void Model::createFromObj(const std::string& filePath)
 
 	//Calc bounds
 	std::vector<Vector3> points;
-	for (unsigned int i = 0; i < attrib.vertices.size() / 3; i++) {
+	for (uint32 i = 0; i < attrib.vertices.size() / 3; i++) {
 		points.emplace_back(attrib.vertices[3 * i + 0], attrib.vertices[3 * i + 1], attrib.vertices[3 * i + 2]);
 	}
 	DirectX::BoundingSphere::CreateFromPoints(m_boundingSphere, points.size(), points.data(), sizeof(Vector3));
@@ -156,7 +156,7 @@ void Model::createFromObj(const std::string& filePath)
 	m_textures["nulltex"] = nulltex;
 
 	const auto rootDir = GetDirPath(filePath);
-	for (unsigned int i = 0; i < materials.size(); i++) {
+	for (uint32 i = 0; i < materials.size(); i++) {
 		const auto texName = materials[i].diffuse_texname;
 		if (!texName.empty()) {
 			const auto dir = rootDir + texName;
@@ -166,7 +166,7 @@ void Model::createFromObj(const std::string& filePath)
 	}
 
 	//Load material
-	for (unsigned int i = 0; i < materials.size(); i++) {
+	for (uint32 i = 0; i < materials.size(); i++) {
 		const Material mat {
 			{
 				materials[i].diffuse[0],

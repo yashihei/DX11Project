@@ -16,6 +16,7 @@
 #include "Fwd.h"
 #include "PtrAlias.h"
 #include "MathAlias.h"
+#include "Types.h"
 
 namespace hks {
 
@@ -32,11 +33,11 @@ struct Material {
 
 class Mesh {
 public:
-	Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std::vector<unsigned long>& indices, int materialID);
+	Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std::vector<unsigned long>& indices, int32 materialID);
 	void draw(ComPtr<ID3D11DeviceContext> deviceContext);
-	int getMatID() const { return m_materialID; }
+	int32 getMatID() const { return m_materialID; }
 private:
-	int m_indexCount, m_materialID;
+	int32 m_indexCount, m_materialID;
 	ComPtr<ID3D11Buffer> m_vertexBuffer;
 	ComPtr<ID3D11Buffer> m_indexBuffer;
 };

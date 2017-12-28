@@ -73,7 +73,7 @@ void CreateDeviceAndSwapChain(
 	}
 }
 
-Graphics::Graphics(HWND hWnd, int screenWidth, int screenHeight, bool fullScreen, bool enableAA)
+Graphics::Graphics(HWND hWnd, int32 screenWidth, int32 screenHeight, bool fullScreen, bool enableAA)
 {
 	CreateDeviceAndSwapChain(hWnd, screenWidth, screenHeight, fullScreen, enableAA, m_device, m_deviceContext, m_swapChain);
 

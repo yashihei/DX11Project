@@ -10,6 +10,7 @@
 #include <DirectXTK/Keyboard.h>
 #include <DirectXTK/GamePad.h>
 #include <DirectXTK/Mouse.h>
+#include "Types.h"
 
 namespace hks {
 
@@ -79,7 +80,7 @@ private:
 	DirectX::GamePad::ButtonStateTracker m_padTracker;
 	using PadButtonState = DirectX::GamePad::ButtonStateTracker::ButtonState;
 	using MouseButtonState = DirectX::Mouse::ButtonStateTracker::ButtonState;
-	int m_padIndex;
+	int32 m_padIndex;
 };
 
 } // namespace hks

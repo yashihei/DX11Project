@@ -10,6 +10,7 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 #include "PtrAlias.h"
+#include "Types.h"
 
 namespace hks {
 
@@ -17,7 +18,7 @@ using Microsoft::WRL::ComPtr;
 
 class Graphics {
 public:
-	Graphics(HWND hWnd, int screenWidth, int screenHeight, bool fullScreen, bool enableAA);
+	Graphics(HWND hWnd, int32 screenWidth, int32 screenHeight, bool fullScreen, bool enableAA);
 	void beginScene();
 	void endScene();
 	ComPtr<ID3D11Device> getDevice() const { return m_device; }

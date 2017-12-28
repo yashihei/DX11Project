@@ -9,6 +9,7 @@
 #include "PtrAlias.h"
 #include "Actor.h"
 #include "MathAlias.h"
+#include "Types.h"
 #include <d3d11.h>
 #include <DirectXTK/SimpleMath.h>
 
@@ -22,12 +23,12 @@ public:
 	explicit Score(App* app);
 	void update() override;
 	void draw() override;
-	void addScore(int score) { m_score += score; }
+	void addScore(int32 score) { m_score += score; }
 	int getScore() const { return m_score; }
 private:
 	App* m_app;
 	SpriteBatchPtr m_fontCanvas;
-	int m_score, m_viewScore;
+	int32 m_score, m_viewScore;
 };
 
 using ScorePtr = std::shared_ptr<Score>;

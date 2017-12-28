@@ -9,6 +9,7 @@
 #include "Actor.h"
 #include "Bullet.h"
 #include "MathAlias.h"
+#include "Types.h"
 #include <d3d11.h>
 #include <DirectXTK/SimpleMath.h>
 
@@ -36,7 +37,7 @@ private:
 	Vector3 m_pos, m_vec;
 	Quaternion m_rot;
 	float m_bulletCount, m_stateCount;
-	int m_life;
+	int32 m_life;
 
 	enum class State {
 		Born, Normal, Die

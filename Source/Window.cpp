@@ -15,7 +15,7 @@ namespace hks {
 
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-Window::Window(const std::string& titleText, int width, int height, bool fullScreen, bool cursor) :
+Window::Window(const std::string& titleText, int32 width, int32 height, bool fullScreen, bool cursor) :
 	m_hWnd(NULL), m_hInstance(GetModuleHandle(NULL)), m_titleText(titleText), m_width(width), m_height(height)
 {
 	registerWndClass();

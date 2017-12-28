@@ -14,6 +14,7 @@
 #include "MathAlias.h"
 #include "Log.h"
 #include "UtilStr.h"
+#include "Types.h"
 
 namespace hks {
 
@@ -64,7 +65,7 @@ inline void CompileFromFile(WCHAR* filePath, LPCSTR entryPoint, LPCSTR shaderMod
 	Log("[Compile] %1%.\n", ws2s(filePath));
 }
 
-inline void CreateConstantBuffer(ComPtr<ID3D11Device> device, unsigned int byteSize, ID3D11Buffer** constantBuffer)
+inline void CreateConstantBuffer(ComPtr<ID3D11Device> device, int32 byteSize, ID3D11Buffer** constantBuffer)
 {
 	D3D11_BUFFER_DESC constantBufferDesc = {};
 	constantBufferDesc.ByteWidth = byteSize;

@@ -21,6 +21,7 @@
 #include "Time.h"
 #include "Sprite2D.h"
 #include "TitleScene.h"
+#include "Types.h"
 #include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/CommonStates.h>
 #include <DirectXColors.h>
@@ -33,9 +34,9 @@ inline bool IsCollied(const Vector3& pos1, const Vector3& pos2, float r1, float 
 	return tmp.x * tmp.x + tmp.y * tmp.y + tmp.z * tmp.z < (r1 + r2) * (r1 + r2);
 }
 
-inline void emitPatricle(App* app, ParticleManagerPtr particles, int num, const Vector3& pos, const Color& color, float size, float speed, float lifeTime)
+inline void emitPatricle(App* app, ParticleManagerPtr particles, int32 num, const Vector3& pos, const Color& color, float size, float speed, float lifeTime)
 {
-	for (int i = 0; i < num; i++) {
+	for (int32 i = 0; i < num; i++) {
 		Quaternion rotate = Quaternion::CreateFromYawPitchRoll(Random(DirectX::XM_2PI), Random(DirectX::XM_2PI), Random(DirectX::XM_2PI));
 		Vector3 vec(speed, 0, 0);
 		vec = Vector3::Transform(vec, rotate);
@@ -99,7 +100,7 @@ Scene* PlayScene::update()
 	//spawn enemy
 	m_spawnCount += m_app->getTime()->deltaTime();
 	if (m_spawnCount > 2.5f) {
-		for (int i = 0; i < 5; i++) {
+		for (int32 i = 0; i < 5; i++) {
 			const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
 			const auto disPos = spawnPos - m_player->getPos();
 			//プレイヤーから近すぎるスポーンはやり直す

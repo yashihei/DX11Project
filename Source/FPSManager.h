@@ -11,6 +11,7 @@
 #include <timeapi.h>
 #include <deque>
 #include <numeric>
+#include "Types.h"
 
 namespace hks {
 
@@ -20,7 +21,7 @@ public:
 		m_prevTime = timeGetTime();
 	}
 
-	void sync(const int fps = 60) {
+	void sync(const int32 fps = 60) {
 		timeBeginPeriod(1);
 
 		const DWORD interval = (1000 / fps);
