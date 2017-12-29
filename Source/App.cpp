@@ -34,7 +34,6 @@ App::~App()
 void App::run()
 {
 	auto config = cpptoml::parse_file("config.toml");
-
 	const auto titleText = config->get_as<std::string>("title_text").value_or("");
 	const auto width = config->get_as<int>("screen_width").value_or(1280);
 	const auto height = config->get_as<int>("screen_height").value_or(720);
@@ -70,23 +69,32 @@ void App::run()
 
 void App::frame()
 {
+	// Toggle DebugPanel
+	static bool viewImgui = false;
+	if (m_inputManager->isClickedButton1()) {
+		viewImgui = !viewImgui;
+	}
+
 	ImGui_ImplDX11_NewFrame();
 
 	m_inputManager->update();
 	m_audioManager->update();
 
+	// Scene update & change
 	const auto nextScene = m_currentScene->update();
 	if (m_currentScene.get() != nextScene) {
 		m_currentScene.reset(nextScene);
 	}
 
+	// View FPS
 	ImGui::Text("FPS : %2.1f", m_fpsManager->getFps());
 
 	ImGuiLog::instance().Draw("Log");
 
+	// Render
 	m_graphics->beginScene();
 	m_currentScene->draw();
-	ImGui::Render();
+	if (viewImgui) ImGui::Render();
 	m_graphics->endScene();
 
 	m_fpsManager->sync(60);
