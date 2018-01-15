@@ -18,16 +18,14 @@ namespace sp4rk {
 class App;
 using namespace hks;
 
-class Score : public Actor {
+class Score {
 public:
-	explicit Score(App* app);
-	void update() override;
-	void draw() override;
+	Score();
+	void update();
 	void addScore(int32 score) { m_score += score; }
+	int getViewScore() const { return m_viewScore; }
 	int getScore() const { return m_score; }
 private:
-	App* m_app;
-	SpriteBatchPtr m_fontCanvas;
 	int32 m_score, m_viewScore;
 };
 

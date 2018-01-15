@@ -17,6 +17,7 @@
 #include "Particle.h"
 #include "Bullet.h"
 #include "Score.h"
+#include "Panel.h"
 
 namespace sp4rk {
 
@@ -37,6 +38,7 @@ private:
 	ParticleManagerPtr m_particles;
 	BulletManagerPtr m_bullets;
 	ScorePtr m_score;
+	PanelPtr m_panel;
 	Sprite2DPtr m_cursor;
 	float m_spawnCount;
 	bool m_pausing;

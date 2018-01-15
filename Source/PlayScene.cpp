@@ -80,13 +80,14 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false)
 
 	auto cursorTex = CreateShaderResourceViewFromFile(device, "assets/texture/cursor.png");
 	m_cursor = std::make_shared<Sprite2D>(device, deviceContext, cursorTex);
+	m_panel = std::make_shared<Panel>(m_app);
 
 	//create actor
 	m_bullets = std::make_shared<ActorManager<Bullet>>();
 	m_particles = std::make_shared<ActorManager<Particle>>();
 	m_player = std::make_shared<Player>(m_app, m_bullets);
 	m_enemies = std::make_shared<ActorManager<Enemy>>();
-	m_score = std::make_shared<Score>(m_app);
+	m_score = std::make_shared<Score>();
 }
 
 Scene* PlayScene::update()
@@ -96,6 +97,9 @@ Scene* PlayScene::update()
 	m_particles->updateAll();
 	m_bullets->updateAll();
 	m_score->update();
+
+	m_panel->setLife(m_player->getLeft());
+	m_panel->setScore(m_score->getViewScore());
 
 	//spawn enemy
 	m_spawnCount += m_app->getTime()->deltaTime();
@@ -138,6 +142,7 @@ Scene* PlayScene::update()
 			break;
 		}
 	}
+
 	if (enemiesClear) {
 		for (auto& enemy : *m_enemies) {
 			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1, 45, 1);
@@ -165,8 +170,12 @@ Scene* PlayScene::update()
 	if (m_app->getInputManager()->isClickedButton4()) {
 		m_pausing = !m_pausing;
 	}
+
 	if (m_pausing) {
 		m_app->getTime()->changeScale(0);
+		m_panel->showPause();
+	} else {
+		m_panel->hidePause();
 	}
 
 	const auto playerPos = m_player->getPos();
@@ -200,7 +209,7 @@ void PlayScene::draw()
 	deviceContext->RSSetState(states->CullCounterClockwise());
 
 	//SpriteBatch‚ÌŒÄ‚Ño‚µ‚ÅAlphaBlend, DepthNone, CullCounterClockwise, LinearClamp‚ª“K—p‚³‚ê‚é
-	m_score->draw();
+	m_panel->draw();
 	deviceContext->OMSetBlendState(states->NonPremultiplied(), 0, 0xFfFfFfFf);
 	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
 
