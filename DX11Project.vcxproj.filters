@@ -91,6 +91,9 @@
     <ClCompile Include="Source\Graphics.cpp">
       <Filter>HKSEngine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Panel.cpp">
+      <Filter>App\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor.h">
@@ -209,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="Source\Graphics.h">
       <Filter>HKSEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Panel.h">
+      <Filter>App\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
