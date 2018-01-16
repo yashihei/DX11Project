@@ -23,7 +23,7 @@ namespace hks {
 Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, ComPtr<ID3D11ShaderResourceView> texture)
 	: m_device(device), m_deviceContext(deviceContext), m_texture(texture)
 {
-	//get tex desc
+	// Get tex desc
 	ComPtr<ID3D11Resource> resource;
 	m_texture->GetResource(&resource);
 	ComPtr<ID3D11Texture2D> texture2D;
@@ -34,7 +34,7 @@ Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> devi
 	m_size.x = static_cast<float>(desc.Width);
 	m_size.y = static_cast<float>(desc.Height);
 
-	//set offset
+	// Set offset
 	UINT vpCount = 1;
 	D3D11_VIEWPORT vp = {};
 	m_deviceContext->RSGetViewports(&vpCount, &vp);
@@ -61,12 +61,10 @@ void Sprite2D::draw(const Vector2& pos, float radian, float scale, const Color& 
 
 	auto newPos = Vector2(pos.x - m_offset.x, -pos.y + m_offset.y);
 	for (auto& vertex : vertices) {
-		//scale * rot * trans
 		const Matrix trans = Matrix::CreateScale(scale) * Matrix::CreateRotationZ(radian) * Matrix::CreateTranslation(newPos.x, newPos.y, 0.0f);
 		Vector3::Transform(vertex.pos, trans, vertex.pos);
 	}
 
-	//update buffer
 	D3D11_MAPPED_SUBRESOURCE resource;
 	HRESULT hr = m_deviceContext->Map(m_vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {

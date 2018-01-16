@@ -23,7 +23,6 @@ void AudioManager::update()
 {
 	if (!m_audioEngine->Update()) {
 		if (m_audioEngine->IsCriticalError()) {
-			//throw
 		}
 	}
 }
@@ -44,7 +43,7 @@ void AudioManager::play(const std::string& alias, bool loop, float volume, float
 {
 	assert(m_soundEffects.count(alias) != 0);
 
-	//ポーズ中なら再開する
+	// ポーズ中なら再開する
 	if (m_soundEffectsInstance[alias]->GetState() == DirectX::SoundState::PAUSED) {
 		m_soundEffectsInstance[alias]->Resume();
 		return;

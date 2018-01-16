@@ -21,7 +21,7 @@ namespace hks {
 Mesh::Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std::vector<unsigned long>& indices, int32 materialID) :
 	m_indexCount(indices.size()), m_materialID(materialID)
 {
-	//Create VertexBuffer
+	// Create VertexBuffer
 	{
 		D3D11_BUFFER_DESC desc = {};
 		desc.ByteWidth = sizeof(ModelVertex) * vertices.size();
@@ -37,7 +37,7 @@ Mesh::Mesh(ComPtr<ID3D11Device> device, std::vector<ModelVertex>& vertices, std:
 			throw std::runtime_error("CreateVertexBuffer Failed.");
 	}
 
-	//Create IndexBuffer
+	// Create IndexBuffer
 	{
 		D3D11_BUFFER_DESC desc = {};
 		desc.ByteWidth = sizeof(unsigned long) * indices.size();
@@ -86,26 +86,25 @@ void Model::createFromObj(const std::string& filePath)
 	}
 	Log("[Load] %1%.\n", filePath);
 
-	//Loop over shapes (g or o)
+	// Loop over shapes (g or o)
 	for (uint32 s = 0; s < shapes.size(); s++) {
 		std::vector<ModelVertex> vertices;
 		std::vector<unsigned long> indices;
 		int32 materialID = shapes[s].mesh.material_ids[0];
 		int32 indexOffset = 0, indexCount = 0;
 
-		//Loop over faces
+		// Loop over faces
 		for (uint32 f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-			//マテリアルが異なる場合meshを分割する
+			// マテリアルが異なる場合meshを分割する
 			if (materialID != shapes[s].mesh.material_ids[f]) {
 				auto mesh = std::make_shared<Mesh>(m_device, vertices, indices, materialID);
 				m_meshes.push_back(mesh);
-				//reset
 				vertices.clear();
 				indices.clear();
 				indexCount = 0;
 			}
 
-			//Loop over vertices in the
+			// Loop over vertices 
 			const int32 fv = shapes[s].mesh.num_face_vertices[f];
 			for (int32 v = 0; v < fv; v++) {
 				const auto idx = shapes[s].mesh.indices[indexOffset + v];
@@ -121,7 +120,7 @@ void Model::createFromObj(const std::string& filePath)
 					normal.y = attrib.normals[3 * idx.normal_index + 1];
 					normal.z = attrib.normals[3 * idx.normal_index + 2];
 				} else {
-					//TODO: calc normal
+					// TODO: Calc normal
 				}
 
 				Vector2 texCoord = {};
@@ -139,19 +138,19 @@ void Model::createFromObj(const std::string& filePath)
 			indexCount += fv;
 		}
 
-		//グループ毎にメッシュを作る
+		// グループ毎にメッシュを作る
 		auto mesh = std::make_shared<Mesh>(m_device, vertices, indices, materialID);
 		m_meshes.push_back(mesh);
 	}
 
-	//Calc bounds
+	// Calc bounds
 	std::vector<Vector3> points;
 	for (uint32 i = 0; i < attrib.vertices.size() / 3; i++) {
 		points.emplace_back(attrib.vertices[3 * i + 0], attrib.vertices[3 * i + 1], attrib.vertices[3 * i + 2]);
 	}
 	DirectX::BoundingSphere::CreateFromPoints(m_boundingSphere, points.size(), points.data(), sizeof(Vector3));
 
-	//Load texures
+	// Load texures
 	const auto nulltex = CreateShaderResourceViewFromFile(m_device, "assets/texture/null.png");
 	m_textures["nulltex"] = nulltex;
 
@@ -165,7 +164,7 @@ void Model::createFromObj(const std::string& filePath)
 		}
 	}
 
-	//Load material
+	// Load material
 	for (uint32 i = 0; i < materials.size(); i++) {
 		const Material mat {
 			{

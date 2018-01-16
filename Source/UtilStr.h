@@ -14,7 +14,7 @@
 
 namespace hks {
 
-//from:http://nekko1119.hatenablog.com/entry/2017/01/02/054629
+// from:http://nekko1119.hatenablog.com/entry/2017/01/02/054629
 inline std::wstring s2ws(const std::string& src)
 {
 	auto const dest_size = ::MultiByteToWideChar(CP_ACP, 0U, src.data(), -1, nullptr, 0U);

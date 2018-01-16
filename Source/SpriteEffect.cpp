@@ -25,21 +25,21 @@ SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceConte
 {
 	WCHAR* filePath = L"assets/shader/sprite.fx";
 
-	//create vs
+	// Create vs
 	ComPtr<ID3DBlob> VSbuffer;
 	CompileFromFile(filePath, "VS", "vs_5_0", &VSbuffer);
 	HRESULT hr = m_device->CreateVertexShader(VSbuffer->GetBufferPointer(), VSbuffer->GetBufferSize(), NULL, &m_vertexShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreateVertexShader() Failed.");
 
-	//create ps
+	// Create ps
 	ComPtr<ID3DBlob> PSBuffer;
 	CompileFromFile(filePath, "PS", "ps_5_0", &PSBuffer);
 	hr = m_device->CreatePixelShader(PSBuffer->GetBufferPointer(), PSBuffer->GetBufferSize(), NULL, &m_pixelShader);
 	if (FAILED(hr))
 		throw std::runtime_error("CreatePixelShader() Failed.");
 
-	//create input layout
+	// Create input layout
 	const D3D11_INPUT_ELEMENT_DESC layout[] = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -51,7 +51,7 @@ SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceConte
 	if (FAILED(hr))
 		throw std::runtime_error("CreateInputLayout() Failed.");
 
-	//create constant buf
+	// Create constant buf
 	D3D11_BUFFER_DESC constantBufferDesc = {};
 	constantBufferDesc.ByteWidth = sizeof(ConstantBuffer);
 	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -62,7 +62,7 @@ SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceConte
 	if (FAILED(hr))
 		throw std::runtime_error("CreateConstantBuffer Failed.");
 
-	//create sampler
+	// Create sampler
 	D3D11_SAMPLER_DESC samplerDesc = {};
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	samplerDesc.AddressU = samplerDesc.AddressV = samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -82,7 +82,7 @@ void SpriteEffect::setParam(const Matrix& world, const Matrix& view, const Matri
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
-	//コンスタントバッファ書き換え
+	// コンスタントバッファ書き換え
 	HRESULT hr = m_deviceContext->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
 		ConstantBuffer* data = reinterpret_cast<ConstantBuffer*>(resource.pData);
@@ -95,16 +95,16 @@ void SpriteEffect::setParam(const Matrix& world, const Matrix& view, const Matri
 
 void SpriteEffect::apply()
 {
-	//set sampler
+	// Set sampler
 	m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
-	//set input layout
+	// Set input layout
 	m_deviceContext->IASetInputLayout(m_layout.Get());
-	//set tex
+	// Set tex
 	m_deviceContext->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
-	//set shader
+	// Set shader
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), NULL, 0);
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), NULL, 0);
-	//set constants
+	// Set constants
 	m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 	m_deviceContext->PSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
 }

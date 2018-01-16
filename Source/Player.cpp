@@ -99,13 +99,13 @@ Vector2 Player::getFireDir() const
 		fireDir.x = input->getRightThumbX();
 		fireDir.y = input->getRightThumbY();
 	} else {
-		//マウスレイを飛ばす
+		// マウス座標へのレイを飛ばす
 		const auto mousePos = input->getMousePos();
 		const Viewport vp(0, 0, static_cast<float>(m_app->getWindow()->getWidth()), static_cast<float>(m_app->getWindow()->getHeight()));
 		const auto proj = m_app->getCamera()->getProjMat();
 		const auto view = m_app->getCamera()->getViewMat();
 		auto ray = GetMouseRay(mousePos, vp, proj, view);
-		//レイと地面の交点へfireDirを向ける
+		// レイと地面の交点へfireDirを向ける
 		float distance = 0;
 		ray.Intersects(Plane(Vector3::Zero, Vector3::Up), distance);
 		const auto hitPos = ray.position + ray.direction * distance;
@@ -153,7 +153,7 @@ void Player::fire(Vector2& fireDir)
 	m_bulletCount = 0;
 
 	fireDir.Normalize();
-	// scatter bullet
+	// 弾を多少ばら撒く
 	float rad = DirectX::XMConvertToRadians(5);
 	rad = Random(-rad, rad);
 	fireDir = Vector2::Transform(fireDir, Matrix::CreateRotationZ(rad));

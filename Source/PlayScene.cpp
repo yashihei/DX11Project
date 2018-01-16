@@ -54,35 +54,35 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false)
 	auto light = m_app->getLight();
 	auto assetsManager = m_app->getAssetsManager();
 
-	//set camera param
+	// Set camera param
 	camera->pos = Vector3(0, 50, 0);
 	camera->lookAt = Vector3(0, 0, 0);
 	camera->up = Vector3::Backward;
 
 	light->direction = Vector3(0.0f, -1.0f, 0.0f);
 
-	//set states
+	// Set states
 	deviceContext->RSSetState(states->CullCounterClockwise());
 	deviceContext->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFffFFff);
 
-	//load obj models
+	// Load obj models
 	assetsManager->loadModel("assets/model/player/player.obj", "player", device, deviceContext, camera, light);
 	assetsManager->loadModel("assets/model/enemy/enemy.obj", "enemy", device, deviceContext, camera, light);
 	assetsManager->loadModel("assets/model/tiled/tiled.obj", "tiled", device, deviceContext, camera, light);
 
-	//create sprite
+	// Load sprites
 	assetsManager->loadSprite("assets/texture/circle_flat.png", "particle", device, deviceContext, camera);
 	assetsManager->loadSprite("assets/texture/circle_flat.png", "bullet", device, deviceContext, camera);
 	assetsManager->loadSprite("assets/texture/ring.png", "ring", device, deviceContext, camera);
 
-	//create font
+	// Load font
 	assetsManager->loadFont("assets/orbitron.spritefont", "orbitron", device);
 
 	auto cursorTex = CreateShaderResourceViewFromFile(device, "assets/texture/cursor.png");
 	m_cursor = std::make_shared<Sprite2D>(device, deviceContext, cursorTex);
 	m_panel = std::make_shared<Panel>(m_app);
 
-	//create actor
+	// Create actor
 	m_bullets = std::make_shared<ActorManager<Bullet>>();
 	m_particles = std::make_shared<ActorManager<Particle>>();
 	m_player = std::make_shared<Player>(m_app, m_bullets);
@@ -101,13 +101,13 @@ Scene* PlayScene::update()
 	m_panel->setLife(m_player->getLeft());
 	m_panel->setScore(m_score->getViewScore());
 
-	//spawn enemy
+	// Spawn enemies
 	m_spawnCount += m_app->getTime()->deltaTime();
 	if (m_spawnCount > 2.5f) {
 		for (int32 i = 0; i < 5; i++) {
 			const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
 			const auto disPos = spawnPos - m_player->getPos();
-			//プレイヤーから近すぎるスポーンはやり直す
+			// プレイヤーから近すぎるスポーンはやり直す
 			if (disPos.Length() < 3.0f) {
 				i--;
 				continue;
@@ -120,7 +120,7 @@ Scene* PlayScene::update()
 		}
 	}
 
-	//bullet vs enemy
+	// Bullet vs enemy
 	for (auto& bullet : *m_bullets) {
 		for (auto& enemy : *m_enemies) {
 			if (IsCollied(bullet->getPos(), enemy->getPos(), 0.5f, 1.0f)) {
@@ -131,7 +131,7 @@ Scene* PlayScene::update()
 		}
 	}
 
-	//enemy vs player
+	// Enemy vs player
 	bool enemiesClear = false;
 	for (auto& enemy : *m_enemies) {
 		if (IsCollied(m_player->getPos(), enemy->getPos(), 0.8f, 0.8f)) {
@@ -150,7 +150,7 @@ Scene* PlayScene::update()
 		m_enemies->clear();
 	}
 
-	//camera control
+	// Camera control
 	auto camera = m_app->getCamera();
 	camera->lookAt = m_player->getPos();
 	camera->pos = m_player->getPos() + Vector3(0, 50, 0);
@@ -159,14 +159,14 @@ Scene* PlayScene::update()
 		camera->pos = Vector3(0, 20, -50);
 	}
 
-	//slow
+	// Slow
 	if (m_app->getInputManager()->isPressedButton3()) {
 		m_app->getTime()->changeScale(0.3f);
 	} else {
 		m_app->getTime()->changeScale(1.0f);
 	}
 
-	//pause
+	// Pause
 	if (m_app->getInputManager()->isClickedButton4()) {
 		m_pausing = !m_pausing;
 	}
@@ -195,7 +195,7 @@ void PlayScene::draw()
 	m_player->draw();
 	m_enemies->drawAll();
 
-	//draw sprites
+	// Draw sprites
 	deviceContext->OMSetDepthStencilState(states->DepthNone(), 0);
 	deviceContext->OMSetBlendState(states->Additive(), 0, 0xFfFfFfFf);
 	m_particles->drawAll();
@@ -203,17 +203,17 @@ void PlayScene::draw()
 	deviceContext->OMSetBlendState(states->NonPremultiplied(), 0, 0xFfFfFfFf);
 	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
 
-	//draw tile
+	// Draw tile
 	deviceContext->RSSetState(states->Wireframe());
 	m_app->getAssetsManager()->getModel("tiled")->draw(Vector3::Zero, Vector3::Zero, Vector3::One * 2);
 	deviceContext->RSSetState(states->CullCounterClockwise());
 
-	//SpriteBatchの呼び出しでAlphaBlend, DepthNone, CullCounterClockwise, LinearClampが適用される
 	m_panel->draw();
+	// SpriteBatchの呼び出しでAlphaBlend, DepthNone, CullCounterClockwise, LinearClampが適用されるので無効化
 	deviceContext->OMSetBlendState(states->NonPremultiplied(), 0, 0xFfFfFfFf);
 	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
 
-	// draw cursor
+	// Draw cursor
 	if (!m_app->getInputManager()->isConnectedPad())
 		m_cursor->draw(m_app->getInputManager()->getMousePos(), 0, 0.5f, Color(DirectX::Colors::LightGreen));
 }
