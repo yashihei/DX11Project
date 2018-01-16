@@ -38,7 +38,6 @@ void Player::update()
 
 	switch (m_state) {
 	case State::Born:
-		//create ring * 3
 		break;
 	case State::Normal:
 		move(moveDir);
@@ -47,7 +46,10 @@ void Player::update()
 	case State::Die:
 		if (m_stateCount > 1.5f) {
 			m_stateCount = 0;
-			m_state = State::Normal;
+			m_life -= 1;
+			if (m_life > 0) {
+				m_state = State::Normal;
+			}
 		}
 		break;
 	default: ;
@@ -68,7 +70,6 @@ void Player::destroy()
 	if (m_state != State::Normal)
 		return;
 	m_state = State::Die;
-	m_life -= 1;
 	m_vec = Vector3::Zero;
 	m_stateCount = 0;
 }
