@@ -53,7 +53,7 @@ void App::run()
 	m_states = std::make_shared<DirectX::CommonStates>(m_graphics->getDevice().Get());
 	m_fpsManager = std::make_shared<FPSManager>();
 	m_time = std::make_shared<Time>();
-	m_currentScene = std::make_shared<PlayScene>(this);
+	m_currentScene = std::make_shared<TitleScene>(this);
 
 	ImGui_ImplDX11_Init(m_window->getHandle(), m_graphics->getDevice().Get(), m_graphics->getDeviceContext().Get());
 

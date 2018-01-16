@@ -26,7 +26,7 @@ public:
 	void destroy();
 	bool isAlive() const { return m_state == State::Normal; }
 	Vector3 getPos() const { return m_pos; }
-	int32 getLeft() const { return m_life; }
+	int32 getLife() const { return m_life; }
 private:
 	Vector2 getMoveDir() const;
 	Vector2 getFireDir() const;

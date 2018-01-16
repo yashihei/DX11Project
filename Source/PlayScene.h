@@ -40,7 +40,7 @@ private:
 	ScorePtr m_score;
 	PanelPtr m_panel;
 	Sprite2DPtr m_cursor;
-	float m_spawnCount;
+	float m_spawnCount, m_gameOverCount;;
 	bool m_pausing;
 };
 

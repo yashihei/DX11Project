@@ -92,14 +92,26 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false)
 
 Scene* PlayScene::update()
 {
+	// Update actors
 	m_player->update();
 	m_enemies->updateAll();
 	m_particles->updateAll();
 	m_bullets->updateAll();
 	m_score->update();
 
-	m_panel->setLife(m_player->getLeft());
+	// Set panel params
+	m_panel->setLife(m_player->getLife());
 	m_panel->setScore(m_score->getViewScore());
+
+	// Game Over
+	if (m_player->getLife() <= 0) {
+		m_gameOverCount += m_app->getTime()->deltaTime();
+		m_panel->showResult();
+		if (m_gameOverCount > 3.0f) {
+			return new TitleScene(m_app);
+		}
+		return this;
+	}
 
 	// Spawn enemies
 	m_spawnCount += m_app->getTime()->deltaTime();
@@ -134,7 +146,7 @@ Scene* PlayScene::update()
 	// Enemy vs player
 	bool enemiesClear = false;
 	for (auto& enemy : *m_enemies) {
-		if (IsCollied(m_player->getPos(), enemy->getPos(), 0.8f, 0.8f)) {
+		if (IsCollied(m_player->getPos(), enemy->getPos(), 0.8f, 0.8f) && m_player->isAlive()) {
 			m_player->destroy();
 			emitPatricle(m_app, m_particles, 50, m_player->getPos(), Color(0.8f, 0.2f, 0.2f), 1, 45, 1);
 			enemiesClear = true;

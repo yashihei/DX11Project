@@ -52,7 +52,6 @@ void Player::update()
 			}
 		}
 		break;
-	default: ;
 	}
 }
 
