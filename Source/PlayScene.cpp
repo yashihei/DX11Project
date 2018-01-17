@@ -117,7 +117,7 @@ Scene* PlayScene::update()
 	m_spawnCount += m_app->getTime()->deltaTime();
 	if (m_spawnCount > 2.5f) {
 		for (int32 i = 0; i < 5; i++) {
-			const auto spawnPos = Vector3(Random(-20.0f, 20.0f), 0, Random(-20.0f, 20.0f));
+			const auto spawnPos = Vector3(Random(-30.0f, 30.0f), 0, Random(-30.0f, 30.0f));
 			const auto disPos = spawnPos - m_player->getPos();
 			// プレイヤーから近すぎるスポーンはやり直す
 			if (disPos.Length() < 3.0f) {
@@ -217,7 +217,7 @@ void PlayScene::draw()
 
 	// Draw tile
 	deviceContext->RSSetState(states->Wireframe());
-	m_app->getAssetsManager()->getModel("tiled")->draw(Vector3::Zero, Vector3::Zero, Vector3::One * 2);
+	m_app->getAssetsManager()->getModel("tiled")->draw(Vector3::Zero, Vector3::Zero, Vector3::One * 3);
 	deviceContext->RSSetState(states->CullCounterClockwise());
 
 	m_panel->draw();

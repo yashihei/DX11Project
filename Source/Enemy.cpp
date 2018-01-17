@@ -28,7 +28,7 @@ void Enemy::update()
 	if (m_count < 0.75f) return;
 
 	m_pos += m_vec * deltaTime;
-	m_pos.Clamp(Vector3(-20.f), Vector3(20.f));
+	m_pos.Clamp(Vector3(-30.f), Vector3(30.f));
 
 	m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Right, m_vec.z * deltaTime);
 	m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Forward, m_vec.x * deltaTime);

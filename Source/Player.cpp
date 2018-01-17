@@ -132,7 +132,7 @@ void Player::move(Vector2& moveDir)
 	m_vec = DirectX::XMVector3ClampLength(m_vec, 0, maxSpeed);
 
 	m_pos += m_vec * deltaTime;
-	m_pos.Clamp(Vector3(-20.f), Vector3(20.f));
+	m_pos.Clamp(Vector3(-30.f), Vector3(30.f));
 
 	m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Right, m_vec.z * deltaTime);
 	m_rot *= Quaternion::CreateFromAxisAngle(Vector3::Forward, m_vec.x * deltaTime);
