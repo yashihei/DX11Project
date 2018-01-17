@@ -124,9 +124,9 @@ Scene* PlayScene::update()
 				i--;
 				continue;
 			}
-			auto enemy = std::make_shared<Enemy>(m_app, spawnPos, m_player->getPos());
+			auto enemy = std::make_shared<GreenEnemy>(m_app, spawnPos, m_player->getPos());
 			m_enemies->add(enemy);
-			auto ring = std::make_shared<SpawnRing>(m_app, spawnPos, Color(0.35f, 0.8f, 0.4f), 0.5f, 10.0f, 0.5f);
+			auto ring = std::make_shared<SpawnRing>(m_app, spawnPos, enemy->getColor(), 0.5f, 10.0f, 0.5f);
 			m_particles->add(ring);
 			m_spawnCount = 0;
 		}
@@ -138,7 +138,7 @@ Scene* PlayScene::update()
 			if (IsCollied(bullet->getPos(), enemy->getPos(), 0.5f, 1.0f)) {
 				m_score->addScore(1000);
 				enemy->kill();
-				emitPatricle(m_app, m_particles, 50, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1, 35, 0.5f);
+				emitPatricle(m_app, m_particles, 50, enemy->getPos(), enemy->getColor(), 1, 35, 0.5f);
 			}
 		}
 	}
@@ -157,7 +157,7 @@ Scene* PlayScene::update()
 
 	if (enemiesClear) {
 		for (auto& enemy : *m_enemies) {
-			emitPatricle(m_app, m_particles, 100, enemy->getPos(), Color(0.35f, 0.8f, 0.4f), 1, 45, 1);
+			emitPatricle(m_app, m_particles, 100, enemy->getPos(), enemy->getColor(), 1, 45, 1);
 		}
 		m_enemies->clear();
 	}
