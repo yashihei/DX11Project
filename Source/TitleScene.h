@@ -6,8 +6,9 @@
 
 #pragma once
 #include "Scene.h"
-#include <boost/timer.hpp>
 #include "PtrAlias.h"
+#include "Particle.h"
+#include <boost/timer.hpp>
 #include <string>
 
 namespace sp4rk {
@@ -22,8 +23,9 @@ public:
 	void draw() override;
 private:
 	App* m_app;
-	boost::timer m_textTimer;
 	SpriteBatchPtr m_fontCanvas;
+	ParticleManagerPtr m_particles;
+	float m_textCount, m_colorCount;
 	std::string m_titleText;
 };
 
