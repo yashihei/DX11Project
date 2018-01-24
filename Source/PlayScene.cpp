@@ -67,7 +67,8 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false)
 
 	// Load obj models
 	assetsManager->loadModel("assets/model/player/player.obj", "player", device, deviceContext, camera, light);
-	assetsManager->loadModel("assets/model/enemy/enemy.obj", "enemy", device, deviceContext, camera, light);
+	assetsManager->loadModel("assets/model/enemy/s11enemy.obj", "enemy", device, deviceContext, camera, light);
+	assetsManager->loadModel("assets/model/enemy/s11enemy2.obj", "enemy2", device, deviceContext, camera, light);
 	assetsManager->loadModel("assets/model/tiled/tiled.obj", "tiled", device, deviceContext, camera, light);
 
 	// Load sprites
@@ -119,12 +120,19 @@ Scene* PlayScene::update()
 		for (int32 i = 0; i < 5; i++) {
 			const auto spawnPos = Vector3(Random(-30.0f, 30.0f), 0, Random(-30.0f, 30.0f));
 			const auto disPos = spawnPos - m_player->getPos();
+
 			// プレイヤーから近すぎるスポーンはやり直す
 			if (disPos.Length() < 3.0f) {
 				i--;
 				continue;
 			}
-			auto enemy = std::make_shared<GreenEnemy>(m_app, spawnPos, m_player->getPos());
+
+			std::shared_ptr<Enemy> enemy = nullptr;
+			if (Random() < 0.5f) {
+				enemy = std::make_shared<GreenEnemy>(m_app, spawnPos, m_player->getPos());
+			} else {
+				enemy = std::make_shared<OrangeEnemy>(m_app, spawnPos, m_player);
+			}
 			m_enemies->add(enemy);
 			auto ring = std::make_shared<SpawnRing>(m_app, spawnPos, enemy->getColor(), 0.5f, 10.0f, 0.5f);
 			m_particles->add(ring);

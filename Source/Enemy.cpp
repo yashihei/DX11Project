@@ -11,6 +11,7 @@
 #include "AssetsManager.h"
 #include "UtilFunc.h"
 #include "Time.h"
+#include "Player.h"
 #include <DirectXColors.h>
 
 namespace sp4rk {
@@ -66,19 +67,27 @@ void GreenEnemy::draw()
 	model->draw(m_pos, m_rot);
 }
 
-OrangeEnemy::OrangeEnemy(App* app, Vector3 spawnPos):
-	Enemy(app, spawnPos)
+OrangeEnemy::OrangeEnemy(App* app, Vector3 spawnPos, std::shared_ptr<Player> player):
+	Enemy(app, spawnPos), m_player(player)
 {
+	m_color = Color(0.8f, 0.6f, 0.0f);
 }
 
 void OrangeEnemy::update()
 {
 	Enemy::update();
 	if (m_count < 0.75f) return;
+
+	const Vector3 target = m_player->getPos();
+	const float speed = 10.0f;
+	const float rad = std::atan2f(target.z - m_pos.z, target.x - m_pos.x);
+	m_vec = Vector3(std::cos(rad), 0, std::sin(rad)) * speed;
 }
 
 void OrangeEnemy::draw()
 {
+	auto model = m_app->getAssetsManager()->getModel("enemy2");
+	model->draw(m_pos, m_rot);
 }
 
 } // namespace sp4rk

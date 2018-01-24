@@ -14,6 +14,7 @@
 namespace sp4rk {
 
 class App;
+class Player;
 using namespace hks;
 
 class Enemy : public Actor {
@@ -41,10 +42,11 @@ private:
 
 class OrangeEnemy : public Enemy {
 public:
-	OrangeEnemy(App* app, Vector3 spawnPos);
+	OrangeEnemy(App* app, Vector3 spawnPos, std::shared_ptr<Player> player);
 	void update() override;
 	void draw() override;
 private:
+	std::shared_ptr<Player> m_player;
 };
 
 using EnemyManagerPtr = std::shared_ptr<ActorManager<Enemy>>;
