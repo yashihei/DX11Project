@@ -71,7 +71,7 @@ void App::frame()
 {
 	// Toggle DebugPanel
 	static bool viewImgui = false;
-	if (m_inputManager->isClickedButton1()) {
+	if (m_inputManager->isClickedDebugButton()) {
 		viewImgui = !viewImgui;
 	}
 

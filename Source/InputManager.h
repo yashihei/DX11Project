@@ -38,6 +38,7 @@ public:
 	bool isClickedButton2() const { return m_keyTracker.pressed.X || m_padTracker.b == PadButtonState::PRESSED; }
 	bool isClickedButton3() const { return m_keyTracker.pressed.C || m_padTracker.a == PadButtonState::PRESSED; }
 	bool isClickedButton4() const { return m_keyTracker.pressed.V || m_padTracker.x == PadButtonState::PRESSED; }
+	bool isClickedDebugButton() const { return m_keyTracker.pressed.F1; }
 	bool isClickedUp() const { return m_keyTracker.pressed.Up || m_padTracker.dpadUp == PadButtonState::PRESSED; }
 	bool isClickedDown() const { return m_keyTracker.pressed.Down || m_padTracker.dpadDown == PadButtonState::PRESSED; }
 	bool isClickedLeft() const { return m_keyTracker.pressed.Left || m_padTracker.dpadLeft == PadButtonState::PRESSED; }
