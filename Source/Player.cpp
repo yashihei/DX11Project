@@ -128,7 +128,7 @@ void Player::move(Vector2& moveDir)
 		m_vec.z += moveDir.y;
 	}
 
-	m_vec *= (1.f - deltaTime * 3.f);
+	m_vec *= (1.f - deltaTime * 2.f);
 	m_vec = DirectX::XMVector3ClampLength(m_vec, 0, maxSpeed);
 
 	m_pos += m_vec * deltaTime;

@@ -66,7 +66,7 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false)
 	deviceContext->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFffFFff);
 
 	// Load obj models
-	assetsManager->loadModel("assets/model/player/player.obj", "player", device, deviceContext, camera, light);
+	assetsManager->loadModel("assets/model/player/player_tex.obj", "player", device, deviceContext, camera, light);
 	assetsManager->loadModel("assets/model/enemy/s11enemy.obj", "enemy", device, deviceContext, camera, light);
 	assetsManager->loadModel("assets/model/enemy/s11enemy2.obj", "enemy2", device, deviceContext, camera, light);
 	assetsManager->loadModel("assets/model/tiled/tiled.obj", "tiled", device, deviceContext, camera, light);
@@ -79,9 +79,8 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false)
 	// Load font
 	assetsManager->loadFont("assets/orbitron.spritefont", "orbitron", device);
 
-	auto cursorTex = CreateShaderResourceViewFromFile(device, "assets/texture/cursor.png");
-	m_cursor = std::make_shared<Sprite2D>(device, deviceContext, cursorTex);
-	m_panel = std::make_shared<Panel>(m_app);
+	// Load 2D sprites
+	m_cursor = std::make_shared<Sprite2D>(device, deviceContext, CreateShaderResourceViewFromFile(device, "assets/texture/cursor.png"));
 
 	// Create actor
 	m_bullets = std::make_shared<ActorManager<Bullet>>();
@@ -89,6 +88,7 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false)
 	m_player = std::make_shared<Player>(m_app, m_bullets);
 	m_enemies = std::make_shared<ActorManager<Enemy>>();
 	m_score = std::make_shared<Score>();
+	m_panel = std::make_shared<Panel>(m_app);
 }
 
 Scene* PlayScene::update()
@@ -109,6 +109,7 @@ Scene* PlayScene::update()
 		m_gameOverCount += m_app->getTime()->deltaTime();
 		m_panel->showResult();
 		if (m_gameOverCount > 3.0f) {
+			m_app->getAssetsManager()->allClear();
 			return new TitleScene(m_app);
 		}
 		return this;
@@ -138,6 +139,11 @@ Scene* PlayScene::update()
 			m_particles->add(ring);
 			m_spawnCount = 0;
 		}
+	}
+
+	// Bomb
+	if (m_app->getInputManager()->isClickedButton1()) {
+		//TODO:ƒ{ƒ€ŽÀ‘•
 	}
 
 	// Bullet vs enemy
