@@ -53,6 +53,40 @@ Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> devi
 void Sprite2D::draw(const Vector2& pos, float radian, float scale, const Color& color)
 {
 	std::vector<SpriteVertex> vertices {
+		{ { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f }, color },
+		{ { m_size.x, 0.0f, 0.0f }, { 1.0f, 0.0f }, color },
+		{ { 0.0f, -m_size.y, 0.0f }, { 0.0f, 1.0f }, color },
+		{ { m_size.x, -m_size.y, 0.0f }, { 1.0f, 1.0f }, color },
+	};
+
+	auto newPos = Vector2(pos.x - m_offset.x, -pos.y + m_offset.y);
+	for (auto& vertex : vertices) {
+		const Matrix trans = Matrix::CreateScale(scale) * Matrix::CreateRotationZ(radian) * Matrix::CreateTranslation(newPos.x, newPos.y, 0.0f);
+		Vector3::Transform(vertex.pos, trans, vertex.pos);
+	}
+
+	D3D11_MAPPED_SUBRESOURCE resource;
+	HRESULT hr = m_deviceContext->Map(m_vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	if (SUCCEEDED(hr)) {
+		SpriteVertex* data = reinterpret_cast<SpriteVertex*>(resource.pData);
+		memcpy(data, reinterpret_cast<void*>(vertices.data()), sizeof(SpriteVertex) * 4);
+		m_deviceContext->Unmap(m_vertexBuffer.Get(), 0);
+	}
+
+	unsigned int stride = sizeof(SpriteVertex);
+	unsigned int offset = 0;
+	m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
+	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	m_spriteEffect->apply();
+
+	m_deviceContext->DrawIndexed(4, 0, 0);
+}
+
+void Sprite2D::drawAt(const Vector2& pos, float radian, float scale, const Color& color)
+{
+	std::vector<SpriteVertex> vertices {
 		{ { -m_size.x / 2.0f, m_size.y / 2.0f, 0.0f }, { 0.0f, 0.0f }, color },
 		{ { m_size.x / 2.0f, m_size.y / 2.0f, 0.0f }, { 1.0f, 0.0f }, color },
 		{ { -m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f }, { 0.0f, 1.0f }, color },
