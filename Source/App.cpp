@@ -71,14 +71,7 @@ void App::run()
 
 void App::frame()
 {
-	// Toggle DebugPanel
-	static bool viewImgui = false;
-	if (m_inputManager->isClickedDebugButton()) {
-		viewImgui = !viewImgui;
-	}
-
 	ImGui_ImplDX11_NewFrame();
-
 	m_inputManager->update();
 	m_audioManager->update();
 
@@ -88,13 +81,9 @@ void App::frame()
 		m_currentScene.reset(nextScene);
 	}
 
-	ImGui::Text("FPS : %2.1f", m_fpsManager->getFps());
-	ImGuiLog::instance().Draw("Log");
-
 	// Render
 	m_graphics->beginScene();
 	m_currentScene->draw();
-	if (viewImgui) ImGui::Render();
 	m_graphics->endScene();
 
 	m_fpsManager->sync(60);

@@ -28,6 +28,7 @@ public:
 	CameraPtr getCamera() const { return m_camera; }
 	LightParamPtr getLight() const { return m_light; }
 	CommonStatesPtr getStates() const { return m_states; }
+	FPSManagerPtr getFpsManager() const { return m_fpsManager; }
 	TimePtr getTime() const { return m_time; }
 private:
 	void frame();

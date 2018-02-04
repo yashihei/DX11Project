@@ -41,7 +41,7 @@ private:
 	PanelPtr m_panel;
 	Sprite2DPtr m_cursor;
 	float m_spawnCount, m_gameOverCount;;
-	bool m_pausing;
+	bool m_pausing, m_viewImgui;
 };
 
 } // namespace sp4rk

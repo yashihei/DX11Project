@@ -22,6 +22,7 @@
 #include "Sprite2D.h"
 #include "TitleScene.h"
 #include "Types.h"
+#include "FPSManager.h"
 #include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/CommonStates.h>
 #include <DirectXColors.h>
@@ -45,7 +46,7 @@ inline void emitPatricle(App* app, ParticleManagerPtr particles, int32 num, cons
 	}
 }
 
-PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false)
+PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false), m_viewImgui(false)
 {
 	auto camera = m_app->getCamera();
 	auto device = m_app->getGraphics()->getDevice();
@@ -214,6 +215,8 @@ Scene* PlayScene::update()
 	ImGui::Text("BulletNum : %d", m_bullets->size());
 	ImGui::Text("EnemyNum : %d", m_enemies->size());
 	ImGui::Text("ParticleNum : %d", m_particles->size());
+	ImGui::Text("FPS : %2.1f", m_app->getFpsManager()->getFps());
+	ImGuiLog::instance().Draw("Log");
 
 	return this;
 }
@@ -247,6 +250,15 @@ void PlayScene::draw()
 	// Draw cursor
 	if (!m_app->getInputManager()->isConnectedPad())
 		m_cursor->drawAt(m_app->getInputManager()->getMousePos(), 0, 0.5f, Color(DirectX::Colors::LightGreen));
+
+	// Toggle DebugPanel
+	if (m_app->getInputManager()->isClickedDebugButton()) {
+		m_viewImgui = !m_viewImgui;
+	}
+
+	if (m_viewImgui) {
+		ImGui::Render();
+	}
 }
 
 } // namespace sp4rk
