@@ -119,6 +119,7 @@ Scene* PlayScene::update()
 	m_spawnCount += m_app->getTime()->deltaTime();
 	if (m_spawnCount > 2.5f) {
 		for (int32 i = 0; i < 5; i++) {
+			// Decide spawn pos
 			const auto spawnPos = Vector3(Random(-30.0f, 30.0f), 0, Random(-30.0f, 30.0f));
 			const auto disPos = spawnPos - m_player->getPos();
 
@@ -128,6 +129,7 @@ Scene* PlayScene::update()
 				continue;
 			}
 
+			// Add enemy
 			std::shared_ptr<Enemy> enemy = nullptr;
 			if (Random() < 0.5f) {
 				enemy = std::make_shared<GreenEnemy>(m_app, spawnPos, m_player->getPos());
@@ -135,8 +137,11 @@ Scene* PlayScene::update()
 				enemy = std::make_shared<OrangeEnemy>(m_app, spawnPos, m_player);
 			}
 			m_enemies->add(enemy);
+
+			// Add ring effect
 			auto ring = std::make_shared<SpawnRing>(m_app, spawnPos, enemy->getColor(), 0.5f, 10.0f, 0.5f);
 			m_particles->add(ring);
+
 			m_spawnCount = 0;
 		}
 	}

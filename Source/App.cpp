@@ -33,6 +33,7 @@ App::~App()
 
 void App::run()
 {
+	// Load config param
 	auto config = cpptoml::parse_file("config.toml");
 	const auto titleText = config->get_as<std::string>("title_text").value_or("");
 	const auto width = config->get_as<int>("screen_width").value_or(1280);
@@ -43,6 +44,7 @@ void App::run()
 
 	MSG msg = {};
 
+	// Init modules
 	m_window = std::make_shared<Window>(titleText, width, height, fullScreen, mouseCursor);
 	m_graphics = std::make_shared<Graphics>(m_window->getHandle(), width, height, fullScreen, enableAA);
 	m_inputManager = std::make_shared<InputManager>();
@@ -86,9 +88,7 @@ void App::frame()
 		m_currentScene.reset(nextScene);
 	}
 
-	// View FPS
 	ImGui::Text("FPS : %2.1f", m_fpsManager->getFps());
-
 	ImGuiLog::instance().Draw("Log");
 
 	// Render
