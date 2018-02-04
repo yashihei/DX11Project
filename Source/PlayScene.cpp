@@ -241,7 +241,7 @@ void PlayScene::draw()
 
 	// Draw cursor
 	if (!m_app->getInputManager()->isConnectedPad())
-		m_cursor->draw(m_app->getInputManager()->getMousePos(), 0, 0.5f, Color(DirectX::Colors::LightGreen));
+		m_cursor->drawAt(m_app->getInputManager()->getMousePos(), 0, 0.5f, Color(DirectX::Colors::LightGreen));
 }
 
 } // namespace sp4rk
