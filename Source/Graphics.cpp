@@ -80,10 +80,6 @@ Graphics::Graphics(HWND hWnd, int32 screenWidth, int32 screenHeight, bool fullSc
 	// Create backbuffer
 	m_backbuffer = std::make_shared<RenderTarget>(m_device.Get(), m_swapChain.Get(), screenWidth, screenHeight, enableAA ? 4 : 1);
 
-	// Use backbuffer
-	std::array<ID3D11RenderTargetView*, 1> rendertargetViews = { m_backbuffer->getRenderTargetView() };
-	m_deviceContext->OMSetRenderTargets(1, rendertargetViews.data(), m_backbuffer->getDepthStencilView());
-
 	// Set viewport
 	D3D11_VIEWPORT vp = {};
 	vp.Width = static_cast<float>(screenWidth);
@@ -100,6 +96,10 @@ void Graphics::beginScene()
 	float color[] = { 0.1f, 0.1f, 0.1f, 1 };
 	m_deviceContext->ClearRenderTargetView(m_backbuffer->getRenderTargetView(), color);
 	m_deviceContext->ClearDepthStencilView(m_backbuffer->getDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	// Use backbuffer
+	std::array<ID3D11RenderTargetView*, 1> rendertargetViews = { m_backbuffer->getRenderTargetView() };
+	m_deviceContext->OMSetRenderTargets(1, rendertargetViews.data(), m_backbuffer->getDepthStencilView());
 }
 
 void Graphics::endScene()
