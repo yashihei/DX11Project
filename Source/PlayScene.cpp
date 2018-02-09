@@ -23,9 +23,11 @@
 #include "TitleScene.h"
 #include "Types.h"
 #include "FPSManager.h"
+#include "RenderTarget.h"
 #include <DirectXTK/SimpleMath.h>
 #include <DirectXTK/CommonStates.h>
 #include <DirectXColors.h>
+#include <array>
 
 namespace sp4rk {
 
@@ -90,6 +92,12 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false), 
 	m_enemies = std::make_shared<ActorManager<Enemy>>();
 	m_score = std::make_shared<Score>();
 	m_panel = std::make_shared<Panel>(m_app);
+
+	// Create SubTarget
+	D3D11_VIEWPORT vp;
+	UINT numVP = 1;
+	deviceContext->RSGetViewports(&numVP, &vp);
+	m_subTarget = std::make_shared<RenderTarget>(device.Get(), static_cast<int>(vp.Width), static_cast<int>(vp.Height), 4);
 }
 
 Scene* PlayScene::update()
@@ -251,6 +259,8 @@ void PlayScene::draw()
 	if (!m_app->getInputManager()->isConnectedPad())
 		m_cursor->drawAt(m_app->getInputManager()->getMousePos(), 0, 0.5f, Color(DirectX::Colors::LightGreen));
 
+	drawBlur();
+
 	// Toggle DebugPanel
 	if (m_app->getInputManager()->isClickedDebugButton()) {
 		m_viewImgui = !m_viewImgui;
@@ -259,6 +269,47 @@ void PlayScene::draw()
 	if (m_viewImgui) {
 		ImGui::Render();
 	}
+}
+
+void PlayScene::drawBlur()
+{
+	auto device = m_app->getGraphics()->getDevice();
+	auto deviceContext = m_app->getGraphics()->getDeviceContext();
+	auto states = m_app->getStates();
+
+	ID3D11RenderTargetView* backBufferRTV;
+	ID3D11DepthStencilView* backBufferDSV;
+
+	// Escape BackBuffer
+	deviceContext->OMGetRenderTargets(1, &backBufferRTV, &backBufferDSV);
+
+	// Clear SubTarget
+	float color[] = { 0.1f, 0.1f, 0.1f, 1 };
+	deviceContext->ClearRenderTargetView(m_subTarget->getRenderTargetView(), color);
+	deviceContext->ClearDepthStencilView(m_subTarget->getDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	// Set SubTarget
+	std::array<ID3D11RenderTargetView*, 1> rendertargetViews = { m_subTarget->getRenderTargetView() };
+	deviceContext->OMSetRenderTargets(1, rendertargetViews.data(), m_subTarget->getDepthStencilView());
+
+	// Draw Models
+	m_player->draw();
+	m_enemies->drawAll();
+
+	// Draw sprites
+	deviceContext->OMSetDepthStencilState(states->DepthNone(), 0);
+	deviceContext->OMSetBlendState(states->Additive(), 0, 0xFfFfFfFf);
+	m_particles->drawAll();
+	m_bullets->drawAll();
+	deviceContext->OMSetBlendState(states->NonPremultiplied(), 0, 0xFfFfFfFf);
+	deviceContext->OMSetDepthStencilState(states->DepthDefault(), 0);
+
+	// Set BuckBuffer
+	deviceContext->OMSetRenderTargets(1, &backBufferRTV, backBufferDSV);
+
+	ImGui::Begin("BrightnessMap");
+	ImGui::Image(m_subTarget->getShaderResourceView(), {320, 180}, {0, 0}, {1, 1}, {1, 1, 1, 1}, {1, 1, 1, 0.25});
+	ImGui::End();
 }
 
 } // namespace sp4rk

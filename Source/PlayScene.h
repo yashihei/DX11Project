@@ -31,6 +31,8 @@ public:
 	Scene* update() override;
 	void draw() override;
 private:
+	void drawBlur();
+
 	App* m_app;
 	//actor
 	PlayerPtr m_player;
@@ -40,6 +42,7 @@ private:
 	ScorePtr m_score;
 	PanelPtr m_panel;
 	Sprite2DPtr m_cursor;
+	RenderTargetPtr m_subTarget;
 	float m_spawnCount, m_gameOverCount;;
 	bool m_pausing, m_viewImgui;
 };
