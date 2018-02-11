@@ -48,7 +48,7 @@ inline void emitPatricle(App* app, ParticleManagerPtr particles, int32 num, cons
 	}
 }
 
-PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false), m_viewImgui(false)
+PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false), m_viewImgui(true)
 {
 	auto camera = m_app->getCamera();
 	auto device = m_app->getGraphics()->getDevice();
@@ -102,6 +102,15 @@ PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false), 
 
 Scene* PlayScene::update()
 {
+	// ImGui
+	const auto playerPos = m_player->getPos();
+	ImGui::Text("PlayerPos : %.2f, %.2f, %.2f", playerPos.x, playerPos.y, playerPos.z);
+	ImGui::Text("BulletNum : %d", m_bullets->size());
+	ImGui::Text("EnemyNum : %d", m_enemies->size());
+	ImGui::Text("ParticleNum : %d", m_particles->size());
+	ImGui::Text("FPS : %2.1f", m_app->getFpsManager()->getFps());
+	ImGuiLog::instance().Draw("Log");
+
 	// Update actors
 	m_player->update();
 	m_enemies->updateAll();
@@ -218,14 +227,6 @@ Scene* PlayScene::update()
 		m_panel->hidePause();
 	}
 
-	const auto playerPos = m_player->getPos();
-	ImGui::Text("PlayerPos : %.2f, %.2f, %.2f", playerPos.x, playerPos.y, playerPos.z);
-	ImGui::Text("BulletNum : %d", m_bullets->size());
-	ImGui::Text("EnemyNum : %d", m_enemies->size());
-	ImGui::Text("ParticleNum : %d", m_particles->size());
-	ImGui::Text("FPS : %2.1f", m_app->getFpsManager()->getFps());
-	ImGuiLog::instance().Draw("Log");
-
 	return this;
 }
 
@@ -284,7 +285,7 @@ void PlayScene::drawBlur()
 	deviceContext->OMGetRenderTargets(1, &backBufferRTV, &backBufferDSV);
 
 	// Clear SubTarget
-	float color[] = { 0.1f, 0.1f, 0.1f, 1 };
+	float color[] = { 0.0f, 0.0f, 0.0f, 1 };
 	deviceContext->ClearRenderTargetView(m_subTarget->getRenderTargetView(), color);
 	deviceContext->ClearDepthStencilView(m_subTarget->getDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
@@ -306,10 +307,9 @@ void PlayScene::drawBlur()
 
 	// Set BuckBuffer
 	deviceContext->OMSetRenderTargets(1, &backBufferRTV, backBufferDSV);
-
-	ImGui::Begin("BrightnessMap");
-	ImGui::Image(m_subTarget->getShaderResourceView(), {320, 180}, {0, 0}, {1, 1}, {1, 1, 1, 1}, {1, 1, 1, 0.25});
-	ImGui::End();
+	
+	ImGui::Text("BrightnessMap:");
+	ImGui::Image(m_subTarget->getShaderResourceView(), {160, 90}, {0, 0}, {1, 1}, {1, 1, 1, 1}, {1, 1, 1, 0.25});
 }
 
 } // namespace sp4rk
