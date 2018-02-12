@@ -2,9 +2,7 @@
 
 hide empty members
 
-class Game {
-    + update()
-    + draw()
+class GameManager {
 }
 
 ' MainModules
@@ -17,7 +15,7 @@ class Window {
 class InputManager
 class AudioManager
 class FPSManager
-class SceneManager #FFA726
+class SceneManager
 class AssetsManager
 class Time
 class Camera {
@@ -79,16 +77,16 @@ package Global {
     class Easing
 }
 
-Game o-- AssetsManager 
-Game o-- Window
-Game o-- GraphicsDevice
-Game o-- InputManager
-Game o-- AudioManager
-Game o-- LightParam
-Game o-- Camera
-Game o-- FPSManager
-Game o-- SceneManager
-Game o-- Time
+GameManager o-- AssetsManager 
+GameManager o-- Window
+GameManager o-- GraphicsDevice
+GameManager o-- InputManager
+GameManager o-- AudioManager
+GameManager o-- LightParam
+GameManager o-- Camera
+GameManager o-- FPSManager
+GameManager o-- SceneManager
+GameManager o-- Time
 
 SceneManager *-- Scene
 
