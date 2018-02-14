@@ -28,6 +28,7 @@
 #include <DirectXTK/CommonStates.h>
 #include <DirectXColors.h>
 #include <array>
+#undef max
 
 namespace sp4rk {
 
@@ -48,7 +49,7 @@ inline void emitPatricle(App* app, ParticleManagerPtr particles, int32 num, cons
 	}
 }
 
-PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false), m_viewImgui(true)
+PlayScene::PlayScene(App* app) : m_app(app), m_spawnCount(0), m_pausing(false), m_viewImgui(true), m_muteki(false)
 {
 	auto camera = m_app->getCamera();
 	auto device = m_app->getGraphics()->getDevice();
@@ -109,6 +110,7 @@ Scene* PlayScene::update()
 	ImGui::Text("EnemyNum : %d", m_enemies->size());
 	ImGui::Text("ParticleNum : %d", m_particles->size());
 	ImGui::Text("FPS : %2.1f", m_app->getFpsManager()->getFps());
+	ImGui::Checkbox("MUTEKI MODE", &m_muteki);
 	ImGuiLog::instance().Draw("Log");
 
 	// Update actors
@@ -119,7 +121,7 @@ Scene* PlayScene::update()
 	m_score->update();
 
 	// Set panel params
-	m_panel->setLife(m_player->getLife());
+	m_panel->setLife(std::max(0, m_player->getLife()));
 	m_panel->setScore(m_score->getViewScore());
 
 	// Game Over
@@ -135,7 +137,7 @@ Scene* PlayScene::update()
 
 	// Spawn enemies
 	m_spawnCount += m_app->getTime()->deltaTime();
-	if (m_spawnCount > 2.5f) {
+	if (m_spawnCount > 1.5f) {
 		for (int32 i = 0; i < 5; i++) {
 			// Decide spawn pos
 			const auto spawnPos = Vector3(Random(-30.0f, 30.0f), 0, Random(-30.0f, 30.0f));
@@ -183,6 +185,7 @@ Scene* PlayScene::update()
 	// Enemy vs player
 	bool enemiesClear = false;
 	for (auto& enemy : *m_enemies) {
+		if (m_muteki) continue;
 		if (IsCollied(m_player->getPos(), enemy->getPos(), 0.8f, 0.8f) && m_player->isAlive()) {
 			m_player->destroy();
 			emitPatricle(m_app, m_particles, 50, m_player->getPos(), Color(0.8f, 0.2f, 0.2f), 1, 45, 1);

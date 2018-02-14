@@ -44,7 +44,7 @@ private:
 	Sprite2DPtr m_cursor;
 	RenderTargetPtr m_subTarget;
 	float m_spawnCount, m_gameOverCount;;
-	bool m_pausing, m_viewImgui;
+	bool m_pausing, m_viewImgui, m_muteki;
 };
 
 } // namespace sp4rk
