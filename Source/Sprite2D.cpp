@@ -9,6 +9,7 @@
 #include <vector>
 #include <stdexcept>
 #include "SpriteEffect.h"
+#include "BlurEffect.h"
 
 namespace {
 	struct SpriteVertex {
@@ -21,19 +22,8 @@ namespace {
 namespace hks {
 
 Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext, ComPtr<ID3D11ShaderResourceView> texture)
-	: m_device(device), m_deviceContext(deviceContext), m_texture(texture)
+	: m_device(device), m_deviceContext(deviceContext)
 {
-	// Get tex desc
-	ComPtr<ID3D11Resource> resource;
-	m_texture->GetResource(&resource);
-	ComPtr<ID3D11Texture2D> texture2D;
-	resource.As(&texture2D);
-	D3D11_TEXTURE2D_DESC desc;
-	texture2D->GetDesc(&desc);
-
-	m_size.x = static_cast<float>(desc.Width);
-	m_size.y = static_cast<float>(desc.Height);
-
 	// Set offset
 	UINT vpCount = 1;
 	D3D11_VIEWPORT vp = {};
@@ -43,8 +33,12 @@ Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> devi
 
 	const Matrix orthoMat = DirectX::XMMatrixOrthographicLH(vp.Width, vp.Height, 0, 1000.0f);
 	m_spriteEffect = std::make_shared<SpriteEffect>(m_device, m_deviceContext);
-	m_spriteEffect->setTexture(m_texture);
 	m_spriteEffect->setParam(Matrix::Identity.Transpose(), Matrix::Identity.Transpose(), orthoMat.Transpose());
+
+	// Set texture
+	if (texture != nullptr) {
+		setTexture(texture);
+	}
 
 	createVertexBuffer();
 	createIndexBuffer();
@@ -116,6 +110,21 @@ void Sprite2D::drawAt(const Vector2& pos, float radian, float scale, const Color
 	m_spriteEffect->apply();
 
 	m_deviceContext->DrawIndexed(4, 0, 0);
+}
+
+void Sprite2D::setTexture(ComPtr<ID3D11ShaderResourceView> texture)
+{
+	ComPtr<ID3D11Resource> resource;
+	texture->GetResource(&resource);
+	ComPtr<ID3D11Texture2D> texture2D;
+	resource.As(&texture2D);
+	D3D11_TEXTURE2D_DESC desc;
+	texture2D->GetDesc(&desc);
+
+	m_size.x = static_cast<float>(desc.Width);
+	m_size.y = static_cast<float>(desc.Height);
+
+	m_spriteEffect->setTexture(texture);
 }
 
 void Sprite2D::createVertexBuffer()
