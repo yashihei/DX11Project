@@ -26,6 +26,7 @@ namespace hks {
 	class BasicEffect;
 	class SpriteEffect;
 	class ToonEffect;
+	class BlurEffect;
 }
 
 namespace DirectX {

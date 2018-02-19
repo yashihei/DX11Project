@@ -30,6 +30,7 @@ using Sprite2DPtr = std::shared_ptr<Sprite2D>;
 using BasicEffectPtr = std::shared_ptr<BasicEffect>;
 using SpriteEffectPtr = std::shared_ptr<SpriteEffect>;
 using ToonEffectPtr = std::shared_ptr<ToonEffect>;
+using BlurEffectPtr = std::shared_ptr<BlurEffect>;
 
 } // namespace hks
 
