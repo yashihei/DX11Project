@@ -51,16 +51,8 @@ SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceConte
 	if (FAILED(hr))
 		throw std::runtime_error("CreateInputLayout() Failed.");
 
-	// Create constant buf
-	D3D11_BUFFER_DESC constantBufferDesc = {};
-	constantBufferDesc.ByteWidth = sizeof(ConstantBuffer);
-	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-	hr = m_device->CreateBuffer(&constantBufferDesc, NULL, &m_constantBuffer);
-	if (FAILED(hr))
-		throw std::runtime_error("CreateConstantBuffer Failed.");
+	// Create constant buffer
+	CreateConstantBuffer(m_device, sizeof(ConstantBuffer), &m_constantBuffer);
 
 	// Create sampler
 	D3D11_SAMPLER_DESC samplerDesc = {};
