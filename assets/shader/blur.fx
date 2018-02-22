@@ -10,6 +10,12 @@ cbuffer ObjectParams : register(b0)
 	matrix g_proj;
 };
 
+cbuffer BlurParams : register(b1)
+{
+    int g_sampleCount : packoffset(c0);
+    float4 g_offset[16] : packoffset(c1);
+}
+
 struct VSInput
 {
 	float4 pos : POSITION;
@@ -42,5 +48,10 @@ PSInput VS(VSInput input)
 
 float4 PS(PSInput input) : SV_TARGET
 {
-	return g_diffuseTex.Sample(g_sampleType, input.texCoord) * input.color;
+	float4 output;
+	for (int i = 0; i < g_sampleCount; ++i)
+	{
+		output += g_offset[i].z * g_diffuseTex.Sample(g_sampleType, input.texCoord + g_offset[i].xy);
+	}
+	return output;
 }
