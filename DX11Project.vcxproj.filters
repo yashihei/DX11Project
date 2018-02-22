@@ -94,6 +94,9 @@
     <ClCompile Include="Source\Panel.cpp">
       <Filter>App\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Source\BlurEffect.cpp">
+      <Filter>HKSEngine\Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor.h">
@@ -215,6 +218,12 @@
     </ClInclude>
     <ClInclude Include="Source\Panel.h">
       <Filter>App\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BlurEffect.h">
+      <Filter>HKSEngine\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EffectBase.h">
+      <Filter>HKSEngine\Effects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

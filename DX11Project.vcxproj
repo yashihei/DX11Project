@@ -134,6 +134,7 @@
     <ClCompile Include="Source\AssetsManager.cpp" />
     <ClCompile Include="Source\AudioManager.cpp" />
     <ClCompile Include="Source\BasicEffect.cpp" />
+    <ClCompile Include="Source\BlurEffect.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\Panel.cpp" />
@@ -155,7 +156,9 @@
   <ItemGroup>
     <ClInclude Include="Source\Actor.h" />
     <ClInclude Include="Source\AssetsManager.h" />
+    <ClInclude Include="Source\BlurEffect.h" />
     <ClInclude Include="Source\FPSManager.h" />
+    <ClInclude Include="Source\EffectBase.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PtrAlias.h" />
     <ClInclude Include="Source\App.h" />
