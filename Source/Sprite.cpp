@@ -46,7 +46,7 @@ void Sprite::draw(const Vector3& pos, float scale)
 	world *= view.Invert();
 	world *= Matrix::CreateTranslation(pos);
 
-	m_spriteEffect->setParam(world.Transpose(), m_camera->getViewMat().Transpose(), m_camera->getProjMat().Transpose());
+	m_spriteEffect->setParams(world.Transpose(), m_camera->getViewMat().Transpose(), m_camera->getProjMat().Transpose());
 	m_spriteEffect->apply();
 
 	m_deviceContext->DrawIndexed(4, 0, 0);

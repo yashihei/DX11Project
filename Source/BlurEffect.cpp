@@ -11,13 +11,13 @@
 
 #pragma pack(push, 1)
 namespace {
-	struct ObjectConstants {
+	struct ObjectParams {
 		Matrix world;
 		Matrix view;
 		Matrix proj;
 	};
 
-	struct BlurConstants {
+	struct BlurParams {
 		int SampleCount;
 		int Dummy[3];
 		Vector4 Offset[16];
@@ -32,9 +32,9 @@ inline float GaussianDistribution(const Vector2& pos, float rho)
 	return exp(-(pos.x * pos.x + pos.y * pos.y) / (2.0f * rho * rho));
 }
 
-inline BlurConstants CalcBlurParam(int width, int height, Vector2 dir, float deviation)
+inline BlurParams CalcBlurParam(int width, int height, Vector2 dir, float deviation)
 {
-	BlurConstants result;
+	BlurParams result;
     result.SampleCount = 15;
     auto tu = 1.0f / float(width);
     auto tv = 1.0f / float(height);
@@ -88,8 +88,8 @@ BlurEffect::BlurEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 		throw std::runtime_error("CreatePixelShader() Failed.");
 
 	// Create constant buf
-	CreateConstantBuffer(m_device, sizeof(ObjectConstants), &m_constantBufferObject);
-	CreateConstantBuffer(m_device, sizeof(BlurConstants), &m_constantBufferBlur);
+	CreateConstantBuffer(m_device, sizeof(ObjectParams), &m_objectParams);
+	CreateConstantBuffer(m_device, sizeof(BlurParams), &m_blurParams);
 
 	const D3D11_INPUT_ELEMENT_DESC layout[] = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -123,13 +123,13 @@ void BlurEffect::setParams(const Matrix& world, const Matrix& view, const Matrix
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	// コンスタントバッファ書き換え
-	HRESULT hr = m_deviceContext->Map(m_constantBufferObject.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	HRESULT hr = m_deviceContext->Map(m_objectParams.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
-		ObjectConstants* data = reinterpret_cast<ObjectConstants*>(resource.pData);
+		ObjectParams* data = reinterpret_cast<ObjectParams*>(resource.pData);
 		data->world = world;
 		data->view = view;
 		data->proj = proj;
-		m_deviceContext->Unmap(m_constantBufferObject.Get(), 0);
+		m_deviceContext->Unmap(m_objectParams.Get(), 0);
 	}
 }
 
@@ -142,12 +142,12 @@ void BlurEffect::setHorizontalBlur()
 	auto src = CalcBlurParam(static_cast<int>(vp.Width), static_cast<int>(vp.Height), Vector2(1.0f, 0.0f), 5.f);
 
 	D3D11_MAPPED_SUBRESOURCE resource;
-	HRESULT hr = m_deviceContext->Map(m_constantBufferBlur.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	HRESULT hr = m_deviceContext->Map(m_blurParams.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
-		BlurConstants* data = reinterpret_cast<BlurConstants*>(resource.pData);
+		BlurParams* data = reinterpret_cast<BlurParams*>(resource.pData);
 		data->SampleCount = src.SampleCount;
 		memcpy(data->Offset, src.Offset, sizeof(data->Offset));
-		m_deviceContext->Unmap(m_constantBufferBlur.Get(), 0);
+		m_deviceContext->Unmap(m_blurParams.Get(), 0);
 	}
 }
 
@@ -160,12 +160,12 @@ void BlurEffect::setVerticalBlur()
 	auto src = CalcBlurParam(static_cast<int>(vp.Width), static_cast<int>(vp.Height), Vector2(0.0f, 1.0f), 5.f);
 
 	D3D11_MAPPED_SUBRESOURCE resource;
-	HRESULT hr = m_deviceContext->Map(m_constantBufferBlur.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	HRESULT hr = m_deviceContext->Map(m_blurParams.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
-		BlurConstants* data = reinterpret_cast<BlurConstants*>(resource.pData);
+		BlurParams* data = reinterpret_cast<BlurParams*>(resource.pData);
 		data->SampleCount = src.SampleCount;
 		memcpy(data->Offset, src.Offset, sizeof(data->Offset));
-		m_deviceContext->Unmap(m_constantBufferBlur.Get(), 0);
+		m_deviceContext->Unmap(m_blurParams.Get(), 0);
 	}
 }
 
@@ -181,7 +181,7 @@ void BlurEffect::apply()
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), NULL, 0);
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), NULL, 0);
 	// Set constant buffers
-	ID3D11Buffer* buffers[2] = { m_constantBufferObject.Get(), m_constantBufferBlur.Get() };
+	ID3D11Buffer* buffers[2] = { m_objectParams.Get(), m_blurParams.Get() };
 	m_deviceContext->VSSetConstantBuffers(0, 2, buffers);
 	m_deviceContext->PSSetConstantBuffers(0, 2, buffers);
 }

@@ -11,7 +11,7 @@
 #include "UtilDX.h"
 
 namespace {
-	struct ConstantBuffer {
+	struct ObjectParams {
 		Matrix world;
 		Matrix view;
 		Matrix proj;
@@ -52,7 +52,7 @@ SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceConte
 		throw std::runtime_error("CreateInputLayout() Failed.");
 
 	// Create constant buffer
-	CreateConstantBuffer(m_device, sizeof(ConstantBuffer), &m_constantBuffer);
+	CreateConstantBuffer(m_device, sizeof(ObjectParams), &m_objectParams);
 
 	// Create sampler
 	D3D11_SAMPLER_DESC samplerDesc = {};
@@ -70,18 +70,18 @@ SpriteEffect::SpriteEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceConte
 		throw std::runtime_error("CreateSamplerState() Failed.");
 }
 
-void SpriteEffect::setParam(const Matrix& world, const Matrix& view, const Matrix& proj)
+void SpriteEffect::setParams(const Matrix& world, const Matrix& view, const Matrix& proj)
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	// コンスタントバッファ書き換え
-	HRESULT hr = m_deviceContext->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	HRESULT hr = m_deviceContext->Map(m_objectParams.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
-		ConstantBuffer* data = reinterpret_cast<ConstantBuffer*>(resource.pData);
+		ObjectParams* data = reinterpret_cast<ObjectParams*>(resource.pData);
 		data->world = world;
 		data->view = view;
 		data->proj = proj;
-		m_deviceContext->Unmap(m_constantBuffer.Get(), 0);
+		m_deviceContext->Unmap(m_objectParams.Get(), 0);
 	}
 }
 
@@ -97,8 +97,8 @@ void SpriteEffect::apply()
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), NULL, 0);
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), NULL, 0);
 	// Set constants
-	m_deviceContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
-	m_deviceContext->PSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
+	m_deviceContext->VSSetConstantBuffers(0, 1, m_objectParams.GetAddressOf());
+	m_deviceContext->PSSetConstantBuffers(0, 1, m_objectParams.GetAddressOf());
 }
 
 } // namespace hks

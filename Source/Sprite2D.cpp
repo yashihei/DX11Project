@@ -33,7 +33,7 @@ Sprite2D::Sprite2D(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> devi
 
 	const Matrix orthoMat = DirectX::XMMatrixOrthographicLH(vp.Width, vp.Height, 0, 1000.0f);
 	m_spriteEffect = std::make_shared<SpriteEffect>(m_device, m_deviceContext);
-	m_spriteEffect->setParam(Matrix::Identity.Transpose(), Matrix::Identity.Transpose(), orthoMat.Transpose());
+	m_spriteEffect->setParams(Matrix::Identity.Transpose(), Matrix::Identity.Transpose(), orthoMat.Transpose());
 
 	// Set texture
 	if (texture != nullptr) {

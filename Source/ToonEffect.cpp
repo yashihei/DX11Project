@@ -13,20 +13,20 @@
 
 #pragma pack(push, 1)
 namespace {
-	struct ObjectConstants {
+	struct ObjectParams {
 		Matrix world;
 		Matrix view;
 		Matrix proj;
 	};
 
-	struct LightConstants {
+	struct LightParams {
 		Vector4 diffuseLight;
 		Vector4 ambientLight;
 		Vector3 lightDirection;
 		float padding;
 	};
 
-	struct MaterialConstants {
+	struct MaterialParams {
 		Vector4 diffuseMaterial;
 		Vector4 ambientMaterial;
 		Vector4 specularMaterial;
@@ -57,9 +57,9 @@ ToonEffect::ToonEffect(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 		throw std::runtime_error("CreatePixelShader() Failed.");
 
 	// Create constant buf
-	CreateConstantBuffer(m_device, sizeof(ObjectConstants), &m_constantBufferObject);
-	CreateConstantBuffer(m_device, sizeof(LightConstants), &m_constantBufferLight);
-	CreateConstantBuffer(m_device, sizeof(MaterialConstants), &m_constantBufferMaterial);
+	CreateConstantBuffer(m_device, sizeof(ObjectParams), &m_objectParams);
+	CreateConstantBuffer(m_device, sizeof(LightParams), &m_lightParams);
+	CreateConstantBuffer(m_device, sizeof(MaterialParams), &m_materialParams);
 
 	// Create input layout
 	const D3D11_INPUT_ELEMENT_DESC layout[] = {
@@ -95,13 +95,13 @@ void ToonEffect::setObjectParams(const Matrix& world, const Matrix& view, const 
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
-	HRESULT hr = m_deviceContext->Map(m_constantBufferObject.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	HRESULT hr = m_deviceContext->Map(m_objectParams.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
-		ObjectConstants* data = reinterpret_cast<ObjectConstants*>(resource.pData);
+		ObjectParams* data = reinterpret_cast<ObjectParams*>(resource.pData);
 		data->world = world;
 		data->view = view;
 		data->proj = proj;
-		m_deviceContext->Unmap(m_constantBufferObject.Get(), 0);
+		m_deviceContext->Unmap(m_objectParams.Get(), 0);
 	}
 }
 
@@ -109,14 +109,14 @@ void ToonEffect::setLightParams(const Vector4& diffuse, const Vector4& ambient, 
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
-	HRESULT hr = m_deviceContext->Map(m_constantBufferLight.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	HRESULT hr = m_deviceContext->Map(m_lightParams.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
-		LightConstants* data = reinterpret_cast<LightConstants*>(resource.pData);
+		LightParams* data = reinterpret_cast<LightParams*>(resource.pData);
 		data->diffuseLight = diffuse;
 		data->ambientLight = ambient;
 		data->lightDirection = lightDir;
 		data->padding = 0.0f;
-		m_deviceContext->Unmap(m_constantBufferLight.Get(), 0);
+		m_deviceContext->Unmap(m_lightParams.Get(), 0);
 	}
 }
 
@@ -124,14 +124,14 @@ void ToonEffect::setMaterialParams(const Vector4& diffuse, const Vector4& ambien
 {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
-	HRESULT hr = m_deviceContext->Map(m_constantBufferMaterial.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+	HRESULT hr = m_deviceContext->Map(m_materialParams.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 	if (SUCCEEDED(hr)) {
-		MaterialConstants* data = reinterpret_cast<MaterialConstants*>(resource.pData);
+		MaterialParams* data = reinterpret_cast<MaterialParams*>(resource.pData);
 		data->diffuseMaterial = diffuse;
 		data->ambientMaterial = ambient;
 		data->specularMaterial = specular;
 		data->power = Vector4(power, 0, 0, 0);
-		m_deviceContext->Unmap(m_constantBufferMaterial.Get(), 0);
+		m_deviceContext->Unmap(m_materialParams.Get(), 0);
 	}
 }
 
@@ -148,7 +148,7 @@ void ToonEffect::apply()
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), NULL, 0);
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), NULL, 0);
 	// Set constant buffers
-	ID3D11Buffer* buffers[3] = { m_constantBufferObject.Get(), m_constantBufferLight.Get(), m_constantBufferMaterial.Get() };
+	ID3D11Buffer* buffers[3] = { m_objectParams.Get(), m_lightParams.Get(), m_materialParams.Get() };
 	m_deviceContext->VSSetConstantBuffers(0, 3, buffers);
 	m_deviceContext->PSSetConstantBuffers(0, 3, buffers);
 }

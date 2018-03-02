@@ -28,9 +28,9 @@ private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ComPtr<ID3D11VertexShader> m_vertexShader;
 	ComPtr<ID3D11PixelShader> m_pixelShader;
-	ComPtr<ID3D11Buffer> m_constantBufferObject;
-	ComPtr<ID3D11Buffer> m_constantBufferLight;
-	ComPtr<ID3D11Buffer> m_constantBufferMaterial;
+	ComPtr<ID3D11Buffer> m_objectParams;
+	ComPtr<ID3D11Buffer> m_lightParams;
+	ComPtr<ID3D11Buffer> m_materialParams;
 	ComPtr<ID3D11InputLayout> m_layout;
 	ComPtr<ID3D11SamplerState> m_samplerState;
 	ComPtr<ID3D11ShaderResourceView> m_texture, m_toonMap;
